@@ -12,6 +12,8 @@
 #include "esp_event_loop.h"
 #include "nvs_flash.h"
 #include "driver/gpio.h"
+#include <string.h>
+
 #define	LED_GPIO_PIN			GPIO_NUM_4
 #define	WIFI_CHANNEL_MAX		(13)
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
@@ -39,22 +41,20 @@ static void wifi_sniffer_set_channel(uint8_t channel);
 static const char *wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type);
 static void wifi_sniffer_packet_handler(void *buff, wifi_promiscuous_pkt_type_t type);
 
-
-/* da aggiungere SSID, HASH del pacchetto, marca temporale */
 void
 app_main(void)
 {
-	uint8_t level = 0, channel = 6;
+	uint8_t level = 0, channel = 1;
 
 	/* setup */
 	wifi_sniffer_init();
-//	gpio_set_direction(LED_GPIO_PIN, GPIO_MODE_OUTPUT);blog
-    wifi_sniffer_set_channel(channel);
+	gpio_set_direction(LED_GPIO_PIN, GPIO_MODE_OUTPUT);
+
 	/* loop */
 	while (true) {
-		//gpio_set_level(LED_GPIO_PIN, level ^= 1);
+		gpio_set_level(LED_GPIO_PIN, level ^= 1);
 		vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
-        wifi_sniffer_set_channel(channel); /* permette di cambiare canale */
+		wifi_sniffer_set_channel(channel);
 		channel = (channel % WIFI_CHANNEL_MAX) + 1;
     	}
 }
@@ -62,7 +62,7 @@ app_main(void)
 esp_err_t
 event_handler(void *ctx, system_event_t *event)
 {
-
+	
 	return ESP_OK;
 }
 
@@ -71,14 +71,14 @@ wifi_sniffer_init(void)
 {
 
 	nvs_flash_init();
-    tcpip_adapter_init();
-    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    	tcpip_adapter_init();
+    	ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
+    	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 	ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
 	ESP_ERROR_CHECK( esp_wifi_set_country(&wifi_country) ); /* set country for channel range [1, 13] */
 	ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
-    ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_NULL) );
-    ESP_ERROR_CHECK( esp_wifi_start() );
+    	ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_NULL) );
+    	ESP_ERROR_CHECK( esp_wifi_start() );
 	esp_wifi_set_promiscuous(true);
 	esp_wifi_set_promiscuous_rx_cb(&wifi_sniffer_packet_handler);
 }
@@ -86,7 +86,7 @@ wifi_sniffer_init(void)
 void
 wifi_sniffer_set_channel(uint8_t channel)
 {
-
+	
 	esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
 }
 
@@ -94,10 +94,9 @@ const char *
 wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type)
 {
 	switch(type) {
-    case WIFI_PKT_CTRL: return "CTRL";
 	case WIFI_PKT_MGMT: return "MGMT";
 	case WIFI_PKT_DATA: return "DATA";
-	default:
+	default:	
 	case WIFI_PKT_MISC: return "MISC";
 	}
 }
@@ -105,29 +104,45 @@ wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type)
 void
 wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 {
-  
+
 	if (type != WIFI_PKT_MGMT)
 		return;
 
 	const wifi_promiscuous_pkt_t *ppkt = (wifi_promiscuous_pkt_t *)buff;
 	const wifi_ieee80211_packet_t *ipkt = (wifi_ieee80211_packet_t *)ppkt->payload;
 	const wifi_ieee80211_mac_hdr_t *hdr = &ipkt->hdr;
-    uint16_t frame = hdr->frame_ctrl;
-
+	
+	
+	uint16_t frame = hdr->frame_ctrl;
+	printf("frame = %x\n", frame);
+	printf("frame_ctrl = %x\n", hdr->frame_ctrl);
+	
     uint16_t a, b=64, mask=0xF0;
     a= frame & mask;
     if (a!=b)
     {
 		return;
     }
+	
+	char *ssid, stringa[32];
+	uint8_t *data=&ppkt->payload;/*new*/
+	uint8_t len=data[25], i;
+	ssid=(char *) malloc((len+1)*sizeof(char));
+	for(i=0; i< len; i++){
+		ssid[i]=data[26+i];
+	}
+	ssid[i]='\0';
+	//ssid=strdup(stringa);
 
-     printf("PACKET TYPE=%s, CHAN=%02d, RSSI=%02d,"
+	printf("PACKET TYPE=%s, CHAN=%02d, RSSI=%02d, TIME=%d, SSID=%d %s"
 		" ADDR1=%02x:%02x:%02x:%02x:%02x:%02x,"
 		" ADDR2=%02x:%02x:%02x:%02x:%02x:%02x,"
 		" ADDR3=%02x:%02x:%02x:%02x:%02x:%02x\n",
 		wifi_sniffer_packet_type2str(type),
 		ppkt->rx_ctrl.channel,
 		ppkt->rx_ctrl.rssi,
+		ppkt->rx_ctrl.timestamp,/*new*/
+		len, ssid,/*new*/
 		/* ADDR1 */
 		hdr->addr1[0],hdr->addr1[1],hdr->addr1[2],
 		hdr->addr1[3],hdr->addr1[4],hdr->addr1[5],
@@ -138,5 +153,5 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 		hdr->addr3[0],hdr->addr3[1],hdr->addr3[2],
 		hdr->addr3[3],hdr->addr3[4],hdr->addr3[5]
 	);
-
 }
+
