@@ -1,0 +1,19 @@
+----CLIENT----
+
+~Azzerare base dei tempi
+~Sniffare per un minuto (Probe request, Beacon)
+~Fermarsi e inviare dati al server(MAC source, SSID, Time, Hash, RSSI)
+~Manutenere base dei tempi
+~ricominciare
+
+----SERVER----
+
+~configurarsi(#schede, riferimenti spaziali)
+~inviare base dei tempi alle N schede
+~ricevere le catture dalle N schede
+~elaborare i dati (contare i device, stimarne la posizione)
+~memorizzare in DB
+
+----GRAFICA----
+
+~plottare dati nel DB
