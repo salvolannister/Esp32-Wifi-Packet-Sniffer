@@ -105,7 +105,7 @@ wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type)
 void
 wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 {
-  typ
+  
 	if (type != WIFI_PKT_MGMT)
 		return;
 
