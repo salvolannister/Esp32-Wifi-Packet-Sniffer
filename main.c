@@ -55,12 +55,13 @@ void P_push(P_array* sniffed_packet, wifi_ieee80211_packet_t x);
 void P_free(P_array* sniffed_packet);
 void P_resize(P_array* sniffed_packet);
 
+P_array Sniffed_packet;
 
 void
 app_main(void)
 {
 	uint8_t level = 0, channel = 1;
-    P_array Sniffed_packet;
+
 	/* setup */
 
 	wifi_sniffer_init();
