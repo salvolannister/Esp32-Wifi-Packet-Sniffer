@@ -17,3 +17,18 @@
 ----GRAFICA----
 
 ~plottare dati nel DB
+
+
+
+
+
+SALVA-DAVE:
+- correzione errori
+- sniffing per tot secondi (60?) + eventuale loop per 5
+- hash
+- scrittura del file
+
+
+UMBERTO-MARGARET
+- connessione Client-Server
+- sistema ricezione file
