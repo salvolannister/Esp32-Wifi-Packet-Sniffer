@@ -13,6 +13,8 @@
 #include "nvs_flash.h"
 #include "driver/gpio.h"
 #include <string.h>
+//#include <rom/md5_hash.h>
+#include "mbedtls/md5.h"
 
 #define	LED_GPIO_PIN			GPIO_NUM_4
 #define	WIFI_CHANNEL_MAX		(13)
@@ -64,6 +66,7 @@ void P_push(P_array* sniffed_packet, reduced_info x);
 void P_free(P_array* sniffed_packet);
 void P_resize(P_array* sniffed_packet);
 void P_printer(P_array sniffed_packet);
+void ComputHashMD5();
 
 P_array Sniffed_packet;
 
@@ -72,6 +75,7 @@ app_main(void)
 {
 	uint8_t channel = 1;
     Sniffed_packet=P_allocate(2);
+	ComputHashMD5();
 	/* setup */
 
 	wifi_sniffer_init();
@@ -137,6 +141,48 @@ void P_free(P_array* sniffed_packet){
     //free(sniffed_packet);
 }
 
+void P_printer(P_array sniffed_packet) {
+	reduced_info x;
+	int i = 0;
+
+	for (i = 0; i< sniffed_packet.count; i++) {
+		x = sniffed_packet.array[i];
+		printf("CHAN=%02d, RSSI=%02d ", x.channel, x.rssi);
+		if (x.length_ssid != 0) {
+			printf(" SSID_length=%d SSID_%s", x.length_ssid, x.ssid);
+		}
+		printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x\n",
+			x.mac_src[0], x.mac_src[1], x.mac_src[2],
+			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
+	}
+}
+
+void ComputHashMD5() {
+	
+	struct mbedtls_md5_context contextMD5; //MD5 context structure. Data fields: Total, state, buffer
+	
+	const unsigned char* string = (const unsigned char*) "Testo di prova";
+	unsigned char data[16]; //it will contain the final output -> digest. MD5 return 128bit = 16byte.
+	
+	//testing: we fill myContext memory space with 0x00 repeated until sizeof(myContext). Similarly for data memory space
+	memset(&contextMD5, 0x00, sizeof(contextMD5));
+	memset(data, 0x00, 16);
+	
+	mbedtls_md5_init(&contextMD5); //init the context
+	mbedtls_md5_starts_ret(&contextMD5); //setup the context
+	if(mbedtls_md5_update_ret(&contextMD5, (const unsigned char*) string, strlen((const char*) string))) //params: MD5 context, buffer holding the data, length of the input data
+	{
+		printf("error in digest computetion \n");
+	}
+	mbedtls_md5_finish_ret(&contextMD5, data); //the final digest. Params: MD5 context, MD5 checksum result.
+	mbedtls_md5_free(&contextMD5); //free MD5 context
+
+	printf("digest of the string: 'Testo di prova': \n");
+	for (int i = 0; i < sizeof(data); i++)
+		printf(" %02x", data[i]);
+	printf("\n");
+}
+
 esp_err_t
 event_handler(void *ctx, system_event_t *event)
 {
@@ -177,22 +223,6 @@ wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type)
 	default:
 	case WIFI_PKT_MISC: return "MISC";
 	}
-}
-
-void P_printer(P_array sniffed_packet){
-    reduced_info x;
-   int i=0;
-
-   for (i=0;  i< sniffed_packet.count; i++){
-    x = sniffed_packet.array[i];
-    printf("CHAN=%02d, RSSI=%02d ",x.channel,x.rssi);
-	if(x.length_ssid != 0 ){
-    printf(" SSID_length=%d SSID_%s",x.length_ssid,x.ssid);
-	}
-    printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x\n",
-        x.mac_src[0],x.mac_src[1],x.mac_src[2],
-		x.mac_src[3],x.mac_src[4],x.mac_src[5]);
-   }
 }
 
 
