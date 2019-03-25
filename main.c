@@ -119,6 +119,7 @@ void P_resize(P_array* sniffed_packet){
 
 void P_push(P_array* sniffed_packet, reduced_info p){
   int n_packets = sniffed_packet->count;
+  printf("Adding captured packet with dim = %d and counter = %d\n", sniffed_packet->dim, n_packets);
 
   if((sniffed_packet->dim) <= n_packets)
         P_resize(sniffed_packet);
@@ -133,7 +134,7 @@ void P_free(P_array* sniffed_packet){
     sniffed_packet->array=NULL;
     sniffed_packet->count=0;
     sniffed_packet->dim=0;
-    free(sniffed_packet);
+    //free(sniffed_packet);
 }
 
 esp_err_t
@@ -265,10 +266,11 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 //		hdr->addr3[0],hdr->addr3[1],hdr->addr3[2],
 //		hdr->addr3[3],hdr->addr3[4],hdr->addr3[5]
 //	);
-      if(Sniffed_packet.count == 50){
+      if(Sniffed_packet.count == 5){
         P_printer(Sniffed_packet);
         P_free(&Sniffed_packet);
-        exit(0);
+		Sniffed_packet = P_allocate(40);
+        //exit(0);
       }
 
 }
