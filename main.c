@@ -71,7 +71,7 @@ void
 app_main(void)
 {
 	uint8_t channel = 1;
-    Sniffed_packet=P_allocate(40);
+    Sniffed_packet=P_allocate(2);
 	/* setup */
 
 	wifi_sniffer_init();
@@ -119,7 +119,7 @@ void P_resize(P_array* sniffed_packet){
 
 void P_push(P_array* sniffed_packet, reduced_info p){
   int n_packets = sniffed_packet->count;
-  printf("Adding captured packet with dim = %d and counter = %d\n", sniffed_packet->dim, n_packets);
+  printf("Adding captured packet. Buffer dim = %d ; num elements = %d\n", sniffed_packet->dim, n_packets);
 
   if((sniffed_packet->dim) <= n_packets)
         P_resize(sniffed_packet);
