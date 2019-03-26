@@ -5,6 +5,9 @@
  */
 
 #include "freertos/FreeRTOS.h"
+#include "freertos/event_groups.h"
+#include "freertos/task.h"
+#include <sys/param.h>
 #include "esp_wifi.h"
 #include "esp_wifi_types.h"
 #include "esp_system.h"
@@ -13,15 +16,29 @@
 #include "nvs_flash.h"
 #include "driver/gpio.h"
 #include <string.h>
-//#include <rom/md5_hash.h>
 #include "mbedtls/md5.h"
+#include "esp_log.h"
+
+//tcp connection
+#include "lwip/err.h"
+#include "lwip/sockets.h"
+#include "lwip/sys.h"
+#include <lwip/netdb.h>
 
 #define	LED_GPIO_PIN			GPIO_NUM_4
 #define	WIFI_CHANNEL_MAX		(13)
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
 
+#define EXAMPLE_WIFI_SSID "Ntani"
+#define EXAMPLE_WIFI_PASS "davidedavide"
+
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
+static const char *TAG = "example"; //used to log functions
+const int IPV4_GOTIP_BIT = BIT0;
+const int IPV6_GOTIP_BIT = BIT1;
+/* FreeRTOS event group to signal when we are connected & ready to make a request */
+static EventGroupHandle_t wifi_event_group;
 
 typedef struct {
 	unsigned frame_ctrl:16;
@@ -53,6 +70,8 @@ typedef struct P_array{
 	int dim; /* dimension of array */
 }P_array;
 
+//connecting function
+static void wait_for_ip();
 
 static esp_err_t event_handler(void *ctx, system_event_t *event);
 static void wifi_sniffer_init(void);
@@ -66,6 +85,7 @@ void P_push(P_array* sniffed_packet, reduced_info x);
 void P_free(P_array* sniffed_packet);
 void P_resize(P_array* sniffed_packet);
 void P_printer(P_array sniffed_packet);
+//hashing function
 void ComputHashMD5();
 
 P_array Sniffed_packet;
@@ -183,10 +203,36 @@ void ComputHashMD5() {
 	printf("\n");
 }
 
-esp_err_t
-event_handler(void *ctx, system_event_t *event)
+static esp_err_t event_handler(void *ctx, system_event_t *event)
 {
+	switch(event->event_id) {
+    case SYSTEM_EVENT_STA_START:
+		esp_wifi_connect();
+		ESP_LOGI(TAG, "SYSTEM_EVENT_STA_START");
+		break;
+	case SYSTEM_EVENT_STA_CONNECTED:
+		/* enable ipv6 */
+		tcpip_adapter_create_ip6_linklocal(TCPIP_ADAPTER_IF_STA);
+		break;
+	case SYSTEM_EVENT_STA_GOT_IP:
+		xEventGroupSetBits(wifi_event_group, IPV4_GOTIP_BIT);
+		ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP");
+		break;
+	case SYSTEM_EVENT_STA_DISCONNECTED:
+		/* This is a workaround as ESP32 WiFi libs don't currently auto-reassociate. */
+		esp_wifi_connect();
+		xEventGroupClearBits(wifi_event_group, IPV4_GOTIP_BIT);
+		xEventGroupClearBits(wifi_event_group, IPV6_GOTIP_BIT);
+		break;
+	case SYSTEM_EVENT_AP_STA_GOT_IP6:
+		xEventGroupSetBits(wifi_event_group, IPV6_GOTIP_BIT);
+		ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP6");
 
+		char *ip6 = ip6addr_ntoa(&event->event_info.got_ip6.ip6_info.ip);
+		ESP_LOGI(TAG, "IPv6: %s", ip6);
+	default:
+		break;
+	}
 	return ESP_OK;
 }
 
@@ -195,16 +241,47 @@ wifi_sniffer_init(void)
 {
 
 	nvs_flash_init();
-    	tcpip_adapter_init();
-    	ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
-    	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    tcpip_adapter_init();
+	
+	wifi_event_group = xEventGroupCreate();
+
+    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 	ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
 	ESP_ERROR_CHECK( esp_wifi_set_country(&wifi_country) ); /* set country for channel range [1, 13] */
 	ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
-    	ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_NULL) );
-    	ESP_ERROR_CHECK( esp_wifi_start() );
+    //ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_NULL) );
+    //ESP_ERROR_CHECK( esp_wifi_start() );
+	
+	wifi_config_t wifi_config = {
+		.sta = {
+		.ssid = EXAMPLE_WIFI_SSID,
+		.password = EXAMPLE_WIFI_PASS,
+	},
+	};
+	
+	ESP_LOGI(TAG, "Setting WiFi configuration SSID %s...", wifi_config.sta.ssid);
+	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+	ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
+	ESP_ERROR_CHECK(esp_wifi_start());
+
 	esp_wifi_set_promiscuous(true);
 	esp_wifi_set_promiscuous_rx_cb(&wifi_sniffer_packet_handler);
+
+	wait_for_ip();
+}
+
+static void wait_for_ip()
+{
+	uint32_t bits = IPV4_GOTIP_BIT | IPV6_GOTIP_BIT;
+
+	ESP_LOGI(TAG, "Waiting for AP connection...");
+	xEventGroupWaitBits(wifi_event_group, bits, false, true, portMAX_DELAY);
+	/*
+	Read bits within an RTOS event group, optionally entering the Blocked state (with a timeout)
+	to wait for a bit or group of bits to become set.
+	*/
+	ESP_LOGI(TAG, "Connected to AP");
 }
 
 void
