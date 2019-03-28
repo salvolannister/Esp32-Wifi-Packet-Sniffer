@@ -103,7 +103,7 @@ void
 app_main(void)
 {
 	uint8_t channel = 1;
-    Sniffed_packet=P_allocate(2);
+    Sniffed_packet=P_allocate(40);
 	ComputHashMD5();
 	
 	/* setup wifi*/
@@ -396,13 +396,44 @@ static void tcp_client_task()
 	printf("Connected to the target website\n");
 
 	// send the request
-	result = write(s, payload, strlen(payload));
+	/*result = write(s, payload, strlen(payload));
 	if (result < 0) {
 		printf("Unable to send data\n");
 		close(s);
 		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
 	}
-	printf("data sent\n");
+	printf("data sent\n");*/
+
+	
+	reduced_info x;
+	int i;
+
+	for (i = 0; i < Sniffed_packet.count; i++) 
+	{
+		char temp[1000];
+		char string_to_send[1000];
+		x = Sniffed_packet.array[i];
+		sprintf(string_to_send, "CHAN=%02d, RSSI=%02d ", x.channel, x.rssi);
+
+		if (x.length_ssid != 0) {
+			sprintf(temp, " SSID_length=%d SSID_%s", x.length_ssid, x.ssid);
+			strcat(string_to_send, temp);
+		}
+
+		sprintf(temp, " MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x\n",
+			x.mac_src[0], x.mac_src[1], x.mac_src[2],
+			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
+
+		strcat(string_to_send, temp);
+
+		result = write(s, string_to_send, strlen(string_to_send));
+		if (result < 0) {
+			printf("Unable to send data\n");
+			close(s);
+			while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+		}
+		printf("data sent\n");
+	}
 
 	close(s);
 	printf("Socket closed\n");
