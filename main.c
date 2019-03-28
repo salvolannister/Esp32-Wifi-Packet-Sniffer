@@ -97,7 +97,7 @@ void P_printer(P_array sniffed_packet);
 void ComputHashMD5();
 
 P_array Sniffed_packet;
-bool CaptureFinish = false;
+bool stopSniffing = false;
 
 void
 app_main(void)
@@ -115,12 +115,27 @@ app_main(void)
 	/* starting promiscue mode*/
 	startSniffingPacket();
 
-	tcp_client_task();
+	//tcp_client_task();
 
 	/* loop */
 	while (true) {
 
-		vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
+		//after tot seconds stop sniffing packets, print the result and send message to server. Then, restart sniffing packets.
+		vTaskDelay(1000*40);
+		printf("---------------40 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+		stopSniffing = true;
+		if (Sniffed_packet.dim > 0)
+		{
+			P_printer(Sniffed_packet);
+			tcp_client_task();
+			P_free(&Sniffed_packet);
+			Sniffed_packet = P_allocate(40);
+		}
+		else
+			printf("no packet sniffed");
+		stopSniffing = false;
+		
+		/*vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
 		wifi_sniffer_set_channel(channel);
 		channel = (channel % WIFI_CHANNEL_MAX) + 1;
 		if (CaptureFinish) {
@@ -128,7 +143,7 @@ app_main(void)
 			esp_wifi_set_promiscuous(false);
 			tcp_client_task();
 			CaptureFinish = false;
-		}
+		}*/
     }
 }
 
@@ -392,9 +407,9 @@ static void tcp_client_task()
 	close(s);
 	printf("Socket closed\n");
 
-	while (1) {
+	/*while (1) {
 		vTaskDelay(1000 / portTICK_RATE_MS);
-	}
+	}*/
 }
 
 void
@@ -420,6 +435,10 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 {
 
 	if (type != WIFI_PKT_MGMT)
+		return;
+
+	//when time is over
+	if (stopSniffing)
 		return;
 
 	const wifi_promiscuous_pkt_t *ppkt = (wifi_promiscuous_pkt_t *)buff;
@@ -485,15 +504,12 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 //		hdr->addr3[0],hdr->addr3[1],hdr->addr3[2],
 //		hdr->addr3[3],hdr->addr3[4],hdr->addr3[5]
 //	);
-      if(Sniffed_packet.count == 5){
+      /*if(Sniffed_packet.count == 5){
         P_printer(Sniffed_packet);
-
-		CaptureFinish = true;
-		//tcp_client_task();//il will send data to server
         P_free(&Sniffed_packet);
 		Sniffed_packet = P_allocate(40);
         //exit(0);
-      }
+      }*/
 
 }
 
