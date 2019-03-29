@@ -1,8 +1,12 @@
 import java.net.*;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EchoServer {
     public static void main(String[] args) throws IOException {
+
+        Map<String, Packet> tab= new HashMap<String, Packet>();
 /*
         if (args.length != 1) {
             System.err.println("Usage: java EchoServer <port number>");
