@@ -32,7 +32,7 @@
 
 #define EXAMPLE_WIFI_SSID "Ntani"
 #define EXAMPLE_WIFI_PASS "davidedavide"
-#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+#define HOST_IP_ADDR "192.168.43.26" //Server ip addres
 #define PORT "8080" //Server port
 
 //connection variables

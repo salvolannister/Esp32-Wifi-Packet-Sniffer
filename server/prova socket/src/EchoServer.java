@@ -12,7 +12,7 @@ public class EchoServer {
         int portNumber = Integer.parseInt(args[0]);*/
 
         //byte[] buffer=new byte[1024];
-        File fos=new File("out.txt");
+        //File fos=new File("out.txt");
 
         while(true) {
 
@@ -26,7 +26,7 @@ public class EchoServer {
 
                     /*FileWriter fw = new FileWriter(fos);
                     BufferedWriter out = new BufferedWriter(fw)*/
-                    PrintWriter out =
+                    /*PrintWriter out =
                             new PrintWriter(fos);
 
                 /*InputStream in = clientSocket.getInputStream();
@@ -41,6 +41,7 @@ public class EchoServer {
                 while ((inputLine = in.readLine()) != null) {
                     //out.println(inputLine);
                     System.out.println(inputLine);
+
                 }
 
 
