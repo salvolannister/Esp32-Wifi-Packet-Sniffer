@@ -39,8 +39,8 @@ public class EchoServer {
             out.write(buffer, 0, byteRead);*/
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                    out.println(inputLine);
-                    System.out.println("file creato");
+                    //out.println(inputLine);
+                    System.out.println(inputLine);
                 }
 
 
