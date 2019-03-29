@@ -13,7 +13,6 @@ public class Packet {
 		GetRssi(packetChar);
 		GetSSID(packetChar);
 		System.out.println("");
-		//System.out.println(packetChar);
 	}
 	
 	private void GetRssi(String packetChar) {
