@@ -32,7 +32,7 @@
 
 #define EXAMPLE_WIFI_SSID "Ntani"
 #define EXAMPLE_WIFI_PASS "davidedavide"
-#define HOST_IP_ADDR "192.168.43.26" //Server ip addres
+#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 #define PORT "8080" //Server port
 
 //connection variables
@@ -104,7 +104,7 @@ app_main(void)
 {
 	uint8_t channel = 1;
     Sniffed_packet=P_allocate(40);
-	ComputHashMD5();
+	//ComputHashMD5();
 	
 	/* setup wifi*/
 	wifi_sniffer_init();
@@ -121,8 +121,8 @@ app_main(void)
 	while (true) {
 
 		//after tot seconds stop sniffing packets, print the result and send message to server. Then, restart sniffing packets.
-		vTaskDelay(1000*40);
-		printf("---------------40 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+		vTaskDelay(1000*10);
+		printf("---------------10 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
 		stopSniffing = true;
 		if (Sniffed_packet.dim > 0)
 		{
@@ -213,11 +213,11 @@ void P_printer(P_array sniffed_packet) {
 	}
 }
 
-void ComputHashMD5() {
+void ComputHashMD5(const unsigned char* string, char* buf) {
 	
 	struct mbedtls_md5_context contextMD5; //MD5 context structure. Data fields: Total, state, buffer
 	
-	const unsigned char* string = (const unsigned char*) "Testo di prova";
+	//const unsigned char* string = (const unsigned char*) "Testo di prova";
 	unsigned char data[16]; //it will contain the final output -> digest. MD5 return 128bit = 16byte.
 	
 	//testing: we fill myContext memory space with 0x00 repeated until sizeof(myContext). Similarly for data memory space
@@ -233,10 +233,27 @@ void ComputHashMD5() {
 	mbedtls_md5_finish_ret(&contextMD5, data); //the final digest. Params: MD5 context, MD5 checksum result.
 	mbedtls_md5_free(&contextMD5); //free MD5 context
 
-	printf("digest of the string: 'Testo di prova': \n");
+	/*printf("printf of the digest  :\n");
 	for (int i = 0; i < sizeof(data); i++)
-		printf(" %02x", data[i]);
-	printf("\n");
+		printf("%02x", data[i]);
+	printf("\n");*/
+
+	/*char output[128];
+	sprintf(output, "%02x", data[0]);
+	for (int i = 1; i < sizeof(data); i++) {
+		char temp[2];
+		sprintf(temp, "%02x", data[i]); //temp contain the 2 characters that rappresent the byte (2 exadecimal number)
+		strcat(output, temp);
+	}
+	printf("sprint function output: %s \n", output);*/
+	//char buf[128];
+	sprintf(buf, "%02x", data[0]);
+	for (int i = 1; i < sizeof(data); i++) {
+		char temp[2];
+		sprintf(temp, "%02x", data[i]); //temp contain the 2 characters that rappresent the byte (2 exadecimal number)
+		strcat(buf, temp);
+	}
+	printf("sprint function output: %s \n", buf);
 }
 
 /*
@@ -413,18 +430,35 @@ static void tcp_client_task()
 		char temp[1000];
 		char string_to_send[1000];
 		x = Sniffed_packet.array[i];
-		sprintf(string_to_send, "CHAN=%02d, RSSI=%02d ", x.channel, x.rssi);
+		sprintf(string_to_send, "CHAN=%02d/RSSI=%02d", x.channel, x.rssi);
 
 		if (x.length_ssid != 0) {
-			sprintf(temp, " SSID_length=%d SSID_%s", x.length_ssid, x.ssid);
+			sprintf(temp, "/SSID_length=%d/SSID_%s", x.length_ssid, x.ssid);
+			strcat(string_to_send, temp);
+		}
+		else
+		{
+			sprintf(temp, "/SSID_length=0");
 			strcat(string_to_send, temp);
 		}
 
-		sprintf(temp, " MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x\n",
+		sprintf(temp, "/MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x/",
 			x.mac_src[0], x.mac_src[1], x.mac_src[2],
 			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
 
 		strcat(string_to_send, temp);
+
+		/*
+		compute hash of the mac. TODO: ADD TIMESTAMP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		*/
+		char digest[128];
+		ComputHashMD5((unsigned char *)temp, digest);
+		sprintf(temp, digest);
+
+		strcat(string_to_send, "Digest=");
+		strcat(string_to_send, temp);
+		strcat(string_to_send, "/\n");
+
 
 		result = write(s, string_to_send, strlen(string_to_send));
 		if (result < 0) {
