@@ -45,6 +45,7 @@ public class EchoServer {
                 while ((inputLine = in.readLine()) != null) {
                     //out.println(inputLine);
                     new Packet(inputLine);
+                	//System.out.println(inputLine);
                 }
 
 
