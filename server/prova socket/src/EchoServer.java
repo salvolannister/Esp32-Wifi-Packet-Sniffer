@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EchoServer {
+    private static final Integer TOT_ESP = 1;
+
     public static void main(String[] args) throws IOException {
 
-        Map<String, Packet> tab= new HashMap<String, Packet>();
+        Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
 /*
         if (args.length != 1) {
             System.err.println("Usage: java EchoServer <port number>");
@@ -44,13 +46,13 @@ public class EchoServer {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     //out.println(inputLine);
-                    new Packet(inputLine);
+                    Packet p=new Packet(inputLine);
+                    if(checkInsert(p, tab)==false){
+                        System.out.println("pacchetto già ricevuto");
+                    }
                 	//System.out.println(inputLine);
+
                 }
-
-
-
-
             } catch (IOException e) {
                 System.out.println("Exception caught when trying to listen on port 8080 "
                         + " or listening for a connection");
@@ -58,5 +60,20 @@ public class EchoServer {
             }
 
         }
+    }
+
+    private static boolean checkInsert(Packet p, Map<String,PacketRec> tab) {
+        if(tab.containsKey(p.getDigest())==true){
+            if(tab.get(p.getDigest()).getN_ESP()<TOT_ESP){
+                tab.get(p.getDigest()).newSignal(p.getRSSI());
+                return true;
+            }
+        }
+        else{
+            tab.put(p.getDigest(), new PacketRec(p));
+            System.out.println(tab.toString());
+            return true;
+        }
+        return false;
     }
 }

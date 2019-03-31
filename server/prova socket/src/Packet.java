@@ -1,51 +1,53 @@
+import lombok.Data;
 
+@Data
 public class Packet {
 
-	int RSSI;
-	String MacSource;
-	String SSID;
-	String Digest;
+	private int RSSI;
+	private String MacSource;
+	private String SSID;
+	private String Digest;
 	
 	/**
 	 * 
 	 */
 	public Packet(String packetChar) {
-		ExtractMac(packetChar);
-		ExtractRssi(packetChar);
-		ExtractSSID(packetChar);
-		ExtractDigest(packetChar);
+		extractMac(packetChar);
+		extractRssi(packetChar);
+		extractSSID(packetChar);
+		extractDigest(packetChar);
 		System.out.println("");
 	}
 	
-	private void ExtractRssi(String packetChar) {
+	private void extractRssi(String packetChar) {
 		String[] begin = packetChar.split("RSSI=");
 		String[] rssi = begin[1].split("/"); //split string after RSSI= by "/"
-		this.RSSI=Integer.parseInt(rssi[0]); //take cahracters from the beginning to /
-		System.out.print("RSSI: " + this.RSSI + "; ");
+		setRSSI(Integer.parseInt(rssi[0])); //take cahracters from the beginning to /
+		System.out.print("RSSI: " + getRSSI() + "; ");
 	}
 	
-	private void ExtractMac(String packetChar) {
+	private void extractMac(String packetChar) {
 		String[] begin = packetChar.split("MAC_SRC=");
 		String[] mac = begin[1].split("/");
-		this.MacSource=mac[0];
-		System.out.print("Mac Source: " + this.MacSource + "; ");
+		setMacSource(mac[0]);
+		System.out.print("Mac Source: " + getMacSource() + "; ");
 	}
 	
-	private void ExtractSSID(String packetChar) {
+	private void extractSSID(String packetChar) {
 		String[] begin = packetChar.split("SSID_length=");
 		String[] ssid = begin[1].split("/");
 		if(ssid[0]!="0")
-			this.SSID = ssid[0];
+			setSSID(ssid[0]);
 		else
-			this.SSID = null;
-		System.out.print("SSID: " + this.SSID + "; ");
+			setSSID(null);
+		System.out.print("SSID: " + getSSID() + "; ");
 	}
 	
-	private void ExtractDigest(String packetChar) {
+	private void extractDigest(String packetChar) {
 		String[] begin = packetChar.split("Digest=");
 		String[] hash = begin[1].split("/");
-		this.Digest = hash[0];
-		System.out.print("Digest: " + this.Digest);
+		setDigest(hash[0]);
+		System.out.print("Digest: " + getDigest());
 	}
 	
 	
