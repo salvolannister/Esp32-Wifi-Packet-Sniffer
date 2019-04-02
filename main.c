@@ -18,7 +18,7 @@
 #include <string.h>
 #include "mbedtls/md5.h"
 #include "esp_log.h"
-#include "apps/sntp/sntp.h"
+#include "lwip/apps/sntp.h"
 //tcp connection
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -30,15 +30,15 @@
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
 
-#define EXAMPLE_WIFI_SSID "Ntani"
-#define EXAMPLE_WIFI_PASS "davidedavide"
-#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+//#define EXAMPLE_WIFI_SSID "Ntani"
+//#define EXAMPLE_WIFI_PASS "davidedavide"
+//#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 #define PORT "8080" //Server port
 
-/*
+
 #define EXAMPLE_WIFI_SSID "cacau"
 #define EXAMPLE_WIFI_PASS "cacauthimth"
-#define HOST_IP_ADDR "192.168.0.10" //Server ip addres */
+#define HOST_IP_ADDR "192.168.0.10" //Server ip addres
 
 //connection variables
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
@@ -104,23 +104,48 @@ void ComputHashMD5();
 P_array Sniffed_packet;
 bool stopSniffing = false;
 
+ /*struttura che viene aggiornata con time,
+ mostra il tempo passato da una det. data*/
+time_t now;
+/*struttura per accedere ai campi di now*/
+struct tm timeinfo;
+
 void
 app_main(void)
 {
-	uint8_t channel = 1;
+    /* imposta fuso orario e ora legale*/
+
+
+    char buffer[100];
+    tzset();
+	//uint8_t channel = 1;
     Sniffed_packet=P_allocate(40);
 	//ComputHashMD5();
 
 	/* setup wifi*/
 	wifi_sniffer_init();
 
-   /* sntp_setoperatingmode(SNTP_OPMODE_POLL);*/
+    /*modalità in cui interroga il server ogni tot secondi */
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
 
+    sntp_setservername(0,"ntp1.inrim.it" );
+   // setenv("TZ", "CET-1", 1);
+    //tzset();
+    sntp_init();
 	//waiting for the configuration from the AP
 	//wait_for_ip();
 
 	/* starting promiscue mode*/
 	startSniffingPacket();
+    time(&now);
+	localtime_r(&now, &timeinfo);
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
+    printf("TEMPO in italia:%s \n",buffer);
+
+
+
+    // es. 08/05/2017 15:10:34
+
 
 	//tcp_client_task();
 
@@ -402,6 +427,9 @@ static void tcp_client_task()
 	destAddr.sin_family = AF_INET;
 	destAddr.sin_port = htons(8080); //8080 listening server port
 
+    /*ask for the time */
+//    time(&now);
+//    localtime_r(&now, &timeinfo);
 									 // create a new socket
 	int s = socket(AF_INET, SOCK_STREAM, 0);
 	if (s < 0) {
