@@ -1,6 +1,6 @@
-import lombok.Data;
 
-@Data
+
+
 public class Packet {
 
 	private int RSSI;
@@ -18,7 +18,49 @@ public class Packet {
 		extractDigest(packetChar);
 		System.out.println("");
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Packet{" +
+				"RSSI=" + RSSI +
+				", MacSource='" + MacSource + '\'' +
+				", SSID='" + SSID + '\'' +
+				", Digest='" + Digest + '\'' +
+				'}';
+	}
+
+	public int getRSSI() {
+		return RSSI;
+	}
+
+	public void setRSSI(int RSSI) {
+		this.RSSI = RSSI;
+	}
+
+	public String getMacSource() {
+		return MacSource;
+	}
+
+	public void setMacSource(String macSource) {
+		MacSource = macSource;
+	}
+
+	public String getSSID() {
+		return SSID;
+	}
+
+	public void setSSID(String SSID) {
+		this.SSID = SSID;
+	}
+
+	public String getDigest() {
+		return Digest;
+	}
+
+	public void setDigest(String digest) {
+		Digest = digest;
+	}
+
 	private void extractRssi(String packetChar) {
 		String[] begin = packetChar.split("RSSI=");
 		String[] rssi = begin[1].split("/"); //split string after RSSI= by "/"

@@ -3,7 +3,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
 public class PacketRec {
 
     private List<Integer> RSSI;
@@ -26,10 +26,60 @@ public class PacketRec {
         newSignal(packet.getRSSI());
     }
 
+    @Override
+    public String toString() {
+        return "PacketRec{" +
+                "RSSI=" + RSSI +
+                ", n_ESP=" + n_ESP +
+                ", MacSource='" + MacSource + '\'' +
+                ", SSID='" + SSID + '\'' +
+                ", Digest='" + Digest + '\'' +
+                '}';
+    }
+
+    public List<Integer> getRSSI() {
+        return RSSI;
+    }
+
+    public void setRSSI(List<Integer> RSSI) {
+        this.RSSI = RSSI;
+    }
+
+    public Integer getN_ESP() {
+        return n_ESP;
+    }
+
+    public void setN_ESP(Integer n_ESP) {
+        this.n_ESP = n_ESP;
+    }
+
+    public String getMacSource() {
+        return MacSource;
+    }
+
+    public void setMacSource(String macSource) {
+        MacSource = macSource;
+    }
+
+    public String getSSID() {
+        return SSID;
+    }
+
+    public void setSSID(String SSID) {
+        this.SSID = SSID;
+    }
+
+    public String getDigest() {
+        return Digest;
+    }
+
+    public void setDigest(String digest) {
+        Digest = digest;
+    }
 
     /*
-        aggiornamento della lista di rssi
-     */
+            aggiornamento della lista di rssi
+         */
     public void newSignal(int rssi) {
         setN_ESP(getN_ESP()+1);
         getRSSI().add(rssi);
