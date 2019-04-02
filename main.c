@@ -18,7 +18,7 @@
 #include <string.h>
 #include "mbedtls/md5.h"
 #include "esp_log.h"
-
+#include "apps/sntp/sntp.h"
 //tcp connection
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -34,6 +34,11 @@
 #define EXAMPLE_WIFI_PASS "davidedavide"
 #define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 #define PORT "8080" //Server port
+
+/*
+#define EXAMPLE_WIFI_SSID "cacau"
+#define EXAMPLE_WIFI_PASS "cacauthimth"
+#define HOST_IP_ADDR "192.168.0.10" //Server ip addres */
 
 //connection variables
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
@@ -105,12 +110,14 @@ app_main(void)
 	uint8_t channel = 1;
     Sniffed_packet=P_allocate(40);
 	//ComputHashMD5();
-	
+
 	/* setup wifi*/
 	wifi_sniffer_init();
 
+   /* sntp_setoperatingmode(SNTP_OPMODE_POLL);*/
+
 	//waiting for the configuration from the AP
-	//wait_for_ip(); 
+	//wait_for_ip();
 
 	/* starting promiscue mode*/
 	startSniffingPacket();
@@ -134,7 +141,7 @@ app_main(void)
 		else
 			printf("no packet sniffed");
 		stopSniffing = false;
-		
+
 		/*vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
 		wifi_sniffer_set_channel(channel);
 		channel = (channel % WIFI_CHANNEL_MAX) + 1;
@@ -214,16 +221,16 @@ void P_printer(P_array sniffed_packet) {
 }
 
 void ComputHashMD5(const unsigned char* string, char* buf) {
-	
+
 	struct mbedtls_md5_context contextMD5; //MD5 context structure. Data fields: Total, state, buffer
-	
+
 	//const unsigned char* string = (const unsigned char*) "Testo di prova";
 	unsigned char data[16]; //it will contain the final output -> digest. MD5 return 128bit = 16byte.
-	
+
 	//testing: we fill myContext memory space with 0x00 repeated until sizeof(myContext). Similarly for data memory space
 	memset(&contextMD5, 0x00, sizeof(contextMD5));
 	memset(data, 0x00, 16);
-	
+
 	mbedtls_md5_init(&contextMD5); //init the context
 	mbedtls_md5_starts_ret(&contextMD5); //setup the context
 	if(mbedtls_md5_update_ret(&contextMD5, (const unsigned char*) string, strlen((const char*) string))) //params: MD5 context, buffer holding the data, length of the input data
@@ -298,13 +305,13 @@ wifi_sniffer_init(void)
 	 the command tcpip_adapter_init() that initializes the lwIP library (that we use in order to menage the tcp connection)
 	*/
     tcpip_adapter_init();
-	
+
 	// disable the default wifi logging
 	esp_log_level_set("wifi", ESP_LOG_NONE);
 
 	/*
 	Firslty we have to indtroduce what is an event bit:
-	Event bits are used to indicate if an event has occurred or not. Event bits are often referred to as event flags. 
+	Event bits are used to indicate if an event has occurred or not. Event bits are often referred to as event flags.
 	For example:
 	"A message has been received and is ready for processing" when it is set to 1, and "there are no messages waiting to be processed" when it is set to 0.
 
@@ -316,7 +323,7 @@ wifi_sniffer_init(void)
 	wifi_event_group = xEventGroupCreate(); //create the event group.
 
     ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
-    
+
 	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 	ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
 	ESP_ERROR_CHECK( esp_wifi_set_country(&wifi_country) ); /* set country for channel range [1, 13] */
@@ -325,22 +332,22 @@ wifi_sniffer_init(void)
 
     //ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_NULL) );
 	//ESP_ERROR_CHECK( esp_wifi_start() );
-	
+
 	wifi_config_t wifi_config = {
 		.sta = {
 		.ssid = EXAMPLE_WIFI_SSID,
 		.password = EXAMPLE_WIFI_PASS,
 	},
 	};
-	
+
 	ESP_LOGI(TAG, "Setting WiFi configuration SSID %s...", wifi_config.sta.ssid);
-	
+
 	ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config)); //Set the configuration of the ESP32 STA or AP.
-	
+
 	/*
-	Start WiFi according to current configuration If mode is WIFI_MODE_STA, 
-	it create station control block and start station If mode is WIFI_MODE_AP, 
-	it create soft-AP control block and start soft-AP If mode is WIFI_MODE_APSTA, 
+	Start WiFi according to current configuration If mode is WIFI_MODE_STA,
+	it create station control block and start station If mode is WIFI_MODE_AP,
+	it create soft-AP control block and start soft-AP If mode is WIFI_MODE_APSTA,
 	it create soft-AP and station control block and start soft-AP and station.
 	*/
 	ESP_ERROR_CHECK(esp_wifi_start());
@@ -382,7 +389,7 @@ static void wait_for_ip()
 	ESP_LOGI(TAG, "Connected to AP");
 }
 
-//NOTE: old definition: static void tcp_client_task(void *pvParameters) 
+//NOTE: old definition: static void tcp_client_task(void *pvParameters)
 static void tcp_client_task()
 {
 	printf("tcp task started \n");
@@ -421,11 +428,11 @@ static void tcp_client_task()
 	}
 	printf("data sent\n");*/
 
-	
+
 	reduced_info x;
 	int i;
 
-	for (i = 0; i < Sniffed_packet.count; i++) 
+	for (i = 0; i < Sniffed_packet.count; i++)
 	{
 		char temp[1000];
 		char string_to_send[1000];
