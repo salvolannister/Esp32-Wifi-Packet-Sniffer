@@ -29,6 +29,7 @@
 #define	WIFI_CHANNEL_MAX		(13)
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
+#define SNIFFING_TIME 60 // tempo di sniffamento in secondi
 
 //#define EXAMPLE_WIFI_SSID "Ntani"
 //#define EXAMPLE_WIFI_PASS "davidedavide"
@@ -71,6 +72,7 @@ typedef struct reduced_wifi_pkt_rx_ctrl_t{
     uint8_t mac_src[6];
     char *ssid;
     uint8_t length_ssid;
+    int time;
 }reduced_info;
 
 //dynamic data structure to contain sniffed packets
@@ -110,12 +112,12 @@ time_t now;
 /*struttura per accedere ai campi di now*/
 struct tm timeinfo;
 static void initialize_sntp();
+static int get_start_timestamp();
 
 void
 app_main(void)
 {
-    /* imposta fuso orario e ora legale*/
-
+    int start_time;
 
     char buffer[100];
 
@@ -127,15 +129,12 @@ app_main(void)
 	wifi_sniffer_init();
 
     initialize_sntp();
+    time(&now);
+    start_time =(int) now;
+    printf("START TIME IS : %d\n",start_time);
 
 	/* starting promiscue mode*/
     startSniffingPacket();
-
-
-
-    // es. 08/05/2017 15:10:34
-
-
 	//tcp_client_task();
 
 	/* loop */
@@ -153,7 +152,7 @@ app_main(void)
 			Sniffed_packet = P_allocate(40);
 		}
 		else
-			ESP_LOGW(TAG, "No packet sniffed");
+			printf("no packet sniffed");
 		stopSniffing = false;
 
 		/*vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
@@ -230,9 +229,10 @@ void P_printer(P_array sniffed_packet) {
 		if (x.length_ssid != 0) {
 			printf(" SSID_length=%d SSID_%s", x.length_ssid, x.ssid);
 		}
-		printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x\n",
+		printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x",
 			x.mac_src[0], x.mac_src[1], x.mac_src[2],
 			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
+        printf("t: %d\n",x.time);
 	}
 }
 
@@ -407,7 +407,8 @@ static void wait_for_ip()
 
 //NOTE: old definition: static void tcp_client_task(void *pvParameters)
 static void tcp_client_task()
-{
+{   int start_time, ora;
+
 	 char buffer[100];
 	printf("tcp task started \n");
 	// wait for connection
@@ -419,9 +420,6 @@ static void tcp_client_task()
 	destAddr.sin_family = AF_INET;
 	destAddr.sin_port = htons(8080); //8080 listening server port
 
-    /*ask for the time */
-//    time(&now);
-//    localtime_r(&now, &timeinfo);
 
 
 
@@ -429,11 +427,13 @@ static void tcp_client_task()
 	//wait_for_ip();
 
 
-
+    /*ask for the time */
+    start_time=(int)get_start_timestamp();
     time(&now);
+    ora=(int) now;
 	localtime_r(&now, &timeinfo);
     strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
-    printf("TEMPO in italia:%s \n",buffer);
+    printf("TEMPO in italia:%s agora=%d st=%d\n",buffer,ora,start_time);
 
 									 // create a new socket
 	int s = socket(AF_INET, SOCK_STREAM, 0);
@@ -539,6 +539,7 @@ void
 wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 {
 
+
 	if (type != WIFI_PKT_MGMT)
 		return;
 
@@ -550,18 +551,19 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 	const wifi_ieee80211_packet_t *ipkt = (wifi_ieee80211_packet_t *)ppkt->payload;
 	const wifi_ieee80211_mac_hdr_t *hdr = &ipkt->hdr;
     reduced_info x;
-
+    time_t ts;
 
 	uint16_t frame = hdr->frame_ctrl;
 
 
     uint16_t a, b=64, mask=0xF0;
     a= frame & mask;
+    //only look for probe request packets
     if (a!=b)
     {
 		return;
     }
-
+    time(&ts);
 
 	char *ssid;
 	uint8_t *data=&ppkt->payload;/*new*/
@@ -585,7 +587,7 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
         exit(-2);
        }
     }
-
+    x.time=(int) ts;
 
     /* only probe request are memorized */
     P_push(&Sniffed_packet,x);
@@ -618,9 +620,23 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 
 }
 
+static int get_start_timestamp()
+{
+	int stime;
+	time_t clk;
+
+	time(&clk);
+	stime = (int)clk - (int)clk % SNIFFING_TIME;
+
+	return stime;
+}
+
 static void initialize_sntp()
 {
     sntp_setoperatingmode(SNTP_OPMODE_POLL); //automatically request time after 1h
     sntp_setservername(0, "pool.ntp.org");
     sntp_init();
+    /* imposta l'ora legale*/
+    setenv("TZ", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00", 1);
+    tzset();
 }
