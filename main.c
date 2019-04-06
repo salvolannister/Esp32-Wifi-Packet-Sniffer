@@ -109,7 +109,6 @@ bool stopSniffing = false;
 time_t now;
 /*struttura per accedere ai campi di now*/
 struct tm timeinfo;
-static void initialize_sntp();
 
 void
 app_main(void)
@@ -118,7 +117,7 @@ app_main(void)
 
 
     char buffer[100];
-
+    tzset();
 	//uint8_t channel = 1;
     Sniffed_packet=P_allocate(40);
 	//ComputHashMD5();
@@ -126,17 +125,22 @@ app_main(void)
 	/* setup wifi*/
 	wifi_sniffer_init();
 
+    /*modalità in cui interroga il server ogni tot secondi */
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
 
-    initialize_sntp();
-    /*con ora legale in italia*/
-    setenv("TZ", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00", 1);
-    tzset();
-
+    sntp_setservername(0,"ntp1.inrim.it" );
+   // setenv("TZ", "CET-1", 1);
+    //tzset();
+    sntp_init();
 	//waiting for the configuration from the AP
 	//wait_for_ip();
 
 	/* starting promiscue mode*/
-
+	startSniffingPacket();
+    time(&now);
+	localtime_r(&now, &timeinfo);
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
+    printf("TEMPO in italia:%s \n",buffer);
 
 
 
@@ -413,7 +417,6 @@ static void wait_for_ip()
 //NOTE: old definition: static void tcp_client_task(void *pvParameters)
 static void tcp_client_task()
 {
-	 char buffer[100];
 	printf("tcp task started \n");
 	// wait for connection
 	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
@@ -427,19 +430,6 @@ static void tcp_client_task()
     /*ask for the time */
 //    time(&now);
 //    localtime_r(&now, &timeinfo);
-	sntp_setoperatingmode(SNTP_OPMODE_POLL);
-
-
-	//waiting for the configuration from the AP
-	//wait_for_ip();
-
-
-
-    time(&now);
-	localtime_r(&now, &timeinfo);
-    strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
-    printf("TEMPO in italia:%s \n",buffer);
-
 									 // create a new socket
 	int s = socket(AF_INET, SOCK_STREAM, 0);
 	if (s < 0) {
@@ -623,9 +613,3 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 
 }
 
-static void initialize_sntp()
-{
-    sntp_setoperatingmode(SNTP_OPMODE_POLL); //automatically request time after 1h
-    sntp_setservername(0, "pool.ntp.org");
-    sntp_init();
-}
