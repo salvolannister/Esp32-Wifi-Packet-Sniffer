@@ -18,7 +18,7 @@
 #include <string.h>
 #include "mbedtls/md5.h"
 #include "esp_log.h"
-#include "lwip/apps/sntp.h"
+#include "apps/sntp/sntp.h"
 //tcp connection
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -42,7 +42,7 @@
 
 //connection variables
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
-static const char *TAG = "ESP32-SniffingProject"; //used to log functions
+static const char *TAG = "ESP32-SniffingProject"; //used to log function
 const int IPV4_GOTIP_BIT = BIT0;
 static const char *payload = "Message from ESP32 \n";
 bool IsConnected = false;
@@ -109,6 +109,7 @@ bool stopSniffing = false;
 time_t now;
 /*struttura per accedere ai campi di now*/
 struct tm timeinfo;
+static void initialize_sntp();
 
 void
 app_main(void)
@@ -117,7 +118,7 @@ app_main(void)
 
 
     char buffer[100];
-    tzset();
+
 	//uint8_t channel = 1;
     Sniffed_packet=P_allocate(40);
 	//ComputHashMD5();
@@ -125,22 +126,10 @@ app_main(void)
 	/* setup wifi*/
 	wifi_sniffer_init();
 
-    /*modalità in cui interroga il server ogni tot secondi */
-    sntp_setoperatingmode(SNTP_OPMODE_POLL);
-
-    sntp_setservername(0,"ntp1.inrim.it" );
-   // setenv("TZ", "CET-1", 1);
-    //tzset();
-    sntp_init();
-	//waiting for the configuration from the AP
-	//wait_for_ip();
+    initialize_sntp();
 
 	/* starting promiscue mode*/
-	startSniffingPacket();
-    time(&now);
-	localtime_r(&now, &timeinfo);
-    strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
-    printf("TEMPO in italia:%s \n",buffer);
+    startSniffingPacket();
 
 
 
@@ -164,7 +153,7 @@ app_main(void)
 			Sniffed_packet = P_allocate(40);
 		}
 		else
-			printf("no packet sniffed");
+			ESP_LOGW(TAG, "No packet sniffed");
 		stopSniffing = false;
 
 		/*vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
@@ -177,6 +166,8 @@ app_main(void)
 			CaptureFinish = false;
 		}*/
     }
+
+
 }
 
 P_array P_allocate(int dim){
@@ -417,6 +408,7 @@ static void wait_for_ip()
 //NOTE: old definition: static void tcp_client_task(void *pvParameters)
 static void tcp_client_task()
 {
+	 char buffer[100];
 	printf("tcp task started \n");
 	// wait for connection
 	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
@@ -430,6 +422,19 @@ static void tcp_client_task()
     /*ask for the time */
 //    time(&now);
 //    localtime_r(&now, &timeinfo);
+
+
+
+	//waiting for the configuration from the AP
+	//wait_for_ip();
+
+
+
+    time(&now);
+	localtime_r(&now, &timeinfo);
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
+    printf("TEMPO in italia:%s \n",buffer);
+
 									 // create a new socket
 	int s = socket(AF_INET, SOCK_STREAM, 0);
 	if (s < 0) {
@@ -613,3 +618,9 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 
 }
 
+static void initialize_sntp()
+{
+    sntp_setoperatingmode(SNTP_OPMODE_POLL); //automatically request time after 1h
+    sntp_setservername(0, "pool.ntp.org");
+    sntp_init();
+}
