@@ -5,6 +5,9 @@
  */
 
 #include "freertos/FreeRTOS.h"
+#include "freertos/event_groups.h"
+#include "freertos/task.h"
+#include <sys/param.h>
 #include "esp_wifi.h"
 #include "esp_wifi_types.h"
 #include "esp_system.h"
@@ -13,15 +16,40 @@
 #include "nvs_flash.h"
 #include "driver/gpio.h"
 #include <string.h>
-//#include <rom/md5_hash.h>
 #include "mbedtls/md5.h"
+#include "esp_log.h"
+#include "apps/sntp/sntp.h"
+//tcp connection
+#include "lwip/err.h"
+#include "lwip/sockets.h"
+#include "lwip/sys.h"
+#include <lwip/netdb.h>
 
 #define	LED_GPIO_PIN			GPIO_NUM_4
 #define	WIFI_CHANNEL_MAX		(13)
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
+#define SNIFFING_TIME 60 // tempo di sniffamento in secondi
 
+//#define EXAMPLE_WIFI_SSID "Ntani"
+//#define EXAMPLE_WIFI_PASS "davidedavide"
+//#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+#define PORT "8080" //Server port
+
+
+#define EXAMPLE_WIFI_SSID "cacau"
+#define EXAMPLE_WIFI_PASS "cacauthimth"
+#define HOST_IP_ADDR "192.168.0.10" //Server ip addres
+
+//connection variables
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
+static const char *TAG = "ESP32-SniffingProject"; //used to log function
+const int IPV4_GOTIP_BIT = BIT0;
+static const char *payload = "Message from ESP32 \n";
+bool IsConnected = false;
+
+/* FreeRTOS event group to signal when we are connected & ready to make a request */
+static EventGroupHandle_t wifi_event_group;
 
 typedef struct {
 	unsigned frame_ctrl:16;
@@ -44,6 +72,7 @@ typedef struct reduced_wifi_pkt_rx_ctrl_t{
     uint8_t mac_src[6];
     char *ssid;
     uint8_t length_ssid;
+    int time;
 }reduced_info;
 
 //dynamic data structure to contain sniffed packets
@@ -52,6 +81,11 @@ typedef struct P_array{
 	int count;    /* number of actual packet -> position is count-1 */
 	int dim; /* dimension of array */
 }P_array;
+
+//connecting function
+static void wait_for_ip();
+static void tcp_client_task();
+void startSniffingPacket();
 
 
 static esp_err_t event_handler(void *ctx, system_event_t *event);
@@ -66,28 +100,73 @@ void P_push(P_array* sniffed_packet, reduced_info x);
 void P_free(P_array* sniffed_packet);
 void P_resize(P_array* sniffed_packet);
 void P_printer(P_array sniffed_packet);
+//hashing function
 void ComputHashMD5();
 
 P_array Sniffed_packet;
+bool stopSniffing = false;
+
+ /*struttura che viene aggiornata con time,
+ mostra il tempo passato da una det. data*/
+time_t now;
+/*struttura per accedere ai campi di now*/
+struct tm timeinfo;
+static void initialize_sntp();
+static int get_start_timestamp();
 
 void
 app_main(void)
 {
-	uint8_t channel = 1;
-    Sniffed_packet=P_allocate(2);
-	ComputHashMD5();
-	/* setup */
+    int start_time;
 
+    char buffer[100];
+
+	//uint8_t channel = 1;
+    Sniffed_packet=P_allocate(40);
+	//ComputHashMD5();
+
+	/* setup wifi*/
 	wifi_sniffer_init();
 
+    initialize_sntp();
+    time(&now);
+    start_time =(int) now;
+    printf("START TIME IS : %d\n",start_time);
+
+	/* starting promiscue mode*/
+    startSniffingPacket();
+	//tcp_client_task();
 
 	/* loop */
 	while (true) {
 
-		vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
+		//after tot seconds stop sniffing packets, print the result and send message to server. Then, restart sniffing packets.
+		vTaskDelay(1000*10);
+		printf("---------------10 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+		stopSniffing = true;
+		if (Sniffed_packet.dim > 0)
+		{
+			P_printer(Sniffed_packet);
+			tcp_client_task();
+			P_free(&Sniffed_packet);
+			Sniffed_packet = P_allocate(40);
+		}
+		else
+			printf("no packet sniffed");
+		stopSniffing = false;
+
+		/*vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
 		wifi_sniffer_set_channel(channel);
 		channel = (channel % WIFI_CHANNEL_MAX) + 1;
-    	}
+		if (CaptureFinish) {
+			printf("capture finished!!! \n")
+			esp_wifi_set_promiscuous(false);
+			tcp_client_task();
+			CaptureFinish = false;
+		}*/
+    }
+
+
 }
 
 P_array P_allocate(int dim){
@@ -105,7 +184,6 @@ P_array P_allocate(int dim){
 
 	return parray;
 }
-
 
 void P_resize(P_array* sniffed_packet){
     int new_dim = sniffed_packet->dim*2;
@@ -151,23 +229,24 @@ void P_printer(P_array sniffed_packet) {
 		if (x.length_ssid != 0) {
 			printf(" SSID_length=%d SSID_%s", x.length_ssid, x.ssid);
 		}
-		printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x\n",
+		printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x",
 			x.mac_src[0], x.mac_src[1], x.mac_src[2],
 			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
+        printf("t: %d\n",x.time);
 	}
 }
 
-void ComputHashMD5() {
-	
+void ComputHashMD5(const unsigned char* string, char* buf) {
+
 	struct mbedtls_md5_context contextMD5; //MD5 context structure. Data fields: Total, state, buffer
-	
-	const unsigned char* string = (const unsigned char*) "Testo di prova";
+
+	//const unsigned char* string = (const unsigned char*) "Testo di prova";
 	unsigned char data[16]; //it will contain the final output -> digest. MD5 return 128bit = 16byte.
-	
+
 	//testing: we fill myContext memory space with 0x00 repeated until sizeof(myContext). Similarly for data memory space
 	memset(&contextMD5, 0x00, sizeof(contextMD5));
 	memset(data, 0x00, 16);
-	
+
 	mbedtls_md5_init(&contextMD5); //init the context
 	mbedtls_md5_starts_ret(&contextMD5); //setup the context
 	if(mbedtls_md5_update_ret(&contextMD5, (const unsigned char*) string, strlen((const char*) string))) //params: MD5 context, buffer holding the data, length of the input data
@@ -177,15 +256,57 @@ void ComputHashMD5() {
 	mbedtls_md5_finish_ret(&contextMD5, data); //the final digest. Params: MD5 context, MD5 checksum result.
 	mbedtls_md5_free(&contextMD5); //free MD5 context
 
-	printf("digest of the string: 'Testo di prova': \n");
+	/*printf("printf of the digest  :\n");
 	for (int i = 0; i < sizeof(data); i++)
-		printf(" %02x", data[i]);
-	printf("\n");
+		printf("%02x", data[i]);
+	printf("\n");*/
+
+	/*char output[128];
+	sprintf(output, "%02x", data[0]);
+	for (int i = 1; i < sizeof(data); i++) {
+		char temp[2];
+		sprintf(temp, "%02x", data[i]); //temp contain the 2 characters that rappresent the byte (2 exadecimal number)
+		strcat(output, temp);
+	}
+	printf("sprint function output: %s \n", output);*/
+	//char buf[128];
+	sprintf(buf, "%02x", data[0]);
+	for (int i = 1; i < sizeof(data); i++) {
+		char temp[2];
+		sprintf(temp, "%02x", data[i]); //temp contain the 2 characters that rappresent the byte (2 exadecimal number)
+		strcat(buf, temp);
+	}
+	printf("sprint function output: %s \n", buf);
 }
 
-esp_err_t
-event_handler(void *ctx, system_event_t *event)
+/*
+Event handler is used to tie events from WiFi/Ethernet/LwIP stacks into application logic.
+*/
+// Wifi event handler
+static esp_err_t event_handler(void *ctx, system_event_t *event)
 {
+	switch (event->event_id) {
+
+	case SYSTEM_EVENT_STA_START:
+		esp_wifi_connect();
+		printf("wify is starting \n");
+		ESP_LOGI(TAG, "SYSTEM_EVENT_STA_START");
+		break;
+
+	case SYSTEM_EVENT_STA_GOT_IP:
+		xEventGroupSetBits(wifi_event_group, IPV4_GOTIP_BIT);
+		printf("esp32 ip setted \n");
+		ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP");
+		break;
+
+	case SYSTEM_EVENT_STA_DISCONNECTED:
+		printf("esp32 has been disconnected \n");
+		xEventGroupClearBits(wifi_event_group, IPV4_GOTIP_BIT);
+		break;
+
+	default:
+		break;
+	}
 
 	return ESP_OK;
 }
@@ -195,16 +316,205 @@ wifi_sniffer_init(void)
 {
 
 	nvs_flash_init();
-    	tcpip_adapter_init();
-    	ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
-    	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+
+	/*
+	 the command tcpip_adapter_init() that initializes the lwIP library (that we use in order to menage the tcp connection)
+	*/
+    tcpip_adapter_init();
+
+	// disable the default wifi logging
+	esp_log_level_set("wifi", ESP_LOG_NONE);
+
+	/*
+	Firslty we have to indtroduce what is an event bit:
+	Event bits are used to indicate if an event has occurred or not. Event bits are often referred to as event flags.
+	For example:
+	"A message has been received and is ready for processing" when it is set to 1, and "there are no messages waiting to be processed" when it is set to 0.
+
+	THEN:
+	An event group is a set of event bits. Individual event bits within an event group are referenced by a bit number.
+	Expanding the example provided above:
+	The event bit that means "A message has been received and is ready for processing" might be bit number 0 within an event group.
+	*/
+	wifi_event_group = xEventGroupCreate(); //create the event group.
+
+    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
+
+	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 	ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
 	ESP_ERROR_CHECK( esp_wifi_set_country(&wifi_country) ); /* set country for channel range [1, 13] */
 	ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
-    	ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_NULL) );
-    	ESP_ERROR_CHECK( esp_wifi_start() );
+	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+
+    //ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_NULL) );
+	//ESP_ERROR_CHECK( esp_wifi_start() );
+
+	wifi_config_t wifi_config = {
+		.sta = {
+		.ssid = EXAMPLE_WIFI_SSID,
+		.password = EXAMPLE_WIFI_PASS,
+	},
+	};
+
+	ESP_LOGI(TAG, "Setting WiFi configuration SSID %s...", wifi_config.sta.ssid);
+
+	ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config)); //Set the configuration of the ESP32 STA or AP.
+
+	/*
+	Start WiFi according to current configuration If mode is WIFI_MODE_STA,
+	it create station control block and start station If mode is WIFI_MODE_AP,
+	it create soft-AP control block and start soft-AP If mode is WIFI_MODE_APSTA,
+	it create soft-AP and station control block and start soft-AP and station.
+	*/
+	ESP_ERROR_CHECK(esp_wifi_start());
+
+
+	/*
+	Create a new task and add it to the list of tasks that are ready to run.
+	Parameters:
+	pvTaskCode: Pointer to the task entry function.
+	pcName: A descriptive name for the task.
+	usStackDepth: The number of words (not bytes!) to allocate for use as the task's stack
+	pvParameters: A value that will passed into the created task as the task's parameter
+	uxPriority: The priority at which the created task will execute
+	pxCreatedTask: Used to pass a handle to the created task out of the xTaskCreate() function. pxCreatedTask is optional and can be set to NULL.
+
+	Returns:
+	If the task was created successfully then pdPASS is returned. Otherwise errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY is returned.
+	*/
+	//xTaskCreate(tcp_client_task, "tcp_client", 4096, NULL, 5, NULL); //try to connect with server socket!!
+
+}
+
+void startSniffingPacket() {
 	esp_wifi_set_promiscuous(true);
 	esp_wifi_set_promiscuous_rx_cb(&wifi_sniffer_packet_handler);
+}
+
+static void wait_for_ip()
+{
+	//uint32_t bits = IPV4_GOTIP_BIT | IPV6_GOTIP_BIT;
+	uint32_t bits = IPV4_GOTIP_BIT; //we will wait that it will be setted
+
+	ESP_LOGI(TAG, "Waiting for AP connection...");
+	xEventGroupWaitBits(wifi_event_group, bits, false, true, portMAX_DELAY);
+	/*
+	Read bits within an RTOS event group, optionally entering the Blocked state (with a timeout)
+	to wait for a bit or group of bits to become set.
+	*/
+	ESP_LOGI(TAG, "Connected to AP");
+}
+
+//NOTE: old definition: static void tcp_client_task(void *pvParameters)
+static void tcp_client_task()
+{   int start_time, ora;
+
+	 char buffer[100];
+	printf("tcp task started \n");
+	// wait for connection
+	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
+
+	// define connection parameters
+	struct sockaddr_in destAddr;
+	destAddr.sin_addr.s_addr = inet_addr(HOST_IP_ADDR); //setting the Server IP address
+	destAddr.sin_family = AF_INET;
+	destAddr.sin_port = htons(8080); //8080 listening server port
+
+
+
+
+	//waiting for the configuration from the AP
+	//wait_for_ip();
+
+
+    /*ask for the time */
+    start_time=(int)get_start_timestamp();
+    time(&now);
+    ora=(int) now;
+	localtime_r(&now, &timeinfo);
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
+    printf("TEMPO in italia:%s agora=%d st=%d\n",buffer,ora,start_time);
+
+									 // create a new socket
+	int s = socket(AF_INET, SOCK_STREAM, 0);
+	if (s < 0) {
+		printf("Unable to allocate a new socket\n");
+		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+	}
+	printf("Socket allocated, id=%d\n", s);
+
+	// connect to the specified server
+	int result = connect(s, (struct sockaddr *)&destAddr, sizeof(destAddr));
+	if (result != 0) {
+		printf("Unable to connect to the target website\n");
+		close(s);
+		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+	}
+	printf("Connected to the target website\n");
+
+	// send the request
+	/*result = write(s, payload, strlen(payload));
+	if (result < 0) {
+		printf("Unable to send data\n");
+		close(s);
+		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+	}
+	printf("data sent\n");*/
+
+
+	reduced_info x;
+	int i;
+
+	for (i = 0; i < Sniffed_packet.count; i++)
+	{
+		char temp[1000];
+		char string_to_send[1000];
+		x = Sniffed_packet.array[i];
+		sprintf(string_to_send, "CHAN=%02d/RSSI=%02d", x.channel, x.rssi);
+
+		if (x.length_ssid != 0) {
+			sprintf(temp, "/SSID_length=%d/SSID_%s", x.length_ssid, x.ssid);
+			strcat(string_to_send, temp);
+		}
+		else
+		{
+			sprintf(temp, "/SSID_length=0");
+			strcat(string_to_send, temp);
+		}
+
+		sprintf(temp, "/MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x/",
+			x.mac_src[0], x.mac_src[1], x.mac_src[2],
+			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
+
+		strcat(string_to_send, temp);
+
+		/*
+		compute hash of the mac. TODO: ADD TIMESTAMP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		*/
+		char digest[128];
+		ComputHashMD5((unsigned char *)temp, digest);
+		sprintf(temp, digest);
+
+		strcat(string_to_send, "Digest=");
+		strcat(string_to_send, temp);
+		strcat(string_to_send, "/\n");
+
+
+		result = write(s, string_to_send, strlen(string_to_send));
+		if (result < 0) {
+			printf("Unable to send data\n");
+			close(s);
+			while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+		}
+		printf("data sent\n");
+	}
+
+	close(s);
+	printf("Socket closed\n");
+
+	/*while (1) {
+		vTaskDelay(1000 / portTICK_RATE_MS);
+	}*/
 }
 
 void
@@ -225,30 +535,35 @@ wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type)
 	}
 }
 
-
 void
 wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 {
 
+
 	if (type != WIFI_PKT_MGMT)
+		return;
+
+	//when time is over
+	if (stopSniffing)
 		return;
 
 	const wifi_promiscuous_pkt_t *ppkt = (wifi_promiscuous_pkt_t *)buff;
 	const wifi_ieee80211_packet_t *ipkt = (wifi_ieee80211_packet_t *)ppkt->payload;
 	const wifi_ieee80211_mac_hdr_t *hdr = &ipkt->hdr;
     reduced_info x;
-
+    time_t ts;
 
 	uint16_t frame = hdr->frame_ctrl;
 
 
     uint16_t a, b=64, mask=0xF0;
     a= frame & mask;
+    //only look for probe request packets
     if (a!=b)
     {
 		return;
     }
-
+    time(&ts);
 
 	char *ssid;
 	uint8_t *data=&ppkt->payload;/*new*/
@@ -272,7 +587,7 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
         exit(-2);
        }
     }
-
+    x.time=(int) ts;
 
     /* only probe request are memorized */
     P_push(&Sniffed_packet,x);
@@ -296,12 +611,32 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 //		hdr->addr3[0],hdr->addr3[1],hdr->addr3[2],
 //		hdr->addr3[3],hdr->addr3[4],hdr->addr3[5]
 //	);
-      if(Sniffed_packet.count == 5){
+      /*if(Sniffed_packet.count == 5){
         P_printer(Sniffed_packet);
         P_free(&Sniffed_packet);
 		Sniffed_packet = P_allocate(40);
         //exit(0);
-      }
+      }*/
 
 }
 
+static int get_start_timestamp()
+{
+	int stime;
+	time_t clk;
+
+	time(&clk);
+	stime = (int)clk - (int)clk % SNIFFING_TIME;
+
+	return stime;
+}
+
+static void initialize_sntp()
+{
+    sntp_setoperatingmode(SNTP_OPMODE_POLL); //automatically request time after 1h
+    sntp_setservername(0, "pool.ntp.org");
+    sntp_init();
+    /* imposta l'ora legale*/
+    setenv("TZ", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00", 1);
+    tzset();
+}

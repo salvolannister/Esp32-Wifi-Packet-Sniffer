@@ -1,8 +1,14 @@
 import java.net.*;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EchoServer {
+    private static final Integer TOT_ESP = 1;
+
     public static void main(String[] args) throws IOException {
+
+        Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
 /*
         if (args.length != 1) {
             System.err.println("Usage: java EchoServer <port number>");
@@ -12,7 +18,7 @@ public class EchoServer {
         int portNumber = Integer.parseInt(args[0]);*/
 
         //byte[] buffer=new byte[1024];
-        File fos=new File("out.txt");
+        //File fos=new File("out.txt");
 
         while(true) {
 
@@ -26,7 +32,7 @@ public class EchoServer {
 
                     /*FileWriter fw = new FileWriter(fos);
                     BufferedWriter out = new BufferedWriter(fw)*/
-                    PrintWriter out =
+                    /*PrintWriter out =
                             new PrintWriter(fos);
 
                 /*InputStream in = clientSocket.getInputStream();
@@ -39,13 +45,14 @@ public class EchoServer {
             out.write(buffer, 0, byteRead);*/
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                    out.println(inputLine);
-                    System.out.println("file creato");
+                    //out.println(inputLine);
+                    Packet p=new Packet(inputLine);
+                    if(checkInsert(p, tab)==false){
+                        System.out.println("pacchetto già ricevuto");
+                    }
+                	//System.out.println(inputLine);
+
                 }
-
-
-
-
             } catch (IOException e) {
                 System.out.println("Exception caught when trying to listen on port 8080 "
                         + " or listening for a connection");
@@ -53,5 +60,20 @@ public class EchoServer {
             }
 
         }
+    }
+
+    private static boolean checkInsert(Packet p, Map<String,PacketRec> tab) {
+        if(tab.containsKey(p.getDigest())==true){
+            if(tab.get(p.getDigest()).getN_ESP()<TOT_ESP){
+                tab.get(p.getDigest()).newSignal(p.getRSSI());
+                return true;
+            }
+        }
+        else{
+            tab.put(p.getDigest(), new PacketRec(p));
+            System.out.println(tab.toString());
+            return true;
+        }
+        return false;
     }
 }
