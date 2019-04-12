@@ -71,7 +71,7 @@ public class EchoServer {
         }
         else{
             tab.put(p.getDigest(), new PacketRec(p));
-            System.out.println(tab.toString());
+            //System.out.println(tab.toString());
             return true;
         }
         return false;

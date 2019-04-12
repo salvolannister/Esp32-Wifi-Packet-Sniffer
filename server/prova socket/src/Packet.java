@@ -17,7 +17,8 @@ public class Packet {
 		extractRssi(packetChar);
 		extractSSID(packetChar);
 		extractDigest(packetChar);
-		System.out.println("");
+		extractTimeStamp(packetChar);
+		System.out.println(this.toString());
 	}
 
 	@Override
@@ -27,6 +28,7 @@ public class Packet {
 				", MacSource='" + MacSource + '\'' +
 				", SSID='" + SSID + '\'' +
 				", Digest='" + Digest + '\'' +
+				", TimeStamp='" + TimeStamp + '\'' +
 				'}';
 	}
 
@@ -70,14 +72,12 @@ public class Packet {
 		String[] begin = packetChar.split("RSSI=");
 		String[] rssi = begin[1].split("/"); //split string after RSSI= by "/"
 		setRSSI(Integer.parseInt(rssi[0])); //take cahracters from the beginning to /
-		System.out.print("RSSI: " + getRSSI() + "; ");
 	}
 	
 	private void extractMac(String packetChar) {
 		String[] begin = packetChar.split("MAC_SRC=");
 		String[] mac = begin[1].split("/");
 		setMacSource(mac[0]);
-		System.out.print("Mac Source: " + getMacSource() + "; ");
 	}
 	
 	private void extractSSID(String packetChar) {
@@ -87,21 +87,23 @@ public class Packet {
 			setSSID(ssid[0]);
 		else
 			setSSID(null);
-		System.out.print("SSID: " + getSSID() + "; ");
 	}
 	
+	/*
+	 * NOTA: FORMAT OF STRING FOR THE DIGEST COMPUTATION:
+	 * /MAC_SRC=2c:fd:a1:9c:e2:bb/ TimeStamp=1555064886/
+	 */
 	private void extractDigest(String packetChar) {
 		String[] begin = packetChar.split("Digest=");
 		String[] hash = begin[1].split("/");
 		setDigest(hash[0]);
-		System.out.print("Digest: " + getDigest());
+		//System.out.print("Digest: " + getDigest());
 	}
 
 	private void extractTimeStamp(String packetChar) {
 		String[] begin = packetChar.split("TimeStamp=");
 		String[] hash = begin[1].split("/");
 		setTimeStamp(hash[0]);
-		System.out.print("TimeStamp: " + getTimeStamp());
 	}
 	
 
