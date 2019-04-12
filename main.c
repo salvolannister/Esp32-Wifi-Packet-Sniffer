@@ -30,24 +30,19 @@
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
 #define SNIFFING_TIME 60 // tempo di sniffamento in secondi
-
-//#define EXAMPLE_WIFI_SSID "Ntani"
-//#define EXAMPLE_WIFI_PASS "davidedavide"
-//#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 #define PORT "8080" //Server port
 
 
 // SALVA AP configuration
-/*
 #define EXAMPLE_WIFI_SSID "cacau"
 #define EXAMPLE_WIFI_PASS "cacauthimth"
-#define HOST_IP_ADDR "192.168.0.10" //Server ip addres
-*/
+#define HOST_IP_ADDR "192.168.0.10" //SERVER IP ADDRES
 
-//DAVIDE AP configuration 
-#define EXAMPLE_WIFI_SSID "Ntani"
-#define EXAMPLE_WIFI_PASS "davidedavide"
-#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+
+//DAVIDE AP configuration
+//#define EXAMPLE_WIFI_SSID "Ntani"
+//#define EXAMPLE_WIFI_PASS "davidedavide"
+//#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 
 //connection variables
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
@@ -116,18 +111,20 @@ bool stopSniffing = false;
 
  /*struttura che viene aggiornata con time,
  mostra il tempo passato da una det. data*/
-time_t now;
-/*struttura per accedere ai campi di now*/
-struct tm timeinfo;
+
+
+
 static void initialize_sntp();
 static int get_start_timestamp();
 static int set_waiting_time();
+static void obtain_time();
 
 void
 app_main(void)
 {
     int start_time;
-
+    time_t now; /*struttura che viene aggiornata con time, mostra il tempo passato da una det. data*/
+   // struct tm timeinfo;/*struttura per accedere ai campi di now*//*struttura per accedere ai campi di now*/
     char buffer[100];
 
 	//uint8_t channel = 1;
@@ -137,7 +134,7 @@ app_main(void)
 	wifi_sniffer_init();
 	wait_for_ip();
 
-    initialize_sntp();
+    obtain_time();
     time(&now);
     start_time =(int) now;
     printf("START TIME IS : %d\n",start_time);
@@ -284,7 +281,7 @@ void ComputHashMD5(const unsigned char* string, char* buf) {
 	printf("sprint function output: %s \n", output);*/
 	//char buf[128];
 
-	
+
 	// STAMPA
 	sprintf(buf, "%02x", data[0]);
 	for (int i = 1; i < sizeof(data); i++) {
@@ -431,8 +428,9 @@ static void wait_for_ip()
 //NOTE: old definition: static void tcp_client_task(void *pvParameters)
 static void tcp_client_task()
 {   int start_time, ora, sleep_time;
-
-	 char buffer[100];
+    time_t now;
+    struct tm timeinfo;
+    char buffer[100];
 	printf("tcp task started \n");
 	// wait for connection
 	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
@@ -680,3 +678,31 @@ static int set_waiting_time()
     /* clculatre how many seconds are left from de sleep time */
 	return st;
 }
+
+static void obtain_time()
+{
+    time_t now = 0;
+    struct tm timeinfo = { 0 };
+    int attempt = 0;
+    const int attempt_count = 15;
+
+    initialize_sntp();
+
+    //wait for time to be set
+    while(timeinfo.tm_year < (2019 - 1900) && ++attempt < attempt_count) {
+       printf("Waiting for system time to be set... (%d/%d)", attempt, attempt_count);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        time(&now);
+        localtime_r(&now, &timeinfo);
+    }
+
+//    if(retry >= retry_count){ //can't set time
+//    	if(ONCE) //if it is first time -> reboot: no reason to sniff with wrong time
+//    		reboot("No response from server after several time. Impossible to set current time");
+//    }
+//    else{
+//    	ONCE = false;
+//    }
+}
+
+
