@@ -113,6 +113,7 @@ time_t now;
 struct tm timeinfo;
 static void initialize_sntp();
 static int get_start_timestamp();
+static int set_waiting_time();
 
 void
 app_main(void)
@@ -140,8 +141,9 @@ app_main(void)
 	/* loop */
 	while (true) {
 
+        int sleep_time = 10*1000;
 		//after tot seconds stop sniffing packets, print the result and send message to server. Then, restart sniffing packets.
-		vTaskDelay(1000*10);
+		vTaskDelay(sleep_time/portTICK_PERIOD_MS);
 		printf("---------------10 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
 		stopSniffing = true;
 		if (Sniffed_packet.dim > 0)
@@ -407,7 +409,7 @@ static void wait_for_ip()
 
 //NOTE: old definition: static void tcp_client_task(void *pvParameters)
 static void tcp_client_task()
-{   int start_time, ora;
+{   int start_time, ora, sleep_time;
 
 	 char buffer[100];
 	printf("tcp task started \n");
@@ -499,7 +501,9 @@ static void tcp_client_task()
 		strcat(string_to_send, temp);
 		strcat(string_to_send, "/\n");
 
-
+        /* aspetta che sia passato lo sleep time dopodiché invia*/
+        sleep_time= set_waiting_time();
+        vTaskDelay(sleep_time / portTICK_RATE_MS);
 		result = write(s, string_to_send, strlen(string_to_send));
 		if (result < 0) {
 			printf("Unable to send data\n");
@@ -639,4 +643,15 @@ static void initialize_sntp()
     /* imposta l'ora legale*/
     setenv("TZ", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00", 1);
     tzset();
+}
+
+static int set_waiting_time()
+{
+	int st,sleep_time=10;
+	time_t t;
+
+	time(&t);
+	st = (sleep_time - (int)t % sleep_time) * 1000;
+    /* clculatre how many seconds are left from de sleep time */
+	return st;
 }
