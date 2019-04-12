@@ -144,7 +144,7 @@ app_main(void)
     start_time =(int) now;
     printf("START TIME IS : %d\n",start_time);
 
-	tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFERTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
+	tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
 	/* starting promiscue mode*/
     startSniffingPacket();
 
@@ -443,9 +443,8 @@ static void tcp_hello() {
 
 	//char *str_hello = "Hello from ESP32\n";
 	char recv_buf[100];
-
-
-	struct sockaddr_in destAddr = tcp_init(); //create connection parameters and return only after ip address configuration!!
+	//create connection parameters and return only after ip address configuration!!
+	struct sockaddr_in destAddr = tcp_init(); 
 
     // create a new socket
 	int s = socket(AF_INET, SOCK_STREAM, 0);
@@ -478,13 +477,17 @@ static void tcp_hello() {
 	bzero(recv_buf, sizeof(recv_buf));
 	r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
 	printf("First message from server: %s\n", recv_buf);
-	/*for (int i = 0; i < r; i++)
-		putchar(recv_buf[i]);*/
-
+	
 	//close socket
 	close(s);
 	printf("Socket closed\n");
 	
+	/*time_t ts;
+	time(&ts);
+	int waitingtime = (int)ts - atoi(recv_buf);
+	printf("waiting time: %d\n", waitingtime);
+	set_waiting_time((int)ts - atoi(recv_buf));*/
+
 }
 
 static struct sockaddr_in tcp_init() {
@@ -644,8 +647,6 @@ wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type)
 void
 wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 {
-
-
 	if (type != WIFI_PKT_MGMT)
 		return;
 
@@ -749,7 +750,7 @@ static void initialize_sntp()
 
 static int set_waiting_time()
 {
-	int st,sleep_time=10;
+	int st,sleep_time = 10;
 	time_t t;
 
 	time(&t);

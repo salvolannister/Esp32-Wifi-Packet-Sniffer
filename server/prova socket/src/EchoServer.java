@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,8 @@ public class EchoServer {
     private static final Integer TOT_ESP = 1;
 
     public static void main(String[] args) throws IOException {
+    	
+    	//variable used to verify if the esp is sniffing or in configuration phase
     	Boolean isSetted = false;
 
         Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
@@ -33,7 +36,13 @@ public class EchoServer {
                 	if(!isSetted)
                 	{
                 		System.out.println(inputLine);
-                		out.println("SERVER OK!");
+                		// create a calendar
+                        Calendar cal = Calendar.getInstance();
+                        // print current time in milliseconds
+                        System.out.println("date from calendar: " + cal.getTime());
+                        String TimeLong = Long.toString(cal.getTimeInMillis()+20);
+                        //we use Math.min in order to avoid problems in the case where the string is already shorter than 10 
+                        out.println("Start sniffing at: " + TimeLong.substring(0, Math.min(TimeLong.length(), 10)));
                 		isSetted = true;
                 	}
                 	else
