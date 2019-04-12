@@ -292,8 +292,11 @@ void ComputHashMD5(const unsigned char* string, char* buf) {
 		sprintf(temp, "%02x", data[i]); //temp contain the 2 characters that rappresent the byte (2 exadecimal number)
 		strcat(buf, temp);
 	}
+	/*
+	//pritn source string and digesto in console
 	printf("string to compute: %s\n", string);
-	printf("sprint function output: %s \n", buf); //print digest in console
+	printf("sprint function output: %s \n", buf);
+	*/
 }
 
 /*
