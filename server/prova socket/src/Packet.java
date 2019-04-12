@@ -7,6 +7,7 @@ public class Packet {
 	private String MacSource;
 	private String SSID;
 	private String Digest;
+	private String TimeStamp;
 	
 	/**
 	 * 
@@ -61,6 +62,10 @@ public class Packet {
 		Digest = digest;
 	}
 
+	public String getTimeStamp() { return TimeStamp; }
+
+	public void setTimeStamp(String timeStamp) { TimeStamp = timeStamp; }
+
 	private void extractRssi(String packetChar) {
 		String[] begin = packetChar.split("RSSI=");
 		String[] rssi = begin[1].split("/"); //split string after RSSI= by "/"
@@ -91,7 +96,13 @@ public class Packet {
 		setDigest(hash[0]);
 		System.out.print("Digest: " + getDigest());
 	}
-	
+
+	private void extractTimeStamp(String packetChar) {
+		String[] begin = packetChar.split("TimeStamp=");
+		String[] hash = begin[1].split("/");
+		setTimeStamp(hash[0]);
+		System.out.print("TimeStamp: " + getTimeStamp());
+	}
 	
 
 }

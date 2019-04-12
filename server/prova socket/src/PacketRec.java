@@ -11,6 +11,7 @@ public class PacketRec {
     private String MacSource;
     private String SSID;
     private String Digest;
+    private String TimeStamp;
 
 
     /*
@@ -23,6 +24,7 @@ public class PacketRec {
         setSSID(packet.getSSID());
         setN_ESP(0);
         setRSSI(new ArrayList<Integer>());
+        setTimeStamp(packet.getTimeStamp());
         newSignal(packet.getRSSI());
     }
 
@@ -34,6 +36,7 @@ public class PacketRec {
                 ", MacSource='" + MacSource + '\'' +
                 ", SSID='" + SSID + '\'' +
                 ", Digest='" + Digest + '\'' +
+                ", TimeStamp='"+ TimeStamp +'\''+
                 '}';
     }
 
@@ -76,6 +79,10 @@ public class PacketRec {
     public void setDigest(String digest) {
         Digest = digest;
     }
+
+    public String getTimeStamp() { return TimeStamp; }
+
+    public void setTimeStamp(String timeStamp) { TimeStamp = timeStamp; }
 
     /*
             aggiornamento della lista di rssi
