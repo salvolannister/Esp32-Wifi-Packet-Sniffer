@@ -19,6 +19,7 @@
 #include "mbedtls/md5.h"
 #include "esp_log.h"
 #include "apps/sntp/sntp.h"
+#include <stdlib.h>
 //tcp connection
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -34,15 +35,15 @@
 
 
 // SALVA AP configuration
-#define EXAMPLE_WIFI_SSID "cacau"
+/*#define EXAMPLE_WIFI_SSID "cacau"
 #define EXAMPLE_WIFI_PASS "cacauthimth"
 #define HOST_IP_ADDR "192.168.0.10" //SERVER IP ADDRES
-
+*/
 
 //DAVIDE AP configuration
-//#define EXAMPLE_WIFI_SSID "Ntani"
-//#define EXAMPLE_WIFI_PASS "davidedavide"
-//#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+#define EXAMPLE_WIFI_SSID "Ntani"
+#define EXAMPLE_WIFI_PASS "davidedavide"
+#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 
 static bool FIRST = true; /* Only used in startup: if obtain_time() can't set current time for the first time -> reboot() */
 //connection variables
@@ -89,7 +90,9 @@ typedef struct P_array{
 //connecting function
 static void wait_for_ip();
 static void tcp_client_task();
+static struct sockaddr_in tcp_init();
 void startSniffingPacket();
+static void tcp_hello();
 
 
 static esp_err_t event_handler(void *ctx, system_event_t *event);
@@ -141,6 +144,7 @@ app_main(void)
     start_time =(int) now;
     printf("START TIME IS : %d\n",start_time);
 
+	tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFERTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
 	/* starting promiscue mode*/
     startSniffingPacket();
 
@@ -427,13 +431,56 @@ static void wait_for_ip()
 	ESP_LOGI(TAG, "Connected to AP");
 }
 
-//NOTE: old definition: static void tcp_client_task(void *pvParameters)
-static void tcp_client_task()
-{   int start_time, ora, sleep_time;
-    time_t now;
-    struct tm timeinfo;
-    char buffer[100];
-	printf("tcp task started \n");
+static void tcp_hello() {
+
+	printf("sending hello to server... \n");
+
+	char *str_hello = "Hello from ESP32\n";
+	char recv_buf[100];
+
+	struct sockaddr_in destAddr = tcp_init(); //create connection parameters and return only after ip address configuration!!
+
+    // create a new socket
+	int s = socket(AF_INET, SOCK_STREAM, 0);
+	if (s < 0) {
+		printf("Unable to allocate a new socket\n");
+		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+	}
+	printf("Socket allocated, id=%d\n", s);
+
+	// connect to the specified server
+	int result = connect(s, (struct sockaddr *)&destAddr, sizeof(destAddr));
+	if (result != 0) {
+		printf("Unable to connect to the target website\n");
+		close(s);
+		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+	}
+	printf("Connected to the target website\n");
+
+	result = write(s, str_hello, strlen(str_hello));
+	if (result < 0) {
+		printf("Unable to send data\n");
+		close(s);
+		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+	}
+
+	// print the response
+	printf("Server response:\n");
+
+	int r;
+	bzero(recv_buf, sizeof(recv_buf));
+	r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
+	printf("First message from server: %s\n", recv_buf);
+	/*for (int i = 0; i < r; i++)
+		putchar(recv_buf[i]);*/
+
+	//close socket
+	close(s);
+	printf("Socket closed\n");
+	
+}
+
+static struct sockaddr_in tcp_init() {
 	// wait for connection
 	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
 
@@ -442,6 +489,29 @@ static void tcp_client_task()
 	destAddr.sin_addr.s_addr = inet_addr(HOST_IP_ADDR); //setting the Server IP address
 	destAddr.sin_family = AF_INET;
 	destAddr.sin_port = htons(8080); //8080 listening server port
+	return destAddr;
+}
+
+static void tcp_client_task()
+{   
+	int start_time, ora, sleep_time;
+    time_t now;
+    struct tm timeinfo;
+    char buffer[100];
+	printf("tcp task started \n");
+
+	/*
+	// wait for connection
+	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
+
+	// define connection parameters
+	struct sockaddr_in destAddr;
+	destAddr.sin_addr.s_addr = inet_addr(HOST_IP_ADDR); //setting the Server IP address
+	destAddr.sin_family = AF_INET;
+	destAddr.sin_port = htons(8080); //8080 listening server port
+	*/
+
+	struct sockaddr_in destAddr = tcp_init(); //create connection parameters and return only after ip address configuration!!
 
 	//waiting for the configuration from the AP
 	//wait_for_ip();

@@ -9,16 +9,6 @@ public class EchoServer {
     public static void main(String[] args) throws IOException {
 
         Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
-/*
-        if (args.length != 1) {
-            System.err.println("Usage: java EchoServer <port number>");
-            System.exit(1);
-        }
-
-        int portNumber = Integer.parseInt(args[0]);*/
-
-        //byte[] buffer=new byte[1024];
-        //File fos=new File("out.txt");
 
         while(true) {
 
@@ -29,29 +19,28 @@ public class EchoServer {
 
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(clientSocket.getInputStream()));
-
-                    /*FileWriter fw = new FileWriter(fos);
-                    BufferedWriter out = new BufferedWriter(fw)*/
-                    /*PrintWriter out =
-                            new PrintWriter(fos);
-
+            		
+            		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 /*InputStream in = clientSocket.getInputStream();
                 BufferedOutputStream out =
                         new BufferedOutputStream(fos)*/
 
-
             ) {
-           /* int byteRead=in.read(buffer, 0, buffer.length);
-            out.write(buffer, 0, byteRead);*/
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                    //out.println(inputLine);
-                    Packet p=new Packet(inputLine);
-                    if(checkInsert(p, tab)==false){
-                        System.out.println("pacchetto già ricevuto");
-                    }
-                	//System.out.println(inputLine);
-
+                    //System.out.println(inputLine);
+                	if(inputLine.compareTo("Hello from ESP32")==0)
+                	{
+                		System.out.println(inputLine);
+                		out.println("SERVER OK!");
+                	}
+                	else
+                	{
+                		Packet p=new Packet(inputLine);
+                        if(checkInsert(p, tab)==false)
+                            System.out.println("pacchetto già ricevuto");
+                	}
+           
                 }
             } catch (IOException e) {
                 System.out.println("Exception caught when trying to listen on port 8080 "
