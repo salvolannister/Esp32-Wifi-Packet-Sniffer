@@ -44,6 +44,7 @@
 //#define EXAMPLE_WIFI_PASS "davidedavide"
 //#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 
+static bool FIRST = true; /* Only used in startup: if obtain_time() can't set current time for the first time -> reboot() */
 //connection variables
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
 static const char *TAG = "ESP32-SniffingProject"; //used to log function
@@ -118,6 +119,7 @@ static void initialize_sntp();
 static int get_start_timestamp();
 static int set_waiting_time();
 static void obtain_time();
+static void reboot(char *msg_err);
 
 void
 app_main(void)
@@ -696,13 +698,27 @@ static void obtain_time()
         localtime_r(&now, &timeinfo);
     }
 
-//    if(retry >= retry_count){ //can't set time
-//    	if(ONCE) //if it is first time -> reboot: no reason to sniff with wrong time
-//    		reboot("No response from server after several time. Impossible to set current time");
-//    }
-//    else{
-//    	ONCE = false;
-//    }
+    if(attempt >= attempt_count){ //can't set time
+    	if(FIRST) //if it is first time -> reboot: no reason to sniff with wrong time
+    		reboot("no response from server after several time. impossible to set current time");
+    }
+    else{
+    	FIRST = false;
+    }
+
 }
 
+static void reboot(char *msg_err)
+{
+	int i;
 
+	printf("%s\n", msg_err);
+    for(i=3; i>=0; i--){
+        printf("Restarting in %d seconds...\n", i);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+   printf("Restarting now");
+    fflush(stdout);
+
+    esp_restart();
+}
