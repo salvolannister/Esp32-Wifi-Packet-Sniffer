@@ -435,8 +435,15 @@ static void tcp_hello() {
 
 	printf("sending hello to server... \n");
 
-	char *str_hello = "Hello from ESP32\n";
+	char str_hello[200];
+	uint8_t espMac[6];
+	esp_efuse_mac_get_default(espMac); //get mac address
+	sprintf(str_hello, "My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
+	printf("My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
+
+	//char *str_hello = "Hello from ESP32\n";
 	char recv_buf[100];
+
 
 	struct sockaddr_in destAddr = tcp_init(); //create connection parameters and return only after ip address configuration!!
 

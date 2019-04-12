@@ -7,6 +7,7 @@ public class EchoServer {
     private static final Integer TOT_ESP = 1;
 
     public static void main(String[] args) throws IOException {
+    	Boolean isSetted = false;
 
         Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
 
@@ -29,10 +30,11 @@ public class EchoServer {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     //System.out.println(inputLine);
-                	if(inputLine.compareTo("Hello from ESP32")==0)
+                	if(!isSetted)
                 	{
                 		System.out.println(inputLine);
                 		out.println("SERVER OK!");
+                		isSetted = true;
                 	}
                 	else
                 	{
