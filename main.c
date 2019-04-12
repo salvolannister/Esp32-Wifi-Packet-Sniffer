@@ -37,9 +37,17 @@
 #define PORT "8080" //Server port
 
 
+// SALVA AP configuration
+/*
 #define EXAMPLE_WIFI_SSID "cacau"
 #define EXAMPLE_WIFI_PASS "cacauthimth"
 #define HOST_IP_ADDR "192.168.0.10" //Server ip addres
+*/
+
+//DAVIDE AP configuration 
+#define EXAMPLE_WIFI_SSID "Ntani"
+#define EXAMPLE_WIFI_PASS "davidedavide"
+#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 
 //connection variables
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
@@ -124,10 +132,10 @@ app_main(void)
 
 	//uint8_t channel = 1;
     Sniffed_packet=P_allocate(40);
-	//ComputHashMD5();
 
 	/* setup wifi*/
 	wifi_sniffer_init();
+	wait_for_ip();
 
     initialize_sntp();
     time(&now);
@@ -136,7 +144,6 @@ app_main(void)
 
 	/* starting promiscue mode*/
     startSniffingPacket();
-	//tcp_client_task();
 
 	/* loop */
 	while (true) {
@@ -234,10 +241,14 @@ void P_printer(P_array sniffed_packet) {
 		printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x",
 			x.mac_src[0], x.mac_src[1], x.mac_src[2],
 			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
-        printf("t: %d\n",x.time);
+        printf(" t: %d\n",x.time);
 	}
 }
 
+/*
+compute the MD5 of the string passaed as parameter. The result is in a string format
+and returned by setting the content of buf variable passed as parameter.
+*/
 void ComputHashMD5(const unsigned char* string, char* buf) {
 
 	struct mbedtls_md5_context contextMD5; //MD5 context structure. Data fields: Total, state, buffer
@@ -272,13 +283,17 @@ void ComputHashMD5(const unsigned char* string, char* buf) {
 	}
 	printf("sprint function output: %s \n", output);*/
 	//char buf[128];
+
+	
+	// STAMPA
 	sprintf(buf, "%02x", data[0]);
 	for (int i = 1; i < sizeof(data); i++) {
 		char temp[2];
 		sprintf(temp, "%02x", data[i]); //temp contain the 2 characters that rappresent the byte (2 exadecimal number)
 		strcat(buf, temp);
 	}
-	printf("sprint function output: %s \n", buf);
+	printf("string to compute: %s\n", string);
+	printf("sprint function output: %s \n", buf); //print digest in console
 }
 
 /*
@@ -393,6 +408,9 @@ void startSniffingPacket() {
 	esp_wifi_set_promiscuous_rx_cb(&wifi_sniffer_packet_handler);
 }
 
+/*
+waiting Ip configuration from the AP
+*/
 static void wait_for_ip()
 {
 	//uint32_t bits = IPV4_GOTIP_BIT | IPV6_GOTIP_BIT;
@@ -422,12 +440,8 @@ static void tcp_client_task()
 	destAddr.sin_family = AF_INET;
 	destAddr.sin_port = htons(8080); //8080 listening server port
 
-
-
-
 	//waiting for the configuration from the AP
 	//wait_for_ip();
-
 
     /*ask for the time */
     start_time=(int)get_start_timestamp();
@@ -437,7 +451,7 @@ static void tcp_client_task()
     strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
     printf("TEMPO in italia:%s agora=%d st=%d\n",buffer,ora,start_time);
 
-									 // create a new socket
+	// create a new socket
 	int s = socket(AF_INET, SOCK_STREAM, 0);
 	if (s < 0) {
 		printf("Unable to allocate a new socket\n");
@@ -466,6 +480,7 @@ static void tcp_client_task()
 
 	reduced_info x;
 	int i;
+	int NumPacketSent = 0;
 
 	for (i = 0; i < Sniffed_packet.count; i++)
 	{
@@ -488,31 +503,38 @@ static void tcp_client_task()
 			x.mac_src[0], x.mac_src[1], x.mac_src[2],
 			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
 
-		strcat(string_to_send, temp);
+		char time[500];
+		sprintf(time, " TimeStamp=%d/", x.time);
+
+		strcat(temp, time); //now temp is the mac address + timestamp -> values that have to be hashed
+
+		strcat(string_to_send, temp); //now string to send have all data except digest
 
 		/*
 		compute hash of the mac. TODO: ADD TIMESTAMP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		*/
 		char digest[128];
-		ComputHashMD5((unsigned char *)temp, digest);
-		sprintf(temp, digest);
+		ComputHashMD5((unsigned char *)temp, digest); //compute digest of the string temp (=mac + temp) and put the result in digest array
+		//sprintf(temp, digest);
 
 		strcat(string_to_send, "Digest=");
-		strcat(string_to_send, temp);
+		strcat(string_to_send, digest);
 		strcat(string_to_send, "/\n");
 
-        /* aspetta che sia passato lo sleep time dopodiché invia*/
-        sleep_time= set_waiting_time();
-        vTaskDelay(sleep_time / portTICK_RATE_MS);
+        /* aspetta che sia passato lo sleep time dopodiché invia TOLTO!!!*/
+        //sleep_time= set_waiting_time();
+        //vTaskDelay(sleep_time / portTICK_RATE_MS);
 		result = write(s, string_to_send, strlen(string_to_send));
 		if (result < 0) {
 			printf("Unable to send data\n");
 			close(s);
 			while (1) vTaskDelay(1000 / portTICK_RATE_MS);
 		}
-		printf("data sent\n");
+		else
+			NumPacketSent++;
 	}
 
+	printf("Num packet sent: %d\n", NumPacketSent);
 	close(s);
 	printf("Socket closed\n");
 
