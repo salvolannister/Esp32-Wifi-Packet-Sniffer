@@ -92,7 +92,7 @@ static void wait_for_ip();
 static void tcp_client_task();
 static struct sockaddr_in tcp_init();
 void startSniffingPacket();
-static void tcp_hello();
+static int tcp_hello();
 
 
 static esp_err_t event_handler(void *ctx, system_event_t *event);
@@ -144,7 +144,12 @@ app_main(void)
     start_time =(int) now;
     printf("START TIME IS : %d\n",start_time);
 
-	tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
+	int waitingTime = tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
+	//wait
+	printf("---------------%d WAITING FOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
+	vTaskDelay(waitingTime*1000 / portTICK_PERIOD_MS);
+	printf("---------------START SNIFFING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+
 	/* starting promiscue mode*/
     startSniffingPacket();
 
@@ -431,7 +436,7 @@ static void wait_for_ip()
 	ESP_LOGI(TAG, "Connected to AP");
 }
 
-static void tcp_hello() {
+static int tcp_hello() {
 
 	printf("sending hello to server... \n");
 
@@ -476,18 +481,21 @@ static void tcp_hello() {
 	int r;
 	bzero(recv_buf, sizeof(recv_buf));
 	r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
-	printf("First message from server: %s\n", recv_buf);
+	printf("Starting received from server: %s\n", recv_buf);
 	
 	//close socket
 	close(s);
 	printf("Socket closed\n");
 	
-	/*time_t ts;
+	time_t ts;
 	time(&ts);
-	int waitingtime = (int)ts - atoi(recv_buf);
-	printf("waiting time: %d\n", waitingtime);
-	set_waiting_time((int)ts - atoi(recv_buf));*/
+	int startTime = atoi(recv_buf);
+	printf("starting time: %d", startTime);
+	printf("My time: %d \n", (int)ts);
 
+	int waitingtime = startTime - (int)ts;
+	printf("waiting time: %d\n", waitingtime);
+	return waitingtime;
 }
 
 static struct sockaddr_in tcp_init() {
@@ -741,7 +749,8 @@ static int get_start_timestamp()
 static void initialize_sntp()
 {
     sntp_setoperatingmode(SNTP_OPMODE_POLL); //automatically request time after 1h
-    sntp_setservername(0, "pool.ntp.org");
+    //sntp_setservername(0, "pool.ntp.org");
+	sntp_setservername(0, "ntp1.inrim.it");
     sntp_init();
     /* imposta l'ora legale*/
     setenv("TZ", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00", 1);
@@ -781,6 +790,13 @@ static void obtain_time()
     		reboot("no response from server after several time. impossible to set current time");
     }
     else{
+		// print the actual time in Italy
+		char buffer[100];
+		printf("\nActual time in Italy:\n");
+		localtime_r(&now, &timeinfo);
+		strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
+		printf("%s\n", buffer);
+
     	FIRST = false;
     }
 

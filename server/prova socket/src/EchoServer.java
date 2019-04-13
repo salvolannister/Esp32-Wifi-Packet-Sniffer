@@ -11,7 +11,7 @@ public class EchoServer {
     	
     	//variable used to verify if the esp is sniffing or in configuration phase
     	Boolean isSetted = false;
-
+    	
         Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
 
         while(true) {
@@ -25,24 +25,25 @@ public class EchoServer {
                             new InputStreamReader(clientSocket.getInputStream()));
             		
             		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                /*InputStream in = clientSocket.getInputStream();
-                BufferedOutputStream out =
-                        new BufferedOutputStream(fos)*/
-
+                
             ) {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                    //System.out.println(inputLine);
                 	if(!isSetted)
                 	{
                 		System.out.println(inputLine);
+     		
                 		// create a calendar
                         Calendar cal = Calendar.getInstance();
-                        // print current time in milliseconds
-                        System.out.println("date from calendar: " + cal.getTime());
-                        String TimeLong = Long.toString(cal.getTimeInMillis()+20);
-                        //we use Math.min in order to avoid problems in the case where the string is already shorter than 10 
-                        out.println("Start sniffing at: " + TimeLong.substring(0, Math.min(TimeLong.length(), 10)));
+                        // get time in millis from Epoch
+                        Long TimeLong = cal.getTimeInMillis();
+                        System.out.println(TimeLong);
+                        // add to current time 20seconds -> ESP start sniffing at now+20
+                        TimeLong = TimeLong + 20000; //20sec
+                        System.out.println(TimeLong);
+                        // convert long to string in order to truncate at 10 number
+                        String StartTime = Long.toString(TimeLong);
+                        out.println(StartTime.substring(0, Math.min(StartTime.length(), 10)));
                 		isSetted = true;
                 	}
                 	else
