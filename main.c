@@ -89,7 +89,7 @@ typedef struct P_array{
 
 //connecting function
 static void wait_for_ip();
-static void tcp_client_task();
+static void tcp_sendPacket();
 static struct sockaddr_in tcp_init();
 void startSniffingPacket();
 static int tcp_hello();
@@ -164,12 +164,18 @@ app_main(void)
 		if (Sniffed_packet.dim > 0)
 		{
 			P_printer(Sniffed_packet);
-			tcp_client_task();
+			tcp_sendPacket();
 			P_free(&Sniffed_packet);
 			Sniffed_packet = P_allocate(40);
 		}
 		else
 			printf("no packet sniffed");
+
+		waitingTime = tcp_hello(); //send mac address to server and ask for waiting time
+		printf("---------------%d WAITING FOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
+		vTaskDelay(waitingTime * 1000 / portTICK_PERIOD_MS);
+		printf("---------------RESTART SNIFFING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+
 		stopSniffing = false;
 
 		/*vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
@@ -178,7 +184,7 @@ app_main(void)
 		if (CaptureFinish) {
 			printf("capture finished!!! \n")
 			esp_wifi_set_promiscuous(false);
-			tcp_client_task();
+			tcp_sendPacket();
 			CaptureFinish = false;
 		}*/
     }
@@ -315,21 +321,29 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)
 {
 	switch (event->event_id) {
 
+	/*
+	after having completed its internal tasks, the driver notifies that it has successfully started triggering the event SYSTEM_EVENT_STA_START
+	*/
 	case SYSTEM_EVENT_STA_START:
-		esp_wifi_connect();
-		printf("wify is starting \n");
 		ESP_LOGI(TAG, "SYSTEM_EVENT_STA_START");
+		//the event handler, once received that event, can call the esp_wifi_connect() API to ask the driver to connect to the network specified during the configuration phase
+		printf("try to connect at the AP \n");
+		esp_wifi_connect(); 
 		break;
 
+	/*
+	when the connection to the AP is completed and after having obtained a valid IP address, the driver triggers the event SYSTEM_EVENT_STA_GOT_IP	
+	*/
 	case SYSTEM_EVENT_STA_GOT_IP:
-		xEventGroupSetBits(wifi_event_group, IPV4_GOTIP_BIT);
-		printf("esp32 ip setted \n");
+		xEventGroupSetBits(wifi_event_group, IPV4_GOTIP_BIT); //now the event handler can inform the main program that the connection has been completed
+		printf("esp32 is connectd and has an IP address \n");
 		ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP");
 		break;
 
 	case SYSTEM_EVENT_STA_DISCONNECTED:
 		printf("esp32 has been disconnected \n");
 		xEventGroupClearBits(wifi_event_group, IPV4_GOTIP_BIT);
+		esp_wifi_connect(); //retry to connect
 		break;
 
 	default:
@@ -366,7 +380,7 @@ wifi_sniffer_init(void)
 	*/
 	wifi_event_group = xEventGroupCreate(); //create the event group.
 
-    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
+    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) ); //function that will be called when there is an event
 
 	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 	ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
@@ -410,7 +424,7 @@ wifi_sniffer_init(void)
 	Returns:
 	If the task was created successfully then pdPASS is returned. Otherwise errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY is returned.
 	*/
-	//xTaskCreate(tcp_client_task, "tcp_client", 4096, NULL, 5, NULL); //try to connect with server socket!!
+	//xTaskCreate(tcp_sendPacket, "tcp_client", 4096, NULL, 5, NULL); //try to connect with server socket!!
 
 }
 
@@ -427,8 +441,12 @@ static void wait_for_ip()
 	//uint32_t bits = IPV4_GOTIP_BIT | IPV6_GOTIP_BIT;
 	uint32_t bits = IPV4_GOTIP_BIT; //we will wait that it will be setted
 
-	ESP_LOGI(TAG, "Waiting for AP connection...");
-	xEventGroupWaitBits(wifi_event_group, bits, false, true, portMAX_DELAY);
+	ESP_LOGI(TAG, "Waiting IP from AP...");
+	/*
+	pauses its execution until the connection to the wifi network is perfomed, waiting for the IPV4_GOTIP_BIT bit to be set.
+	The portMAX_DELAY constant will cause the task to block indefinitely (without a timeout).
+	*/
+	xEventGroupWaitBits(wifi_event_group, bits, false, true, portMAX_DELAY); 
 	/*
 	Read bits within an RTOS event group, optionally entering the Blocked state (with a timeout)
 	to wait for a bit or group of bits to become set.
@@ -436,52 +454,81 @@ static void wait_for_ip()
 	ESP_LOGI(TAG, "Connected to AP");
 }
 
+static struct sockaddr_in tcp_init() {
+	// wait for connection
+	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
+
+	// define connection parameters
+	struct sockaddr_in destAddr;
+	destAddr.sin_addr.s_addr = inet_addr(HOST_IP_ADDR); //setting the Server IP address
+	destAddr.sin_family = AF_INET;
+	destAddr.sin_port = htons(8080); //8080 listening server port
+	return destAddr;
+}
+
+/*
+Return socket struct only if connection to server works. If it fail 5 times will reboot the system.
+*/
+int getSocket() {
+	//create connection parameters and return only after ip address configuration!!
+	struct sockaddr_in destAddr = tcp_init();
+
+	// try to connect to the specified server
+	int attempNum = 5;
+	int result = 1;
+	int s = 0;
+	while (attempNum != 0 && result != 0) //try until result != 0 (connection extablished) or trynumber reached
+	{
+		// create a new socket
+		s = socket(AF_INET, SOCK_STREAM, 0);
+		if (s < 0) {
+			printf("Unable to allocate a new socket\n");
+			//while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+		}
+		else
+			printf("Socket allocated, id=%d\n", s);
+
+		result = connect(s, (struct sockaddr *)&destAddr, sizeof(destAddr));
+		if (result != 0) {
+			printf("connection to server: attemp remaining %d failed\n", attempNum-1);
+			close(s);
+			attempNum--;
+			//while (1) vTaskDelay(1000 / portTICK_RATE_MS);
+		}
+		else
+			printf("connectd to the server\n");
+	}
+	if (attempNum == 0) {
+		reboot("unable to connect with server");
+	}
+	return s;
+
+}
+
 static int tcp_hello() {
 
 	printf("sending hello to server... \n");
 
+	//get MAC address
 	char str_hello[200];
 	uint8_t espMac[6];
 	esp_efuse_mac_get_default(espMac); //get mac address
 	sprintf(str_hello, "My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 	printf("My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 
-	//char *str_hello = "Hello from ESP32\n";
 	char recv_buf[100];
-	//create connection parameters and return only after ip address configuration!!
-	struct sockaddr_in destAddr = tcp_init(); 
+	int s = getSocket();
 
-    // create a new socket
-	int s = socket(AF_INET, SOCK_STREAM, 0);
-	if (s < 0) {
-		printf("Unable to allocate a new socket\n");
-		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
-	}
-	printf("Socket allocated, id=%d\n", s);
-
-	// connect to the specified server
-	int result = connect(s, (struct sockaddr *)&destAddr, sizeof(destAddr));
-	if (result != 0) {
-		printf("Unable to connect to the target website\n");
-		close(s);
-		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
-	}
-	printf("Connected to the target website\n");
-
-	result = write(s, str_hello, strlen(str_hello));
+	int result = write(s, str_hello, strlen(str_hello));
 	if (result < 0) {
 		printf("Unable to send data\n");
 		close(s);
-		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
 	}
-
-	// print the response
-	printf("Server response:\n");
 
 	int r;
 	bzero(recv_buf, sizeof(recv_buf));
 	r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
-	printf("Starting received from server: %s\n", recv_buf);
+	printf("Starting time received from server: %s\n", recv_buf);
 	
 	//close socket
 	close(s);
@@ -498,19 +545,7 @@ static int tcp_hello() {
 	return waitingtime;
 }
 
-static struct sockaddr_in tcp_init() {
-	// wait for connection
-	xEventGroupWaitBits(wifi_event_group, IPV4_GOTIP_BIT, false, true, portMAX_DELAY);
-
-	// define connection parameters
-	struct sockaddr_in destAddr;
-	destAddr.sin_addr.s_addr = inet_addr(HOST_IP_ADDR); //setting the Server IP address
-	destAddr.sin_family = AF_INET;
-	destAddr.sin_port = htons(8080); //8080 listening server port
-	return destAddr;
-}
-
-static void tcp_client_task()
+static void tcp_sendPacket()
 {   
 	int start_time, ora, sleep_time;
     time_t now;
@@ -529,11 +564,6 @@ static void tcp_client_task()
 	destAddr.sin_port = htons(8080); //8080 listening server port
 	*/
 
-	struct sockaddr_in destAddr = tcp_init(); //create connection parameters and return only after ip address configuration!!
-
-	//waiting for the configuration from the AP
-	//wait_for_ip();
-
     /*ask for the time */
     start_time=(int)get_start_timestamp();
     time(&now);
@@ -541,37 +571,13 @@ static void tcp_client_task()
 	localtime_r(&now, &timeinfo);
     strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
     printf("TEMPO in italia:%s agora=%d st=%d\n",buffer,ora,start_time);
-
-	// create a new socket
-	int s = socket(AF_INET, SOCK_STREAM, 0);
-	if (s < 0) {
-		printf("Unable to allocate a new socket\n");
-		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
-	}
-	printf("Socket allocated, id=%d\n", s);
-
-	// connect to the specified server
-	int result = connect(s, (struct sockaddr *)&destAddr, sizeof(destAddr));
-	if (result != 0) {
-		printf("Unable to connect to the target website\n");
-		close(s);
-		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
-	}
-	printf("Connected to the target website\n");
-
-	// send the request
-	/*result = write(s, payload, strlen(payload));
-	if (result < 0) {
-		printf("Unable to send data\n");
-		close(s);
-		while (1) vTaskDelay(1000 / portTICK_RATE_MS);
-	}
-	printf("data sent\n");*/
-
+	
+	int s = getSocket();
 
 	reduced_info x;
 	int i;
 	int NumPacketSent = 0;
+	int result;
 
 	for (i = 0; i < Sniffed_packet.count; i++)
 	{
@@ -602,7 +608,7 @@ static void tcp_client_task()
 		strcat(string_to_send, temp); //now string to send have all data except digest
 
 		/*
-		compute hash of the mac. TODO: ADD TIMESTAMP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		compute hash of the digest of MAC+TS
 		*/
 		char digest[128];
 		ComputHashMD5((unsigned char *)temp, digest); //compute digest of the string temp (=mac + temp) and put the result in digest array
@@ -612,26 +618,26 @@ static void tcp_client_task()
 		strcat(string_to_send, digest);
 		strcat(string_to_send, "/\n");
 
-        /* aspetta che sia passato lo sleep time dopodiché invia TOLTO!!!*/
-        //sleep_time= set_waiting_time();
-        //vTaskDelay(sleep_time / portTICK_RATE_MS);
 		result = write(s, string_to_send, strlen(string_to_send));
 		if (result < 0) {
 			printf("Unable to send data\n");
 			close(s);
-			while (1) vTaskDelay(1000 / portTICK_RATE_MS);
 		}
 		else
 			NumPacketSent++;
+	}
+	//stop message
+	char *stop = "STOP";
+	result = write(s, stop, strlen(stop));
+	if (result < 0) {
+		printf("Unable to send data\n");
+		close(s);
 	}
 
 	printf("Num packet sent: %d\n", NumPacketSent);
 	close(s);
 	printf("Socket closed\n");
 
-	/*while (1) {
-		vTaskDelay(1000 / portTICK_RATE_MS);
-	}*/
 }
 
 void

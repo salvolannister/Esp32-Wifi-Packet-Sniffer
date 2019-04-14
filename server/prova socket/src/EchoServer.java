@@ -48,9 +48,17 @@ public class EchoServer {
                 	}
                 	else
                 	{
-                		Packet p=new Packet(inputLine);
-                        if(checkInsert(p, tab)==false)
-                            System.out.println("pacchetto già ricevuto");
+                		if(inputLine.compareTo("STOP")!=0) {
+                			Packet p=new Packet(inputLine);
+                            if(checkInsert(p, tab)==false)
+                                System.out.println("pacchetto già ricevuto");
+                		}
+                		else
+                		{
+                			System.out.println(inputLine);
+                			isSetted=false;
+                		}
+                			
                 	}
            
                 }
