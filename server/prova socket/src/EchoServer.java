@@ -8,10 +8,7 @@ public class EchoServer {
     private static final Integer TOT_ESP = 1;
 
     public static void main(String[] args) throws IOException {
-    	
-    	//variable used to verify if the esp is sniffing or in configuration phase
-    	Boolean isSetted = false;
-    	
+    	    	
         Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
 
         while(true) {
@@ -29,25 +26,29 @@ public class EchoServer {
             ) {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                	if(!isSetted)
-                	{
+            		//System.out.println(inputLine);
+                	//if(!isSetted)
+                	//{
+                	String str = trunc(inputLine, 5);
+                	if(str.compareTo("Hello")==0) {
+                		     	
                 		System.out.println(inputLine);
      		
                 		// create a calendar
                         Calendar cal = Calendar.getInstance();
                         // get time in millis from Epoch
                         Long TimeLong = cal.getTimeInMillis();
-                        System.out.println(TimeLong);
+                        //System.out.println(TimeLong);
                         // add to current time 20seconds -> ESP start sniffing at now+20
-                        TimeLong = TimeLong + 20000; //20sec
-                        System.out.println(TimeLong);
+                        TimeLong = TimeLong + 6000; //20sec
                         // convert long to string in order to truncate at 10 number
                         String StartTime = Long.toString(TimeLong);
                         out.println(StartTime.substring(0, Math.min(StartTime.length(), 10)));
-                		isSetted = true;
+                        System.out.println("Time sendend to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
+                		//isSetted = true;
                 	}
                 	else
-                	{
+                	{	
                 		if(inputLine.compareTo("STOP")!=0) {
                 			Packet p=new Packet(inputLine);
                             if(checkInsert(p, tab)==false)
@@ -55,8 +56,8 @@ public class EchoServer {
                 		}
                 		else
                 		{
-                			System.out.println(inputLine);
-                			isSetted=false;
+                			System.out.println("Stop message received: " + inputLine);
+                			//isSetted=false;
                 		}
                 			
                 	}
@@ -84,5 +85,13 @@ public class EchoServer {
             return true;
         }
         return false;
+    }
+    
+    private static String trunc(String value, int length)
+    {
+    String val = "";
+      if (value != null && value.length() > length)
+        val = value.substring(0, length);
+      return val;
     }
 }

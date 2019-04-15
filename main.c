@@ -146,7 +146,7 @@ app_main(void)
 
 	int waitingTime = tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
 	//wait
-	printf("---------------%d WAITING FOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
+	printf("--------------- %d SECONDS WAITING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
 	vTaskDelay(waitingTime*1000 / portTICK_PERIOD_MS);
 	printf("---------------START SNIFFING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
 
@@ -159,7 +159,7 @@ app_main(void)
         int sleep_time = 10*1000;
 		//after tot seconds stop sniffing packets, print the result and send message to server. Then, restart sniffing packets.
 		vTaskDelay(sleep_time/portTICK_PERIOD_MS);
-		printf("---------------10 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+		printf("--------------- 10 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
 		stopSniffing = true;
 		if (Sniffed_packet.dim > 0)
 		{
@@ -172,9 +172,11 @@ app_main(void)
 			printf("no packet sniffed");
 
 		waitingTime = tcp_hello(); //send mac address to server and ask for waiting time
-		printf("---------------%d WAITING FOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
+		if (waitingTime <= 0)
+			reboot("error in tcp_hello function!");
+		printf("--------------- %d SECONDS WAITING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
 		vTaskDelay(waitingTime * 1000 / portTICK_PERIOD_MS);
-		printf("---------------RESTART SNIFFING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+		printf("--------------- RESTART SNIFFING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
 
 		stopSniffing = false;
 
@@ -513,8 +515,8 @@ static int tcp_hello() {
 	char str_hello[200];
 	uint8_t espMac[6];
 	esp_efuse_mac_get_default(espMac); //get mac address
-	sprintf(str_hello, "My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
-	printf("My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
+	sprintf(str_hello, "Hello, My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
+	//printf("Hello, My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 
 	char recv_buf[100];
 	int s = getSocket();
@@ -524,11 +526,16 @@ static int tcp_hello() {
 		printf("Unable to send data\n");
 		close(s);
 	}
+	vTaskDelay(2000 / portTICK_PERIOD_MS);
 
 	int r;
 	bzero(recv_buf, sizeof(recv_buf));
 	r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
 	printf("Starting time received from server: %s\n", recv_buf);
+	if (result < 0) {
+		printf("Unable to receive data\n");
+		close(s);
+	}
 	
 	//close socket
 	close(s);
@@ -628,6 +635,8 @@ static void tcp_sendPacket()
 	}
 	//stop message
 	char *stop = "STOP";
+	vTaskDelay(2000 / portTICK_PERIOD_MS);
+
 	result = write(s, stop, strlen(stop));
 	if (result < 0) {
 		printf("Unable to send data\n");
