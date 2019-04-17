@@ -2,6 +2,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class PacketRec {
@@ -38,6 +39,24 @@ public class PacketRec {
                 ", Digest='" + Digest + '\'' +
                 ", TimeStamp='"+ TimeStamp +'\''+
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PacketRec packetRec = (PacketRec) o;
+        return RSSI.equals(packetRec.RSSI) &&
+                n_ESP.equals(packetRec.n_ESP) &&
+                MacSource.equals(packetRec.MacSource) &&
+                SSID.equals(packetRec.SSID) &&
+                Digest.equals(packetRec.Digest) &&
+                TimeStamp.equals(packetRec.TimeStamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(RSSI, n_ESP, MacSource, SSID, Digest, TimeStamp);
     }
 
     public List<Integer> getRSSI() {

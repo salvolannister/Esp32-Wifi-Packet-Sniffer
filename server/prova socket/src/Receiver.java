@@ -1,10 +1,8 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Receiver implements Runnable {
@@ -29,7 +27,7 @@ public class Receiver implements Runnable {
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(csocket.getInputStream()));
 
-                    PrintWriter out = new PrintWriter(csocket.getOutputStream(), true);
+                    //DataOutputStream dOut = new DataOutputStream(csocket.getOutputStream());
 
             ) {
                 String inputLine;
@@ -37,50 +35,23 @@ public class Receiver implements Runnable {
                     //System.out.println(inputLine);
                     //if(!isSetted)
                     //{
-                    String str = trunc(inputLine, 5);
-                    if(str.compareTo("Hello")==0) {
-
-                        System.out.println(inputLine);
-
-                        // create a calendar
-                        Calendar cal = Calendar.getInstance();
-                        // get time in millis from Epoch
-                        Long TimeLong = cal.getTimeInMillis();
-                        //System.out.println(TimeLong);
-                        // add to current time 20seconds -> ESP start sniffing at now+20
-                        TimeLong = TimeLong + 6000; //20sec
-                        // convert long to string in order to truncate at 10 number
-                        String StartTime = Long.toString(TimeLong);
-                        out.println(StartTime.substring(0, Math.min(StartTime.length(), 10)));
-                        System.out.println("Time sendend to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
-                        //isSetted = true;
+                    if (inputLine.compareTo("STOP") != 0) {
+                        Packet p = new Packet(inputLine);
+                        if (checkInsert(p, EchoServer.tab) == false)
+                            System.out.println("pacchetto già ricevuto");
+                    } else {
+                        System.out.println("Stop message received: " + inputLine);
                     }
-                    else
-                    {
-                        if(inputLine.compareTo("STOP")!=0) {
-                            Packet p=new Packet(inputLine);
-                            if(checkInsert(p, EchoServer.tab)==false)
-                                System.out.println("pacchetto già ricevuto");
-                        }
-                        else
-                        {
-                            System.out.println("Stop message received: " + inputLine);
-                            //isSetted=false;
-                        }
-
-                    }
-
                 }
-            } catch (IOException e) {
+            }catch(IOException e){
                 System.out.println("Exception caught when trying to listen on port 8080 "
                         + " or listening for a connection");
                 System.out.println(e.getMessage());
             }
-
         }
 
         }
-    private static boolean checkInsert(Packet p, Map<String,PacketRec> tab) {
+    private static boolean checkInsert(Packet p, Map<String, PacketRec> tab) {
         if(tab.containsKey(p.getDigest())==true){
             if(tab.get(p.getDigest()).getN_ESP()<n_ESP){
                 tab.get(p.getDigest()).newSignal(p.getRSSI());

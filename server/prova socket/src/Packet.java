@@ -1,5 +1,4 @@
-
-
+import java.util.Objects;
 
 public class Packet {
 
@@ -19,6 +18,23 @@ public class Packet {
 		extractDigest(packetChar);
 		extractTimeStamp(packetChar);
 		System.out.println(this.toString());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Packet packet = (Packet) o;
+		return RSSI == packet.RSSI &&
+				MacSource.equals(packet.MacSource) &&
+				SSID.equals(packet.SSID) &&
+				Digest.equals(packet.Digest) &&
+				TimeStamp.equals(packet.TimeStamp);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(RSSI, MacSource, SSID, Digest, TimeStamp);
 	}
 
 	@Override

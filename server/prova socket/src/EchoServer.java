@@ -6,12 +6,13 @@ import java.util.Map;
 
 public class EchoServer {
     private static final Integer TOT_ESP = 1;
+    public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
 
     public static void main(String[] args) throws IOException {
     	/*
     	 * prova sinc GIT!!	
     	 */
-        Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
+
         int waitSec = 10;
         String MacESPDavide = "24:0a:c4:9b:4f:ac";
 
@@ -24,7 +25,7 @@ public class EchoServer {
 
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(clientSocket.getInputStream()));
-            		
+
             		//PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             		//prova!!!!!!!!!!!!!!!!!!!!!
             		DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream());
@@ -35,7 +36,7 @@ public class EchoServer {
                 while ((inputLine = in.readLine()) != null) {
                 	String str = trunc(inputLine, 5);
                 	if(str.compareTo("Hello")==0) {
-                		     	
+
                 		System.out.println(inputLine);
      		
                 		// create a calendar
@@ -70,7 +71,7 @@ public class EchoServer {
                         break;
                 	}
                 	else
-                	{	
+                	{
                 		if(inputLine.compareTo("STOP")!=0) {
                 			Packet p=new Packet(inputLine);
                             if(checkInsert(p, tab)==false)
