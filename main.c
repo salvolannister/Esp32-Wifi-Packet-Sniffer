@@ -30,7 +30,7 @@
 #define	WIFI_CHANNEL_MAX		(13)
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
-#define SNIFFING_TIME 60 // tempo di sniffamento in secondi
+#define SNIFFING_TIME 30 // tempo di sniffamento in secondi
 #define PORT "8080" //Server port
 
 
@@ -112,6 +112,7 @@ void ComputHashMD5();
 
 P_array Sniffed_packet;
 bool stopSniffing = false;
+int rebooted = 1;
 
  /*struttura che viene aggiornata con time,
  mostra il tempo passato da una det. data*/
@@ -156,10 +157,10 @@ app_main(void)
 	/* loop */
 	while (true) {
 
-        int sleep_time = 10*1000;
+        int sleep_time = SNIFFING_TIME*1000;
 		//after tot seconds stop sniffing packets, print the result and send message to server. Then, restart sniffing packets.
 		vTaskDelay(sleep_time/portTICK_PERIOD_MS);
-		printf("--------------- 10 SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
+		printf("--------------- %d SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", (int)SNIFFING_TIME);
 		stopSniffing = true;
 		if (Sniffed_packet.dim > 0)
 		{
@@ -515,41 +516,78 @@ static int tcp_hello() {
 	char str_hello[200];
 	uint8_t espMac[6];
 	esp_efuse_mac_get_default(espMac); //get mac address
-	sprintf(str_hello, "Hello, My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
+	sprintf(str_hello, "Hello, booted = %d and My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", rebooted, espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 	//printf("Hello, My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 
-	char recv_buf[100];
-	int s = getSocket();
+	char recv_buf[11];
+	int attemptNum = 5;
+	char timeRec[20];
 
-	int result = write(s, str_hello, strlen(str_hello));
-	if (result < 0) {
-		printf("Unable to send data\n");
-		close(s);
-	}
-	vTaskDelay(2000 / portTICK_PERIOD_MS);
+	while (attemptNum>0)  //try until we have perfomed all send/receive messages
+	{
+		printf("attemp number: %d", (5-attemptNum));
+		int s = getSocket();
 
-	int r;
-	bzero(recv_buf, sizeof(recv_buf));
-	r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
-	printf("Starting time received from server: %s\n", recv_buf);
-	if (result < 0) {
-		printf("Unable to receive data\n");
+		//send hello to server
+		int result = write(s, str_hello, strlen(str_hello));
+		if (result < 0) {
+			printf("Unable to send data\n");
+			close(s);
+			attemptNum--;
+			vTaskDelay(2000 / portTICK_RATE_MS);
+			continue; //retry!
+		}
+		vTaskDelay(2000 / portTICK_PERIOD_MS);
+
+		int r;
+		bzero(timeRec, sizeof(timeRec));
+		int bytenum = 0;
+		do {
+			bzero(recv_buf, sizeof(recv_buf));
+			r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
+			for (int i = 0; i < r; i++) {
+				printf("data coming from server\n");
+				printf(" %c\n", recv_buf[i]);
+				timeRec[bytenum+i] = recv_buf[i];
+			}
+			bytenum += r;
+			
+		} while (r > 0);
+
+		if (r < 0) {
+			printf("Unable to receive data\n");
+			close(s);
+			attemptNum--;
+			bzero(timeRec, sizeof(timeRec));
+			continue; //retry!
+		}
+		//r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
+		printf("Starting time received from server: %s\n", timeRec);
+		
+
+		//close socket
 		close(s);
+		printf("Socket closed\n");
+
+		break;	//exit from while
 	}
-	
-	//close socket
-	close(s);
-	printf("Socket closed\n");
-	
+
 	time_t ts;
 	time(&ts);
-	int startTime = atoi(recv_buf);
+	int startTime = atoi(timeRec);
 	printf("starting time: %d", startTime);
 	printf("My time: %d \n", (int)ts);
 
 	int waitingtime = startTime - (int)ts;
 	printf("waiting time: %d\n", waitingtime);
+
+	//set rebooted to 0. If the system reboot reset rebooted to 1
+	//so, we can check in the server if the system has rebooted. 
+	//this is possible because it's written in hello message!
+	//ONLY IN FIRST MESSAGE REBOOTED VARIABLE SHOULD BE SET TO 1.
+	rebooted = 0;
 	return waitingtime;
+	
 }
 
 static void tcp_sendPacket()

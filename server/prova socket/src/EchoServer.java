@@ -10,6 +10,8 @@ public class EchoServer {
     public static void main(String[] args) throws IOException {
     	    	
         Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
+        int waitSec = 10;
+        String MacESPDavide = "24:0a:c4:9b:4f:ac";
 
         while(true) {
 
@@ -21,14 +23,14 @@ public class EchoServer {
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(clientSocket.getInputStream()));
             		
-            		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            		//PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            		//prova!!!!!!!!!!!!!!!!!!!!!
+            		DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream());
+
                 
             ) {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-            		//System.out.println(inputLine);
-                	//if(!isSetted)
-                	//{
                 	String str = trunc(inputLine, 5);
                 	if(str.compareTo("Hello")==0) {
                 		     	
@@ -38,14 +40,32 @@ public class EchoServer {
                         Calendar cal = Calendar.getInstance();
                         // get time in millis from Epoch
                         Long TimeLong = cal.getTimeInMillis();
-                        //System.out.println(TimeLong);
-                        // add to current time 20seconds -> ESP start sniffing at now+20
-                        TimeLong = TimeLong + 6000; //20sec
+                        // add to current time waitSec -> ESP start sniffing at now+waitSec
+                        TimeLong = TimeLong + waitSec*1000;
                         // convert long to string in order to truncate at 10 number
                         String StartTime = Long.toString(TimeLong);
-                        out.println(StartTime.substring(0, Math.min(StartTime.length(), 10)));
-                        System.out.println("Time sendend to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
-                		//isSetted = true;
+                        
+                        //VECCHIO
+                        /*out.println(StartTime.substring(0, Math.min(StartTime.length(), 10)));
+                        out.close();
+                        */
+                        
+                        //PROVA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        for (int i = 0; i < 10; i++) {
+                        	System.out.print(StartTime.charAt(i));
+							dOut.write(StartTime.charAt(i));
+						}
+                        dOut.flush(); // Send off the data
+                        dOut.close();
+                    	System.out.println();
+
+                        //System.out.println("Time send to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
+                        
+                        //check if MAC has changed!!!!!
+                        String[] mac = inputLine.split("My Mac is: ");
+                        if(mac[1].compareTo(MacESPDavide)!=0)
+                        	System.out.println("---------- MAC HAS CHANGED!!!!!!!!!");
+                        break;
                 	}
                 	else
                 	{	
@@ -57,7 +77,6 @@ public class EchoServer {
                 		else
                 		{
                 			System.out.println("Stop message received: " + inputLine);
-                			//isSetted=false;
                 		}
                 			
                 	}
@@ -81,7 +100,6 @@ public class EchoServer {
         }
         else{
             tab.put(p.getDigest(), new PacketRec(p));
-            //System.out.println(tab.toString());
             return true;
         }
         return false;
