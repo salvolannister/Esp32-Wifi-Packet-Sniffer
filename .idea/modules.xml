@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/provaDB.iml" filepath="$PROJECT_DIR$/provaDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MUDS.iml" filepath="$PROJECT_DIR$/.idea/MUDS.iml" />
     </modules>
   </component>
 </project>

@@ -6,6 +6,11 @@ public class DBUtil {
 
     private Connection conn;
 
+
+    public Connection getConn() {
+        return conn;
+    }
+
     public DBUtil(){
 
         try {
@@ -18,13 +23,13 @@ public class DBUtil {
     }
 
     //apertura della connessione
-    public boolean openConnection(){
+    public boolean openConnection(String DbName){
         try{
 
             //rendo indipendente il db dalpercorso
             File f=new File(".");
             f.getAbsolutePath();
-            String url ="jdbc:sqlite:"+f.getAbsolutePath()+"//prov.db";
+            String url ="jdbc:sqlite:"+f.getAbsolutePath()+"//"+DbName;
 
             //conenssione al db
             conn=DriverManager.getConnection(url);
@@ -38,37 +43,6 @@ public class DBUtil {
         }
 
     }
-
-    //funzione di insert
-    public boolean aggiungiTupla(int id, int prova) throws SQLException{
-
-        PreparedStatement pstmt;
-
-        try {
-            conn.setAutoCommit(false);
-
-            String s=new String("INSERT INTO Test"+ "(id, prova)"+" VALUES (?, ?)");
-            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
-                pstmt.setInt(1, (int) id);
-                pstmt.setInt(2, (int) prova);
-                pstmt.executeUpdate();
-                conn.commit();
-                return true;
-            }
-            catch (Exception ex){
-                ex.printStackTrace();
-                return false;
-            }
-
-        }catch (Exception e) {
-            conn.rollback();
-            e.printStackTrace();
-            System.out.println("errore");
-            return false;
-        }
-
-    }
-
 
 
     /*
