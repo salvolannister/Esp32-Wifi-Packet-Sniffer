@@ -43,7 +43,11 @@
 //DAVIDE AP configuration
 #define EXAMPLE_WIFI_SSID "Ntani"
 #define EXAMPLE_WIFI_PASS "davidedavide"
-#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+//#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+
+//SERVER ADDRESS UMBERTO!!
+#define HOST_IP_ADDR "192.168.43.26" //Server ip addres
+
 
 static bool FIRST = true; /* Only used in startup: if obtain_time() can't set current time for the first time -> reboot() */
 //connection variables
@@ -113,6 +117,8 @@ void ComputHashMD5();
 P_array Sniffed_packet;
 bool stopSniffing = false;
 int rebooted = 1;
+//mac address
+uint8_t espMac[6];
 
  /*struttura che viene aggiornata con time,
  mostra il tempo passato da una det. data*/
@@ -144,6 +150,9 @@ app_main(void)
     time(&now);
     start_time =(int) now;
     printf("START TIME IS : %d\n",start_time);
+
+	//init MAC
+	esp_efuse_mac_get_default(espMac); //get mac address
 
 	int waitingTime = tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
 	//wait
@@ -511,11 +520,7 @@ int getSocket() {
 static int tcp_hello() {
 
 	printf("sending hello to server... \n");
-
-	//get MAC address
 	char str_hello[200];
-	uint8_t espMac[6];
-	esp_efuse_mac_get_default(espMac); //get mac address
 	sprintf(str_hello, "Hello, booted = %d and My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", rebooted, espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 	//printf("Hello, My Mac is: %02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 
@@ -629,7 +634,7 @@ static void tcp_sendPacket()
 		char temp[1000];
 		char string_to_send[1000];
 		x = Sniffed_packet.array[i];
-		sprintf(string_to_send, "CHAN=%02d/RSSI=%02d", x.channel, x.rssi);
+		sprintf(string_to_send, "CHAN=%02d/RSSI=%02d", x.channel, x.rssi); //final string = CHAN+RSSI
 
 		if (x.length_ssid != 0) {
 			sprintf(temp, "/SSID_length=%d/SSID_%s", x.length_ssid, x.ssid);
@@ -640,6 +645,10 @@ static void tcp_sendPacket()
 			sprintf(temp, "/SSID_length=0");
 			strcat(string_to_send, temp);
 		}
+		//final string = CHAN+RSSI+SSID_lenght+[SSID]
+
+		sprintf(temp, "/ESP_MAC=%02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
+		strcat(string_to_send, temp);  //final string = CHAN+RSSI+SSID_lenght+[SSID]+ESP_MAC
 
 		sprintf(temp, "/MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x/",
 			x.mac_src[0], x.mac_src[1], x.mac_src[2],
@@ -662,6 +671,9 @@ static void tcp_sendPacket()
 		strcat(string_to_send, "Digest=");
 		strcat(string_to_send, digest);
 		strcat(string_to_send, "/\n");
+
+		printf("Stringa finale: %s /n", string_to_send);
+
 
 		result = write(s, string_to_send, strlen(string_to_send));
 		if (result < 0) {
