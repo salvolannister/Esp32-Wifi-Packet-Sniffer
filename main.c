@@ -30,7 +30,7 @@
 #define	WIFI_CHANNEL_MAX		(13)
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
-#define SNIFFING_TIME 30 // tempo di sniffamento in secondi
+#define SNIFFING_TIME 15 // tempo di sniffamento in secondi
 #define PORT "8080" //Server port
 
 
@@ -647,7 +647,7 @@ static void tcp_sendPacket()
 		}
 		//final string = CHAN+RSSI+SSID_lenght+[SSID]
 
-		sprintf(temp, "/ESP_MAC=%02x:%02x:%02x:%02x:%02x:%02x\n", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
+		sprintf(temp, "/ESP_MAC=%02x:%02x:%02x:%02x:%02x:%02x", espMac[0], espMac[1], espMac[2], espMac[3], espMac[4], espMac[5]);
 		strcat(string_to_send, temp);  //final string = CHAN+RSSI+SSID_lenght+[SSID]+ESP_MAC
 
 		sprintf(temp, "/MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x/",
@@ -671,9 +671,6 @@ static void tcp_sendPacket()
 		strcat(string_to_send, "Digest=");
 		strcat(string_to_send, digest);
 		strcat(string_to_send, "/\n");
-
-		printf("Stringa finale: %s /n", string_to_send);
-
 
 		result = write(s, string_to_send, strlen(string_to_send));
 		if (result < 0) {
