@@ -14,8 +14,8 @@
       <Label layoutX="44.0" layoutY="142.0" text="Height" />
       <Label layoutX="44.0" layoutY="179.0" prefHeight="21.0" prefWidth="45.0" text="Width" />
       <Spinner fx:id="SpinnerBox" layoutX="406.0" layoutY="95.0" prefHeight="21.0" prefWidth="71.0" />
-      <TextField fx:id="HeightBox" layoutX="115.0" layoutY="137.0" onKeyReleased="#setHeight" prefHeight="31.0" prefWidth="45.0" />
-      <TextField fx:id="WidthBox" layoutX="115.0" layoutY="174.0" prefHeight="31.0" prefWidth="45.0" />
+      <TextField fx:id="HeightBox" layoutX="115.0" layoutY="137.0" onInputMethodTextChanged="#setHeight" prefHeight="31.0" prefWidth="45.0" />
+      <TextField fx:id="WidthBox" layoutX="115.0" layoutY="174.0" onInputMethodTextChanged="#setWidth" prefHeight="31.0" prefWidth="45.0" />
       <Button fx:id="OKButton" layoutX="207.0" layoutY="394.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="96.0" text="OK" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="137.0" prefHeight="32.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="174.0" prefHeight="31.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
