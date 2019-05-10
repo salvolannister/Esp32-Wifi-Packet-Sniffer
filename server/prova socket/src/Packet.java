@@ -7,9 +7,13 @@ public class Packet {
 	private String SSID;
 	private String Digest;
 	private String TimeStamp;
-	
-	/**
-	 * 
+	private String IdMac;
+
+	/***
+	 *
+	 * @param packetChar
+	 *
+	 * costruttore dell'oggetto Packet crea l'oggetto richiamando i vari metodi estrattori
 	 */
 	public Packet(String packetChar) {
 		extractMac(packetChar);
@@ -17,6 +21,7 @@ public class Packet {
 		extractSSID(packetChar);
 		extractDigest(packetChar);
 		extractTimeStamp(packetChar);
+		extractIdMac(packetChar);
 		System.out.println(this.toString());
 	}
 
@@ -29,12 +34,13 @@ public class Packet {
 				MacSource.equals(packet.MacSource) &&
 				SSID.equals(packet.SSID) &&
 				Digest.equals(packet.Digest) &&
-				TimeStamp.equals(packet.TimeStamp);
+				TimeStamp.equals(packet.TimeStamp)&&
+				IdMac.equals(packet.IdMac);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(RSSI, MacSource, SSID, Digest, TimeStamp);
+		return Objects.hash(RSSI, MacSource, SSID, Digest, TimeStamp, IdMac);
 	}
 
 	@Override
@@ -45,7 +51,16 @@ public class Packet {
 				", SSID='" + SSID + '\'' +
 				", Digest='" + Digest + '\'' +
 				", TimeStamp='" + TimeStamp + '\'' +
+				", IdMac='" + IdMac + '\'' +
 				'}';
+	}
+
+	public String getIdMac() {
+		return IdMac;
+	}
+
+	public void setIdMac(String idMac) {
+		IdMac = idMac;
 	}
 
 	public int getRSSI() {
@@ -84,18 +99,49 @@ public class Packet {
 
 	public void setTimeStamp(String timeStamp) { TimeStamp = timeStamp; }
 
+
+	/***
+	 *
+	 * @param packetChar
+	 *
+	 * estrae dal pacchetto l'RSSI
+	 */
 	private void extractRssi(String packetChar) {
 		String[] begin = packetChar.split("RSSI=");
 		String[] rssi = begin[1].split("/"); //split string after RSSI= by "/"
 		setRSSI(Integer.parseInt(rssi[0])); //take cahracters from the beginning to /
 	}
-	
+
+	/***
+	 *
+	 * @param packetChar
+	 *
+	 * estrae dal pacchetto il MAC dell'ESP32
+	 */
+	private void extractIdMac(String packetChar) {
+		String[] begin = packetChar.split("ESP_MAC=");
+		String[] idmac = begin[1].split("/");
+		setIdMac(idmac[0]); //take cahracters from the beginning to /
+	}
+
+	/***
+	 *
+	 * @param packetChar
+	 *
+	 * estrae dal pacchetto il MAC source dei dispositivi
+	 */
 	private void extractMac(String packetChar) {
 		String[] begin = packetChar.split("MAC_SRC=");
 		String[] mac = begin[1].split("/");
 		setMacSource(mac[0]);
 	}
-	
+
+	/***
+	 *
+	 * @param packetChar
+	 *
+	 * estrae dal pacchetto il SSID
+	 */
 	private void extractSSID(String packetChar) {
 		String[] begin = packetChar.split("SSID_length=");
 		String[] ssid = begin[1].split("/");
@@ -109,6 +155,12 @@ public class Packet {
 	 * NOTA: FORMAT OF STRING FOR THE DIGEST COMPUTATION:
 	 * /MAC_SRC=2c:fd:a1:9c:e2:bb/ TimeStamp=1555064886/
 	 */
+	/***
+	 *
+	 * @param packetChar
+	 *
+	 * estrae dal pacchetto il digest
+	 */
 	private void extractDigest(String packetChar) {
 		String[] begin = packetChar.split("Digest=");
 		String[] hash = begin[1].split("/");
@@ -116,6 +168,13 @@ public class Packet {
 		//System.out.print("Digest: " + getDigest());
 	}
 
+
+	/***
+	 *
+	 * @param packetChar
+	 *
+	 * estrae dal pacchetto il timestamp
+	 */
 	private void extractTimeStamp(String packetChar) {
 		String[] begin = packetChar.split("TimeStamp=");
 		String[] hash = begin[1].split("/");

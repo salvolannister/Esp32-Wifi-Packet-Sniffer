@@ -21,18 +21,29 @@ public class EchoServer {
             try (
                     ServerSocket serverSocket =
                             new ServerSocket(8080);
-                    Socket clientSocket = serverSocket.accept();
+                    //Socket clientSocket = serverSocket.accept();
 
-                    BufferedReader in = new BufferedReader(
+                  /*  BufferedReader in = new BufferedReader(
                             new InputStreamReader(clientSocket.getInputStream()));
 
             		//PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             		//prova!!!!!!!!!!!!!!!!!!!!!
             		DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream());
-
+*/
                 
             ) {
-                String inputLine;
+
+                while (true) {
+                    //count++;
+
+
+                    new Receiver(serverSocket.accept(),2,1).start();
+                    System.out.println("io");
+                    synchronized (tab){
+                        writeFile(tab);
+                    }
+                }
+                /*String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                 	String str = trunc(inputLine, 5);
                 	if(str.compareTo("Hello")==0) {
@@ -49,9 +60,9 @@ public class EchoServer {
                         String StartTime = Long.toString(TimeLong);
                         
                         //VECCHIO
-                        /*out.println(StartTime.substring(0, Math.min(StartTime.length(), 10)));
-                        out.close();
-                        */
+                        //out.println(StartTime.substring(0, Math.min(StartTime.length(), 10)));
+                        //out.close();
+                        //
                         
                         //PROVA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         for (int i = 0; i < 10; i++) {
@@ -83,8 +94,9 @@ public class EchoServer {
                 		}
                 			
                 	}
-           
+
                 }
+           */
             } catch (IOException e) {
                 System.out.println("Exception caught when trying to listen on port 8080 "
                         + " or listening for a connection");
@@ -94,25 +106,28 @@ public class EchoServer {
         }
     }
 
-    private static boolean checkInsert(Packet p, Map<String,PacketRec> tab) {
-        if(tab.containsKey(p.getDigest())==true){
-            if(tab.get(p.getDigest()).getN_ESP()<TOT_ESP){
-                tab.get(p.getDigest()).newSignal(p.getRSSI());
-                return true;
-            }
+
+    /***
+     *
+     * @param tab
+     *
+     * funzione di debug, scrive il contenuto della mappa tab su di un file
+     */
+    public static void writeFile(Map<String, PacketRec> tab) {
+
+
+        String path = "prova.txt";
+        File f=new File(".");
+        f.getAbsolutePath();
+        String url =f.getAbsolutePath()+"//"+path;
+        try {
+            File file = new File(url);
+            FileWriter fw = new FileWriter(file);
+            fw.write(tab.toString());
+            fw.close();
         }
-        else{
-            tab.put(p.getDigest(), new PacketRec(p));
-            return true;
+        catch(IOException e) {
+            e.printStackTrace();
         }
-        return false;
-    }
-    
-    private static String trunc(String value, int length)
-    {
-    String val = "";
-      if (value != null && value.length() > length)
-        val = value.substring(0, length);
-      return val;
     }
 }

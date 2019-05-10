@@ -1,13 +1,11 @@
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class PacketRec {
 
-    private List<Integer> RSSI;
+    private Map<String, Integer> RSSI;
     private Integer n_ESP;
     private String MacSource;
     private String SSID;
@@ -15,8 +13,11 @@ public class PacketRec {
     private String TimeStamp;
 
 
-    /*
-        costruttore di un record di tipo PacketRec, a partire da un oggetto di tipo Packet
+    /***
+     *
+     * @param packet
+     *
+     * costruttore di un oggetto di tipo PacketRec, a partire da un oggetto di tipo Packet
      */
 
     public PacketRec(Packet packet) {
@@ -24,9 +25,9 @@ public class PacketRec {
         setMacSource(packet.getMacSource());
         setSSID(packet.getSSID());
         setN_ESP(0);
-        setRSSI(new ArrayList<Integer>());
+        setRSSI(new HashMap<String,Integer>());
         setTimeStamp(packet.getTimeStamp());
-        newSignal(packet.getRSSI());
+        newSignal(packet.getIdMac(),packet.getRSSI());
     }
 
     @Override
@@ -59,11 +60,11 @@ public class PacketRec {
         return Objects.hash(RSSI, n_ESP, MacSource, SSID, Digest, TimeStamp);
     }
 
-    public List<Integer> getRSSI() {
+    public Map<String, Integer> getRSSI() {
         return RSSI;
     }
 
-    public void setRSSI(List<Integer> RSSI) {
+    public void setRSSI(Map<String, Integer> RSSI) {
         this.RSSI = RSSI;
     }
 
@@ -103,11 +104,15 @@ public class PacketRec {
 
     public void setTimeStamp(String timeStamp) { TimeStamp = timeStamp; }
 
-    /*
-            aggiornamento della lista di rssi
-         */
-    public void newSignal(int rssi) {
+    /***
+     *
+     * @param id
+     * @param rssi
+     *
+     * Aggiornamento della Mappa contenente MAC, RSSI
+     */
+    public void newSignal(String id,int rssi) {
         setN_ESP(getN_ESP()+1);
-        getRSSI().add(rssi);
+        getRSSI().put(id, rssi);
     }
 }
