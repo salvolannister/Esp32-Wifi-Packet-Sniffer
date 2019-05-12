@@ -21,7 +21,7 @@
       <Button fx:id="OKButton" layoutX="207.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#OKButtontEvent" prefHeight="31.0" prefWidth="96.0" text="OK" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="137.0" prefHeight="32.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="174.0" prefHeight="31.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
-      <AnchorPane layoutX="225.0" layoutY="140.0" prefHeight="253.0" prefWidth="287.0">
+      <AnchorPane layoutX="225.0" layoutY="134.0" prefHeight="259.0" prefWidth="279.0">
          <children>
             <AnchorPane prefHeight="40.0" prefWidth="260.0">
                <children>
