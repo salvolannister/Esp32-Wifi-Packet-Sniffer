@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+
 
 public class ConfigurationController implements Initializable{
 	
@@ -24,7 +25,7 @@ public class ConfigurationController implements Initializable{
 	private float Width ;
 	private int nEsp;
 	@FXML
-	private void setHeight() {
+	private void setHeight(Event event) {
 		
 		try{
 			String h = new String(HeightBox.getText());
@@ -37,7 +38,7 @@ public class ConfigurationController implements Initializable{
 	}
 	
 	
-	public void setWidth() {
+	public void setWidth(Event event) {
 		String w = new String(WidthBox.getText());
 		System.out.println("larghezza:"+ w);
 		Height = Float.parseFloat(w);
@@ -55,7 +56,7 @@ public class ConfigurationController implements Initializable{
 		
 	}
 	
-	public void getSpinnerValue() {
+	public void getSpinnerValue(Event event) {
 	 nEsp = SpinnerBox.getValue();
 	 System.out.println("nEsp "+nEsp);
 	}
