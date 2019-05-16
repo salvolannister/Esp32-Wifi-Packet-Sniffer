@@ -18,12 +18,12 @@
       <Label layoutX="44.0" layoutY="179.0" prefHeight="21.0" prefWidth="45.0" text="Width" />
       <TextField fx:id="HeightBox" editable="false" layoutX="115.0" layoutY="137.0" onAction="#setHeight" onInputMethodTextChanged="#setHeight" onKeyReleased="#setHeight" onKeyTyped="#setHeight" prefHeight="31.0" prefWidth="45.0" />
       <TextField fx:id="WidthBox" layoutX="115.0" layoutY="174.0" onKeyReleased="#setWidth" prefHeight="31.0" prefWidth="45.0" />
-      <Button fx:id="OKButton" layoutX="207.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#OKButtontEvent" prefHeight="31.0" prefWidth="96.0" text="OK" />
+      <Button fx:id="OKButton" layoutX="207.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#OKButtontEvent" prefHeight="31.0" prefWidth="96.0" text="OK" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="137.0" prefHeight="32.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="174.0" prefHeight="31.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
-      <AnchorPane layoutX="225.0" layoutY="134.0" prefHeight="259.0" prefWidth="279.0">
+      <AnchorPane fx:id="EspPane" layoutX="225.0" layoutY="130.0" prefHeight="259.0" prefWidth="279.0" AnchorPane.leftAnchor="225.0">
          <children>
-            <AnchorPane prefHeight="40.0" prefWidth="260.0">
+            <AnchorPane prefHeight="40.0" prefWidth="260.0" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="3.0">
                <children>
                   <Label layoutX="-2.0" layoutY="10.0" text="MAC" />
                   <Label layoutX="177.0" layoutY="10.0" text="X" />
@@ -43,7 +43,7 @@
                   <TextField layoutX="234.0" layoutY="5.0" prefHeight="31.0" prefWidth="25.0" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="80.0" prefHeight="40.0" prefWidth="260.0" visible="false">
+            <AnchorPane layoutY="80.0" prefHeight="40.0" prefWidth="260.0">
                <children>
                   <Label layoutX="-2.0" layoutY="10.0" text="MAC" />
                   <Label layoutX="177.0" layoutY="10.0" text="X" />

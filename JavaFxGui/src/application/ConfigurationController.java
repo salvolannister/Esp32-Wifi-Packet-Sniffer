@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
@@ -26,10 +28,13 @@ public class ConfigurationController implements Initializable{
 	@FXML private TextField WidthBox;
 	@FXML private Button OKButton;
 	@FXML private Spinner<Integer> SpinnerBox; 
+	@FXML private AnchorPane EspPane ;
 	
 	private float Height = 0;
 	private float Width = 0 ;
 	private int nEsp = 0;
+	private List<TextField> espTextField;
+	
 	@FXML
 	private void setHeight(Event event) {
 		
@@ -37,6 +42,7 @@ public class ConfigurationController implements Initializable{
 			String h = new String(HeightBox.getText());
 			System.out.println("altezza:"+ h);
 			Height = Float.parseFloat(h);
+			
 		}catch (Exception e) {
 			
 		}
@@ -55,7 +61,7 @@ public class ConfigurationController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		HeightBox.setEditable(true);
 		SpinnerValueFactory<Integer> valueFactory = 
-	                new SpinnerValueFactory.IntegerSpinnerValueFactory(2,10,2);
+	                new SpinnerValueFactory.IntegerSpinnerValueFactory(3,10,3);
 		
 		if(Height != 0 && Width != 0 && nEsp!= 0) {
 			String h = new String( Float.toString(Height));
@@ -71,6 +77,11 @@ public class ConfigurationController implements Initializable{
 	
 	public void getSpinnerValue(Event event) {
 	 nEsp = SpinnerBox.getValue();
+	 TextField newField = new TextField();
+	 AnchorPane ap = (AnchorPane) EspPane.getChildren().get(2);
+	 double X =ap.getChildren().get(0).getLayoutX();
+	 newField.setLayoutX(X);
+	 EspPane.getChildren().add(newField);
 	 System.out.println("nEsp "+nEsp);
 	}
 	
