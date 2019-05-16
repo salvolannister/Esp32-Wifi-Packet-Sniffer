@@ -42,6 +42,7 @@
     <index id="14" parent="6" name="sqlite_autoindex_Position_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Hash</ColNames>
+      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="15" parent="6">

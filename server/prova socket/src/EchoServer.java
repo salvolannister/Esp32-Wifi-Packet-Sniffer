@@ -1,13 +1,13 @@
+import DB.DBUtil;
+
 import java.net.*;
 import java.io.*;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class EchoServer {
     private static final Integer TOT_ESP = 1;
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
-
+    public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
     public static void main(String[] args) throws IOException {
     	/*
     	 * prova sinc GIT!!	
@@ -15,6 +15,12 @@ public class EchoServer {
 
         int waitSec = 10;
         String MacESPDavide = "24:0a:c4:9b:4f:ac";
+
+        DBUtil db=new DBUtil();
+        if(!db.openConnection("fake_db.db")){
+            System.err.println("Errore di Connessione al DB. Impossibile Continuare");
+            System.exit(-1);
+        }
 
         while(true) {
 
@@ -37,10 +43,13 @@ public class EchoServer {
                     //count++;
 
 
-                    new Receiver(serverSocket.accept(),2,1).start();
+                    new Receiver(serverSocket.accept(),TOT_ESP,db).start();
                     System.out.println("io");
                     synchronized (tab){
-                        writeFile(tab);
+                        writeFile(tab, "prova.txt");
+                    }
+                    synchronized (sum_tab){
+                        writeFile2(sum_tab, "out.txt");
                     }
                 }
                 /*String inputLine;
@@ -101,6 +110,8 @@ public class EchoServer {
                 System.out.println("Exception caught when trying to listen on port 8080 "
                         + " or listening for a connection");
                 System.out.println(e.getMessage());
+            }finally {
+                db.closeConnection();
             }
 
         }
@@ -113,10 +124,28 @@ public class EchoServer {
      *
      * funzione di debug, scrive il contenuto della mappa tab su di un file
      */
-    public static void writeFile(Map<String, PacketRec> tab) {
+    public static void writeFile(Map<String, PacketRec> tab, String path) {
 
 
-        String path = "prova.txt";
+
+        File f=new File(".");
+        f.getAbsolutePath();
+        String url =f.getAbsolutePath()+"//"+path;
+        try {
+            File file = new File(url);
+            FileWriter fw = new FileWriter(file);
+            fw.write(tab.toString());
+            fw.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeFile2(List<Sum_PacketRec> tab, String path) {
+
+
+
         File f=new File(".");
         f.getAbsolutePath();
         String url =f.getAbsolutePath()+"//"+path;

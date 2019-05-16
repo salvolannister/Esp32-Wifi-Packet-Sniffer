@@ -1,20 +1,22 @@
+import DB.DBUtil;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
 public class Receiver extends Thread {
 
     Socket csocket;
     private  static Integer n_ESP;
     private Integer id;
+    private DBUtil db;
 
-    public Receiver(Socket csocket, Integer n, Integer id) {
+    public Receiver(Socket csocket, Integer n, DBUtil db) {
         this.csocket = csocket;
         this.n_ESP=n;
-        this.id=id;
+        this.db=db;
     }
 
     @Override
@@ -69,6 +71,42 @@ public class Receiver extends Thread {
                         String[] mac = inputLine.split("My Mac is: ");
                         if (mac[1].compareTo(MacESPDavide) != 0)
                             System.out.println("---------- MAC HAS CHANGED!!!!!!!!!");
+
+                        /*
+                            trilaterazione+db
+
+                         */
+                        synchronized (EchoServer.sum_tab){
+                            for(Sum_PacketRec p:EchoServer.sum_tab){
+
+                                //giusto per inserire un valore
+                                double average=p.getRSSI().values().stream().mapToInt(i->i).average().getAsDouble();
+
+                                try {
+                                    QueryFake q = new QueryFake(db.getConn());
+
+                                    if (!q.aggiungiTupla(p.getdigest(),p.getMacSource(), Long.parseLong(p.getTimeStamp()), 1, (float) average,(float) average)) {
+                                        System.err.println("Errore nell'inserimento");
+                                        System.exit(-1);
+                                    }
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+
+                        /*synchronized (EchoServer.tab){
+                            if(EchoServer.tab.isEmpty()==true){
+                                System.out.println("inizio");
+                            }
+                            else{
+                                System.out.println("in corso");
+                                EchoServer.tab.clear();
+                            }
+
+                        }*/
+
                         break;
                     } else {
                         synchronized (EchoServer.tab) {
@@ -105,18 +143,34 @@ public class Receiver extends Thread {
      *  e in caso di primo inserimento crea l'oggetto packet rec e lo inserisce
      */
         private static boolean checkInsert (Packet p, Map < String, PacketRec > tab){
+
+            boolean esito;
+            //inserisco nella mappa principale
+
             if (tab.containsKey(p.getDigest()) == true) {
                 if (tab.get(p.getDigest()).getRSSI().containsKey(p.getIdMac()) == false) {
 
                     tab.get(p.getDigest()).newSignal(p.getIdMac(), p.getRSSI());
-                    return true;
+                    esito=true;
                 }
             } else {
                 tab.put(p.getDigest(), new PacketRec(p));
                 //System.out.println(tab.toString());
-                return true;
+                esito=true;
             }
-            return false;
+            esito=false;
+            synchronized (EchoServer.sum_tab) {
+                if (tab.get(p.getDigest()).getN_ESP() == n_ESP) {
+                    Sum_PacketRec s = new Sum_PacketRec(tab.get(p.getDigest()).getRSSI(),
+                            tab.get(p.getDigest()).getMacSource(),
+                            tab.get(p.getDigest()).getDigest(),
+                            tab.get(p.getDigest()).getTimeStamp());
+                    EchoServer.sum_tab.add(s);
+                    EchoServer.tab.remove(p.getDigest());
+                }
+
+            }
+            return esito;
         }
 
 
