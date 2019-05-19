@@ -73,7 +73,7 @@ public class Receiver extends Thread {
                             System.out.println("---------- MAC HAS CHANGED!!!!!!!!!");
 
                         /*
-                            trilaterazione+db
+                            trilaterazione+db da aggiungere
 
                          */
                         synchronized (EchoServer.sum_tab){

@@ -3,12 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1b871214-de53-4ad8-bf0c-77c3757c0e5d" name="Default Changelist" comment="Inserita Funzione TimeStamp">
       <change beforePath="$PROJECT_DIR$/../../main.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../provaDB/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../provaDB/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fake_db.db" beforeDir="false" afterPath="$PROJECT_DIR$/fake_db.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prova.txt" beforeDir="false" afterPath="$PROJECT_DIR$/prova.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EchoServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EchoServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -60,11 +54,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Receiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="97" column="55" selection-start-line="97" selection-start-column="55" selection-end-line="97" selection-end-column="55" />
+            <state relative-caret-position="91">
+              <caret line="75" column="59" selection-start-line="75" selection-start-column="59" selection-end-line="75" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -82,7 +76,7 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="das://f985fd29-5a0b-43b8-8369-04c10437b5fb/schema/main/table/Position">
           <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
             <state projectRestartId="08953731-3a7f-4494-b55d-d9fd90de3179">
@@ -131,10 +125,10 @@
         <option value="$PROJECT_DIR$/src/prova.txt" />
         <option value="$PROJECT_DIR$/src/QueryFake.java" />
         <option value="$PROJECT_DIR$/src/Sum_PacketRec.java" />
-        <option value="$PROJECT_DIR$/src/Receiver.java" />
         <option value="$PROJECT_DIR$/out.txt" />
         <option value="$PROJECT_DIR$/prova.txt" />
         <option value="$PROJECT_DIR$/src/EchoServer.java" />
+        <option value="$PROJECT_DIR$/src/Receiver.java" />
       </list>
     </option>
   </component>
@@ -265,7 +259,7 @@
       <workItem from="1557646616805" duration="11000" />
       <workItem from="1557735174682" duration="14000" />
       <workItem from="1557989877641" duration="5973000" />
-      <workItem from="1558255260188" duration="3047000" />
+      <workItem from="1558255260188" duration="3403000" />
     </task>
     <task id="LOCAL-00001" summary="prova git">
       <created>1553873564913</created>
@@ -299,7 +293,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44348000" />
+    <option name="totallyTimeSpent" value="44704000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1366" height="743" extended-state="6" />
@@ -519,16 +513,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Receiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="97" column="55" selection-start-line="97" selection-start-column="55" selection-end-line="97" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -551,6 +535,16 @@
           <filtering>
             <filter text="" />
           </filtering>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Receiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="75" column="59" selection-start-line="75" selection-start-column="59" selection-end-line="75" selection-end-column="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
