@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07933c12-94d0-4874-b3ec-ad9524717665" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../server/prova socket/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/prova socket/fake_db.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/prova socket/src/DB/DBUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/prova socket/src/QueryFake.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../main.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/915c1877-ced3-42c5-9626-ccb13ab1835e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/915c1877-ced3-42c5-9626-ccb13ab1835e.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/out/production/Serverino/EchoServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/out/production/Serverino/EchoServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/out/production/Serverino/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/out/production/Serverino/Receiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/prova.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/prova.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/src/EchoServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/src/EchoServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/src/Receiver.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -70,7 +59,7 @@
         <entry file="file://$PROJECT_DIR$/src/main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="457">
-              <caret line="72" column="17" lean-forward="true" selection-start-line="63" selection-start-column="16" selection-end-line="72" selection-end-column="17" />
+              <caret line="72" column="17" selection-start-line="63" selection-start-column="16" selection-end-line="72" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,7 +70,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
+            <state relative-caret-position="630">
               <caret line="45" selection-start-line="45" selection-end-line="45" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -95,7 +84,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/QueryFake.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
+            <state relative-caret-position="255">
               <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -109,7 +98,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="das://915c1877-ced3-42c5-9626-ccb13ab1835e/schema/main/table/Position">
           <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state projectRestartId="a52e08e7-2e62-44e1-90db-fe1a086a124c">
+            <state projectRestartId="2737d482-dfd8-4680-acb0-15c4af5b7f51">
               <filtering />
             </state>
           </provider>
@@ -118,7 +107,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/QueryProv.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="467">
+            <state relative-caret-position="525">
               <caret line="39" selection-start-line="39" selection-end-line="39" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -156,7 +145,7 @@
     <option name="x" value="683" />
     <option name="y" value="25" />
     <option name="width" value="683" />
-    <option name="height" value="743" />
+    <option name="height" value="741" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -254,15 +243,16 @@
       <workItem from="1555059177436" duration="5903000" />
       <workItem from="1556302469035" duration="7765000" />
       <workItem from="1556469915608" duration="25000" />
-      <workItem from="1557994321768" duration="1283000" />
+      <workItem from="1557994321768" duration="1533000" />
+      <workItem from="1558255235808" duration="17000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14976000" />
+    <option name="totallyTimeSpent" value="15243000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="683" y="25" width="683" height="743" extended-state="4" />
+    <frame x="683" y="25" width="683" height="741" extended-state="4" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
@@ -270,7 +260,7 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info content_ui="combo" id="Project" order="5" weight="0.46938777" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.48508635" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" weight="0.32899022" />
@@ -333,19 +323,31 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/915c1877-ced3-42c5-9626-ccb13ab1835e/console.sql">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/QueryProv.java">
+    <entry file="file://$PROJECT_DIR$/src/main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="457">
+          <caret line="72" column="17" selection-start-line="63" selection-start-column="16" selection-end-line="72" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#139#140#0" expanded="true" />
+            <element signature="e#166#167#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/QueryFake.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
+        <state relative-caret-position="255">
           <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -357,27 +359,15 @@
     </entry>
     <entry file="das://915c1877-ced3-42c5-9626-ccb13ab1835e/schema/main/table/Position">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="a52e08e7-2e62-44e1-90db-fe1a086a124c">
+        <state projectRestartId="2737d482-dfd8-4680-acb0-15c4af5b7f51">
           <filtering />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/QueryProv.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#139#140#0" expanded="true" />
-            <element signature="e#166#167#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="72" column="17" lean-forward="true" selection-start-line="63" selection-start-column="16" selection-end-line="72" selection-end-column="17" />
+        <state relative-caret-position="525">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

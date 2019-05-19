@@ -93,7 +93,10 @@ public class Receiver extends Thread {
                                     e.printStackTrace();
                                 }
 
+
                             }
+                            EchoServer.sum_tab.clear();
+
                         }
 
                         /*synchronized (EchoServer.tab){
@@ -144,7 +147,7 @@ public class Receiver extends Thread {
      */
         private static boolean checkInsert (Packet p, Map < String, PacketRec > tab){
 
-            boolean esito;
+            boolean esito =false;
             //inserisco nella mappa principale
 
             if (tab.containsKey(p.getDigest()) == true) {
@@ -158,17 +161,20 @@ public class Receiver extends Thread {
                 //System.out.println(tab.toString());
                 esito=true;
             }
-            esito=false;
-            synchronized (EchoServer.sum_tab) {
-                if (tab.get(p.getDigest()).getN_ESP() == n_ESP) {
-                    Sum_PacketRec s = new Sum_PacketRec(tab.get(p.getDigest()).getRSSI(),
-                            tab.get(p.getDigest()).getMacSource(),
-                            tab.get(p.getDigest()).getDigest(),
-                            tab.get(p.getDigest()).getTimeStamp());
-                    EchoServer.sum_tab.add(s);
-                    EchoServer.tab.remove(p.getDigest());
-                }
+            //esito=false;
+            if(esito==true) {
+                synchronized (EchoServer.sum_tab) {
+                    if (tab.get(p.getDigest()).getN_ESP() == n_ESP) {
 
+                        Sum_PacketRec s = new Sum_PacketRec(tab.get(p.getDigest()).getRSSI(),
+                                tab.get(p.getDigest()).getMacSource(),
+                                tab.get(p.getDigest()).getDigest(),
+                                tab.get(p.getDigest()).getTimeStamp());
+                        EchoServer.sum_tab.add(s);
+                        //EchoServer.tab.remove(p.getDigest());
+                    }
+
+                }
             }
             return esito;
         }

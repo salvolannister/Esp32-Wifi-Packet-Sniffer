@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 
 public class EchoServer {
-    private static final Integer TOT_ESP = 1;
+    private static final Integer TOT_ESP = 2;
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
     public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
     public static void main(String[] args) throws IOException {
