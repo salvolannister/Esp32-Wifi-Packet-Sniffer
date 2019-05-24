@@ -5,13 +5,15 @@ import java.io.*;
 import java.util.*;
 
 public class EchoServer {
-    private static final Integer TOT_ESP = 2;
+    public static  Long TOT_ESP= Long.valueOf(1);
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
     public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
+    public  static Map<String, Long> mac_tab= new HashMap<String, Long>();
     public static void main(String[] args) throws IOException {
     	/*
     	 * prova sinc GIT!!	
     	 */
+
 
         int waitSec = 10;
         String MacESPDavide = "24:0a:c4:9b:4f:ac";
@@ -43,14 +45,14 @@ public class EchoServer {
                     //count++;
 
 
-                    new Receiver(serverSocket.accept(),TOT_ESP,db).start();
+                    new Receiver(serverSocket.accept(), Math.toIntExact(TOT_ESP),db).start();
                     System.out.println("io");
                     synchronized (tab){
                         writeFile(tab, "prova.txt");
                     }
-                    synchronized (sum_tab){
-                        writeFile2(sum_tab, "out.txt");
-                    }
+                    //synchronized (sum_tab){
+                        //writeFile2(sum_tab, "out.txt");
+                    //}
                 }
                 /*String inputLine;
                 while ((inputLine = in.readLine()) != null) {

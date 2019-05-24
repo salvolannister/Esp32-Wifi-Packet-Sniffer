@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.*;
 
 public class Receiver extends Thread {
@@ -69,6 +70,28 @@ public class Receiver extends Thread {
 
                         //check if MAC has changed!!!!!
                         String[] mac = inputLine.split("My Mac is: ");
+
+                        synchronized (EchoServer.mac_tab){
+                            EchoServer.mac_tab.put(mac[1], TimeLong);
+
+                            for(String x: EchoServer.mac_tab.keySet()) {
+                                if (EchoServer.mac_tab.get(x) != Long.MIN_VALUE) {
+                                    if ((TimeLong - EchoServer.mac_tab.get(x)) > 60000) {//5 min=300000
+                                        EchoServer.mac_tab.put(x, Long.MIN_VALUE);
+
+                                    }
+                                }
+                            }
+                            synchronized (EchoServer.TOT_ESP) {
+                                EchoServer.TOT_ESP=EchoServer.mac_tab.values().stream().filter(y->Long.compareUnsigned(y,Long.MIN_VALUE)!=0).count();
+                                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  n_esp = " + EchoServer.TOT_ESP);
+                                writeFile3(EchoServer.mac_tab, "out.txt");
+                            }
+
+                        }
+
+
+
                         if (mac[1].compareTo(MacESPDavide) != 0)
                             System.out.println("---------- MAC HAS CHANGED!!!!!!!!!");
 
@@ -194,6 +217,24 @@ public class Receiver extends Thread {
         if (value != null && value.length() > length)
             val = value.substring(0, length);
         return val;
+    }
+
+    public static void writeFile3(Map<String, Long> tab, String path) {
+
+
+
+        File f=new File(".");
+        f.getAbsolutePath();
+        String url =f.getAbsolutePath()+"//"+path;
+        try {
+            File file = new File(url);
+            FileWriter fw = new FileWriter(file);
+            fw.write(tab.toString());
+            fw.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
