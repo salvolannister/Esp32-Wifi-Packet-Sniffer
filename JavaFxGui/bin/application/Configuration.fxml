@@ -21,9 +21,9 @@
       <Button fx:id="OKButton" layoutX="207.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#OKButtontEvent" prefHeight="31.0" prefWidth="96.0" text="OK" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="137.0" prefHeight="32.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
       <Label alignment="CENTER" layoutX="163.0" layoutY="174.0" prefHeight="31.0" prefWidth="25.0" text="m" textAlignment="CENTER" />
-      <AnchorPane fx:id="EspPane" layoutX="225.0" layoutY="134.0" prefHeight="259.0" prefWidth="279.0">
+      <AnchorPane fx:id="EspPane" layoutX="225.0" layoutY="130.0" prefHeight="259.0" prefWidth="279.0" AnchorPane.leftAnchor="225.0">
          <children>
-            <AnchorPane prefHeight="40.0" prefWidth="260.0">
+            <AnchorPane prefHeight="40.0" prefWidth="260.0" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="3.0">
                <children>
                   <Label layoutX="-2.0" layoutY="10.0" text="MAC" />
                   <Label layoutX="177.0" layoutY="10.0" text="X" />
