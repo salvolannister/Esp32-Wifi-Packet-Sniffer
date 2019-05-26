@@ -2,25 +2,33 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="Serverino:jar" />
+      <artifact name="Serverino:jar2" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1b871214-de53-4ad8-bf0c-77c3757c0e5d" name="Default Changelist" comment="Inserita Funzione TimeStamp">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Serverino_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Configuration.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Configuration.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/ConfigurationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/ConfigurationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Serverino_jar2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sqlite_jdbc_3_7_2__2_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/Serverino.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/Serverino.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/fake_db.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/fake_db.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/Serverino.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/Serverino.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/fake_db.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../main.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f985fd29-5a0b-43b8-8369-04c10437b5fb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f985fd29-5a0b-43b8-8369-04c10437b5fb.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Serverino_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Serverino_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Serverino.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Serverino.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fake_db.db" beforeDir="false" afterPath="$PROJECT_DIR$/fake_db.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Serverino_jar/Serverino.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Serverino_jar/Serverino.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prova.txt" beforeDir="false" afterPath="$PROJECT_DIR$/prova.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlite-jdbc-3.7.2.jar" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sqlite-jdbc-3.7.2.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EchoServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EchoServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/QueryFake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/QueryFake.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,30 +48,7 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="fake_db.db" type="feb32156:DbDataSourceImpl" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="fake_db.db" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="fake_db.db" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="fake_db.db" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
-        <item name="Position: table" type="3d80ac25:SqliteImplModel$Table" />
-      </path>
-    </expand>
+    <expand />
     <select />
   </component>
   <component name="DefaultGradleProjectSettings">
@@ -74,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Receiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1215">
-              <caret line="88" column="29" selection-start-line="88" selection-start-column="29" selection-end-line="88" selection-end-column="29" />
+            <state relative-caret-position="150">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -90,32 +75,34 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/out.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="66" selection-start-column="66" selection-end-column="66" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="das://f985fd29-5a0b-43b8-8369-04c10437b5fb/schema/main/table/Position">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state projectRestartId="f4f0f32f-d70e-460c-baf8-edae72a62356">
-              <filtering />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="das://f985fd29-5a0b-43b8-8369-04c10437b5fb/schema/main/table/Position">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state projectRestartId="3e386e18-fbe0-484f-868f-209589ef2769">
+              <filtering>
+                <filter text="" />
+              </filtering>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+            <state relative-caret-position="126">
+              <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/QueryFake.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
             </state>
           </provider>
         </entry>
@@ -123,10 +110,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="47" column="55" selection-start-line="47" selection-start-column="55" selection-end-line="47" selection-end-column="55" />
+            <state relative-caret-position="171">
+              <caret line="28" column="10" selection-start-line="28" selection-start-column="10" selection-end-line="28" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#211#230#0" expanded="true" />
+                <element signature="e#295#310#0" expanded="true" />
+                <element signature="e#371#385#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -156,16 +146,17 @@
         <option value="$PROJECT_DIR$/src/Packet.java" />
         <option value="$PROJECT_DIR$/src/PacketRec.java" />
         <option value="$PROJECT_DIR$/src/prova.txt" />
-        <option value="$PROJECT_DIR$/src/QueryFake.java" />
         <option value="$PROJECT_DIR$/src/Sum_PacketRec.java" />
+        <option value="$PROJECT_DIR$/src/Receiver.java" />
         <option value="$PROJECT_DIR$/out.txt" />
         <option value="$PROJECT_DIR$/prova.txt" />
         <option value="$PROJECT_DIR$/src/EchoServer.java" />
-        <option value="$PROJECT_DIR$/src/Receiver.java" />
+        <option value="$PROJECT_DIR$/src/QueryFake.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="683" />
     <option name="y" value="25" />
     <option name="width" value="683" />
     <option name="height" value="743" />
@@ -176,6 +167,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -197,13 +189,25 @@
             <path>
               <item name="prova socket" type="b2602c69:ProjectViewProjectNode" />
               <item name="prova socket" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+              <item name="Serverino_jar2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="prova socket" type="b2602c69:ProjectViewProjectNode" />
+              <item name="prova socket" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="prova socket" type="b2602c69:ProjectViewProjectNode" />
+              <item name="prova socket" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="DB" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -227,12 +231,13 @@
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -306,6 +311,8 @@
       <workItem from="1558728759457" duration="22000" />
       <workItem from="1558780254610" duration="1164000" />
       <workItem from="1558797626205" duration="23000" />
+      <workItem from="1558885152256" duration="864000" />
+      <workItem from="1558886181552" duration="2356000" />
     </task>
     <task id="LOCAL-00001" summary="prova git">
       <created>1553873564913</created>
@@ -339,12 +346,21 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57668000" />
+    <option name="totallyTimeSpent" value="60888000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1366" height="743" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.39166668" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16742425" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -353,11 +369,11 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49834436" weight="0.5879479" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49834436" weight="0.4397394" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.7980456" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32899022" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49880287" weight="0.3255086" />
       <window_info anchor="bottom" id="Database Changes" order="9" weight="0.32899022" />
@@ -369,7 +385,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Database" order="4" weight="0.32810047" />
+      <window_info anchor="right" id="Database" order="4" weight="0.3280303" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Maven" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="7" />
@@ -568,59 +584,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/QueryFake.java">
+    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Receiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1215">
-          <caret line="88" column="29" selection-start-line="88" selection-start-column="29" selection-end-line="88" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/out.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/prova.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/out.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="66" selection-start-column="66" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://f985fd29-5a0b-43b8-8369-04c10437b5fb/schema/main/table/Position">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="f4f0f32f-d70e-460c-baf8-edae72a62356">
-          <filtering />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+        <state relative-caret-position="126">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="47" column="55" selection-start-line="47" selection-start-column="55" selection-end-line="47" selection-end-column="55" />
+        <state relative-caret-position="171">
+          <caret line="28" column="10" selection-start-line="28" selection-start-column="10" selection-end-line="28" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#211#230#0" expanded="true" />
+            <element signature="e#295#310#0" expanded="true" />
+            <element signature="e#371#385#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Receiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/QueryFake.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://f985fd29-5a0b-43b8-8369-04c10437b5fb/schema/main/table/Position">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="3e386e18-fbe0-484f-868f-209589ef2769">
+          <filtering>
+            <filter text="" />
+          </filtering>
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">
@@ -628,7 +649,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>Serverino:jar</last-edited>
+          <last-edited>Serverino:jar2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

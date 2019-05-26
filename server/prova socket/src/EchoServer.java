@@ -2,6 +2,7 @@ import DB.DBUtil;
 
 import java.net.*;
 import java.io.*;
+import java.sql.SQLException;
 import java.util.*;
 
 public class EchoServer {
@@ -9,7 +10,7 @@ public class EchoServer {
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
     public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
     public  static Map<String, Long> mac_tab= new HashMap<String, Long>();
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
     	/*
     	 * prova sinc GIT!!	
     	 */
@@ -23,6 +24,12 @@ public class EchoServer {
             System.err.println("Errore di Connessione al DB. Impossibile Continuare");
             System.exit(-1);
         }
+
+        QueryFake q=new QueryFake(db.getConn());
+        //q.dropDB();
+        q.createDB();
+
+
 
         while(true) {
 
