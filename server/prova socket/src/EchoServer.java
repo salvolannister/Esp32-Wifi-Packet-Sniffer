@@ -9,7 +9,7 @@ public class EchoServer {
     public static  Long TOT_ESP= Long.valueOf(1);
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
     public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
-    public  static Map<String, Long> mac_tab= new HashMap<String, Long>();
+    public  static Configuration conf= new Configuration();
     public static void main(String[] args) throws IOException, SQLException {
     	/*
     	 * prova sinc GIT!!	
@@ -119,6 +119,7 @@ public class EchoServer {
                 System.out.println("Exception caught when trying to listen on port 8080 "
                         + " or listening for a connection");
                 System.out.println(e.getMessage());
+                return;
             }finally {
                 db.closeConnection();
             }

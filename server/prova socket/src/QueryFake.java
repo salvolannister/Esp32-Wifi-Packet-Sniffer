@@ -36,7 +36,8 @@ public class QueryFake {
     public boolean createDB() throws SQLException {
         try{
             conn.setAutoCommit(false);
-            String s=new String("CREATE TABLE \"Position\" ( \"MAC\" TEXT, \"Timestamp\" INTEGER, \"X\" REAL, \"Y\" REAL, \"Room\" INTEGER, \"Hash\" REAL, PRIMARY KEY(\"Hash\"))" );
+
+            String s=new String("CREATE TABLE IF NOT EXISTS \"Position\" ( \"MAC\" TEXT, \"Timestamp\" INTEGER, \"X\" REAL, \"Y\" REAL, \"Room\" INTEGER, \"Hash\" REAL, PRIMARY KEY(\"Hash\"))" );
             try (PreparedStatement pstmt = conn.prepareStatement(s)) {
                 pstmt.executeUpdate();
                 conn.commit();

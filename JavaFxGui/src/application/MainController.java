@@ -1,6 +1,7 @@
 package application;
 
 import java.io.Console;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -37,12 +38,11 @@ public class MainController {
 
 		public void startServer(ActionEvent event){
 			System.out.println("cisono");
-			Runtime runTime = Runtime.getRuntime();
 			try {
-				//Process process = runTime.exec("java -classpath /home/umb/Scrivania/PROGRAMMAZIONEDISISTEMA/progetto/MUDS/server/prova socket/out/production/Serverino:/home/umb/Scrivania/PROGRAMMAZIONEDISISTEMA/progetto/MUDS/server/prova socket/sqlite-jdbc-3.7.2.jar EchoServer");
-						Process process = Runtime.getRuntime().exec("java -jar /home/umb/Scrivania/PROGRAMMAZIONEDISISTEMA/progetto/MUDS/JavaFxGui/src/Serverino.jar");
-				InputStream in = process.getInputStream();
-				InputStream err = process.getErrorStream();
+				File f=new File(".");
+				f.getAbsolutePath();
+				String jar =f.getAbsolutePath()+"//Serverino.jar";
+				Process process = Runtime.getRuntime().exec("java -jar"+ jar);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
