@@ -1,10 +1,8 @@
 import DB.DBUtil;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.*;
 
 public class Receiver extends Thread {
@@ -71,21 +69,22 @@ public class Receiver extends Thread {
                         //check if MAC has changed!!!!!
                         String[] mac = inputLine.split("My Mac is: ");
 
-                        synchronized (EchoServer.mac_tab){
-                            EchoServer.mac_tab.put(mac[1], TimeLong);
+                        synchronized (EchoServer.conf){
+                            Payload pack=new Payload(TimeLong, new Polo( Double.valueOf("0.0"), Double.valueOf("0.0")));
+                            EchoServer.conf.getMac_tab().put(mac[1], pack);
 
-                            for(String x: EchoServer.mac_tab.keySet()) {
-                                if (EchoServer.mac_tab.get(x) != Long.MIN_VALUE) {
-                                    if ((TimeLong - EchoServer.mac_tab.get(x)) > 60000) {//5 min=300000
-                                        EchoServer.mac_tab.put(x, Long.MIN_VALUE);
+                            for(String x: EchoServer.conf.getMac_tab().keySet()) {
+                                if (EchoServer.conf.getMac_tab().get(x).getLastTime() != Long.MIN_VALUE) {
+                                    if ((TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()) > 60000) {//5 min=300000
+                                        EchoServer.conf.getMac_tab().get(x).setLastTime(Long.MIN_VALUE);
 
                                     }
                                 }
                             }
                             synchronized (EchoServer.TOT_ESP) {
-                                EchoServer.TOT_ESP=EchoServer.mac_tab.values().stream().filter(y->Long.compareUnsigned(y,Long.MIN_VALUE)!=0).count();
+                                EchoServer.TOT_ESP=EchoServer.conf.getMac_tab().values().stream().filter(y->Long.compareUnsigned(y.getLastTime(),Long.MIN_VALUE)!=0).count();
                                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  n_esp = " + EchoServer.TOT_ESP);
-                                writeFile3(EchoServer.mac_tab, "out.txt");
+                                writeFile3(EchoServer.conf, "out.txt");
                             }
 
                         }
@@ -219,7 +218,7 @@ public class Receiver extends Thread {
         return val;
     }
 
-    public static void writeFile3(Map<String, Long> tab, String path) {
+    public static void writeFile3(Configuration tab, String path) {
 
 
 

@@ -1,1 +1,1 @@
-{3c:71:bf:0c:b5:38=1559053347431}
+Configuration{mac_tab={3c:71:bf:0c:b5:38=Payload{lastTime=1559057615542, posizione=Polo{x=0.0, y=0.0}}}}
