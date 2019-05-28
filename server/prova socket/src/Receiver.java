@@ -108,7 +108,7 @@ public class Receiver extends Thread {
                                 try {
                                     QueryFake q = new QueryFake(db.getConn());
 
-                                    if (!q.aggiungiTupla(p.getdigest(),p.getMacSource(), Long.parseLong(p.getTimeStamp()), 1, (float) average,(float) average)) {
+                                    if (!q.aggiungiTupla(p.getdigest(),p.getMacSource(), Long.parseLong(p.getTimeStamp())*1000, 1, (float) average,(float) average)) {
                                         System.err.println("Errore nell'inserimento");
                                         System.exit(-1);
                                     }

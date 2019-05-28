@@ -119,6 +119,7 @@ public class EchoServer {
                 System.out.println("Exception caught when trying to listen on port 8080 "
                         + " or listening for a connection");
                 System.out.println(e.getMessage());
+                return;
             }finally {
                 db.closeConnection();
             }
