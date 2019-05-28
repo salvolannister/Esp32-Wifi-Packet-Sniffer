@@ -9,6 +9,7 @@ public class Configuration {
     /* Potenza del segnale ricevuto alla distanza di riferimento di un metro */
     /* Settato a questo valore dopo varie misurazioni fatte */
     private final Integer Px = 62;
+    private int numEsp;
 
 
     public Configuration(Double n) {
@@ -59,4 +60,12 @@ public class Configuration {
                 ", Px=" + Px +
                 '}';
     }
+
+	public int getNumEsp() {
+		return numEsp;
+	}
+
+	public void setNumEsp(int numEsp) {
+		this.numEsp = numEsp;
+	}
 }

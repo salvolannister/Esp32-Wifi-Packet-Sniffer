@@ -6,16 +6,16 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class EchoServer {
-    public static  Long TOT_ESP= Long.valueOf(1);
+    public static  Long TOT_ESP= Long.valueOf(1); //da togliere
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
     public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
-    public  static Configuration conf= new Configuration(n);
+    public  static Configuration conf= new Configuration(2.5);
     public static void main(String[] args) throws IOException, SQLException {
     	/*
     	 * prova sinc GIT!!	
     	 */
 
-
+    	conf.setNumEsp(3);
         int waitSec = 10;
         String MacESPDavide = "24:0a:c4:9b:4f:ac";
 
