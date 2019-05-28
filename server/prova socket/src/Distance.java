@@ -46,4 +46,18 @@ public class Distance {
                 ", rssi=" + rssi +
                 '}';
     }
+    
+    /***
+     * Converte l'RSSI in distanza
+     * @param conf
+     * @return
+     */
+
+    public double getDistance(Configuration conf){
+
+        double x = (conf.getPx() - rssi)/(10 * conf.getN());
+        double distance = Math.pow(10,x);
+        return distance;
+
+    }
 }
