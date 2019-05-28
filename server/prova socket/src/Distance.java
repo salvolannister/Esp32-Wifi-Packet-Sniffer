@@ -46,7 +46,7 @@ public class Distance {
                 ", rssi=" + rssi +
                 '}';
     }
-    
+
     /***
      * Converte l'RSSI in distanza
      * @param conf

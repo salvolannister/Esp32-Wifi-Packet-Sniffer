@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class EchoServer {
-    public static  Long TOT_ESP= Long.valueOf(1); //da togliere
+    //public static  Long TOT_ESP= Long.valueOf(1); //da togliere
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
     public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
     public  static Configuration conf= new Configuration(2.5);
@@ -52,7 +52,7 @@ public class EchoServer {
                     //count++;
 
 
-                    new Receiver(serverSocket.accept(), Math.toIntExact(TOT_ESP),db).start();
+                    new Receiver(serverSocket.accept(), conf.getNumEsp(),db).start();
                     System.out.println("io");
                     synchronized (tab){
                         writeFile(tab, "prova.txt");

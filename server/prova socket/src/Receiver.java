@@ -72,8 +72,12 @@ public class Receiver extends Thread {
                         String[] mac = inputLine.split("My Mac is: ");
 
                         synchronized (EchoServer.conf){
-                            Payload pack=new Payload(TimeLong, new Polo( Double.valueOf("0.0"), Double.valueOf("0.0")));
-                            EchoServer.conf.getMac_tab().put(mac[1], pack);
+                            if(EchoServer.conf.getMac_tab().containsKey(mac[1])==false){
+                                Payload pack=new Payload(TimeLong, new Polo( Math.random(), Double.valueOf("1.0")));
+                                EchoServer.conf.getMac_tab().put(mac[1], pack);
+                            }
+                            EchoServer.conf.getMac_tab().get(mac[1]).setLastTime(TimeLong);
+
 
                             for(String x: EchoServer.conf.getMac_tab().keySet()) {
                                 if (EchoServer.conf.getMac_tab().get(x).getLastTime() != Long.MIN_VALUE) {
@@ -83,11 +87,11 @@ public class Receiver extends Thread {
                                     }
                                 }
                             }
-                            synchronized (EchoServer.TOT_ESP) {
-                                EchoServer.TOT_ESP=EchoServer.conf.getMac_tab().values().stream().filter(y->Long.compareUnsigned(y.getLastTime(),Long.MIN_VALUE)!=0).count();
-                                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  n_esp = " + EchoServer.TOT_ESP);
+                            Long l=EchoServer.conf.getMac_tab().values().stream().filter(y->Long.compareUnsigned(y.getLastTime(),Long.MIN_VALUE)!=0).count();
+                                EchoServer.conf.setNumEsp(l.intValue());
+                                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  n_esp = " + EchoServer.conf.getNumEsp());
                                 writeFile3(EchoServer.conf, "out.txt");
-                            }
+
 
                         }
 
@@ -110,14 +114,16 @@ public class Receiver extends Thread {
                                     }
 
                                 }
-                                System.out.println(dist);
+                                //System.out.println(dist);
                                 //giusto per inserire un valore
-                                double average=p.getRSSI().values().stream().mapToInt(i->i).average().getAsDouble();
+                                Polo pos=computePosition(dist);
+
+                                //double average=p.getRSSI().values().stream().mapToInt(i->i).average().getAsDouble();
 
                                 try {
                                     QueryFake q = new QueryFake(db.getConn());
 
-                                    if (!q.aggiungiTupla(p.getdigest(),p.getMacSource(), Long.parseLong(p.getTimeStamp())*1000, 1, (float) average,(float) average)) {
+                                    if (!q.aggiungiTupla(p.getdigest(),p.getMacSource(), Long.parseLong(p.getTimeStamp())*1000, 1, (float) pos.getX(),(float) pos.getY())) {
                                         System.err.println("Errore nell'inserimento");
                                         System.exit(-1);
                                     }
@@ -246,29 +252,32 @@ public class Receiver extends Thread {
         }
     }
     
-    private Polo computePosition(ArrayList<Distance> d) {
-    	
-    	int numESP = EchoServer.conf.getNumEsp();
-    	
-    	double[][] positions = new double[numESP][2];
-    	double [] distances = new double[numESP];
-    	
-    	for(int i=0; i<numESP; i++) {
-    		
-    		//posizione
-    		positions[i][0] = d.get(i).getPosizione().getX();
-    		positions[i][1] = d.get(i).getPosizione().getY();
-    		
-    		//distanza
-    		distances[i] = d.get(i).getDistance(EchoServer.conf);	
-    	}
-    	
-    	TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
-    	NonLinearLeastSquaresSolver nlSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());
-    	Optimum nonLinearOptimum = nlSolver.solve();
-    	RealVector x = nonLinearOptimum.getPoint();
-    	Polo pos = new Polo(x.getEntry(0), x.getEntry(1));
-    	return pos;  	
+    private Polo computePosition(List<Distance> d) {
+
+        synchronized (EchoServer.conf) {
+            int numESP = EchoServer.conf.getNumEsp();
+
+
+            double[][] positions = new double[numESP][2];
+            double[] distances = new double[numESP];
+
+            for (int i = 0; i < numESP; i++) {
+
+                //posizione
+                positions[i][0] = d.get(i).getPosizione().getX();
+                positions[i][1] = d.get(i).getPosizione().getY();
+
+                //distanza
+                distances[i] = d.get(i).getDistance(EchoServer.conf);
+            }
+
+            TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
+            NonLinearLeastSquaresSolver nlSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());
+            Optimum nonLinearOptimum = nlSolver.solve();
+            RealVector x = nonLinearOptimum.getPoint();
+            Polo pos = new Polo(x.getEntry(0), x.getEntry(1));
+            return pos;
+        }
     }
     
 
