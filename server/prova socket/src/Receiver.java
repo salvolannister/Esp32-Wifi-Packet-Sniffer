@@ -99,8 +99,16 @@ public class Receiver extends Thread {
 
                          */
                         synchronized (EchoServer.sum_tab){
-                            for(Sum_PacketRec p:EchoServer.sum_tab){
 
+                            for(Sum_PacketRec p:EchoServer.sum_tab){
+                                List<Distance> dist=new ArrayList<>();
+                                for(String s:p.getRSSI().keySet()){
+                                    synchronized (EchoServer.conf){
+                                        dist.add(new Distance(EchoServer.conf.getMac_tab().get(s).getPosizione(), p.getRSSI().get(s)));
+                                    }
+
+                                }
+                                System.out.println(dist);
                                 //giusto per inserire un valore
                                 double average=p.getRSSI().values().stream().mapToInt(i->i).average().getAsDouble();
 
@@ -115,7 +123,7 @@ public class Receiver extends Thread {
                                     e.printStackTrace();
                                 }
 
-
+                                dist.clear();
                             }
                             EchoServer.sum_tab.clear();
 
