@@ -1,9 +1,15 @@
 import DB.DBUtil;
+import trilateration.NonLinearLeastSquaresSolver;
+import trilateration.TrilaterationFunction;
 
 import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.*;
+
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
+import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
+import org.apache.commons.math3.linear.RealVector;
 
 public class Receiver extends Thread {
 
@@ -235,6 +241,33 @@ public class Receiver extends Thread {
             e.printStackTrace();
         }
     }
+    
+    private Polo computePosition(ArrayList<Distance> d) {
+    	
+    	Configuration conf = new Configuration(); //cancellare
+    	int numESP = conf.getNumEsp();
+    	
+    	double[][] positions = new double[numESP][2];
+    	double [] distances = new double[numESP];
+    	
+    	for(int i=0; i<numESP; i++) {
+    		
+    		//posizione
+    		positions[i][0] = d.get(i).getPolo.getX();
+    		positions[i][1] = d.get(i).getPolo.getY();
+    		
+    		//distanza
+    		distances[i] = d.get(i).getDistance();	
+    	}
+    	
+    	TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
+    	NonLinearLeastSquaresSolver nlSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());
+    	Optimum nonLinearOptimum = nlSolver.solve();
+    	RealVector x = nonLinearOptimum.getPoint();
+    	Polo pos = new Polo(x.getEntry(0), x.getEntry(1));
+    	return pos;  	
+    }
+    
 
 
 
