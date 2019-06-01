@@ -19,69 +19,84 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 
 public class ConfigurationController implements Initializable{
 	
-	@FXML private TextField HeightBox;
-	@FXML private TextField WidthBox;
+	
 	@FXML private Button OKButton;
 	@FXML private Spinner<Integer> SpinnerBox; 
-	@FXML private AnchorPane EspPane ;
+	@FXML private HBox hbox;
+	@FXML private GridPane gp;
 	
-	private float Height = 0;
-	private float Width = 0 ;
+
 	private int nEsp = 0;
 	private List<TextField> espTextField;
+	GridPane espButton ;
 	
-	@FXML
-	private void setHeight(Event event) {
-		
-		try{
-			String h = new String(HeightBox.getText());
-			System.out.println("altezza:"+ h);
-			Height = Float.parseFloat(h);
-			
-		}catch (Exception e) {
-			
+	
+	
+	private void addEspButton(int x, int y) throws IOException {
+		GridPane eb = (GridPane) FXMLLoader.load(getClass().getResource("Esp_button.fxml"));
+		if(x == 0 && y == 0)
+			gp.add(eb, x, y);//x is column index and 0 is row index
+		else {
+			gp.addRow(1);
+			gp.add(eb, x, y);
 		}
 		
-	}
-	
-	
-	public void setWidth(Event event) {
-		String w = new String(WidthBox.getText());
-		System.out.println("larghezza:"+ w);
-		Height = Float.parseFloat(w);
 	}
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		HeightBox.setEditable(true);
+
 		SpinnerValueFactory<Integer> valueFactory = 
 	                new SpinnerValueFactory.IntegerSpinnerValueFactory(3,10,3);
 		
-		if(Height != 0 && Width != 0 && nEsp!= 0) {
-			String h = new String( Float.toString(Height));
-			String w = new String(Float.toString(Width));
-			HeightBox.setText(h);
-			WidthBox.setText(w);
+	
 			valueFactory.setValue(nEsp);
 			SpinnerBox.setValueFactory(valueFactory);
-		}else {
-			SpinnerBox.setValueFactory(valueFactory);
-		}
+			
+				
+				try {
+					
+					
+					for(int i = 0;i<3;i++) {
+					addEspButton(0,i);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+	
+			
+		
+//			SpinnerBox.setValueFactory(valueFactory);
+		
 	}
 	
 	public void getSpinnerValue(Event event) {
 	 nEsp = SpinnerBox.getValue();
-	 TextField newField = new TextField();
-	 AnchorPane ap = (AnchorPane) EspPane.getChildren().get(2);
-	 double X =ap.getChildren().get(0).getLayoutX();
-	 newField.setLayoutX(X);
-	 EspPane.getChildren().add(newField);
+//	 TextField newField = new TextField();
+//	 HBox hb =(HBox) hbox.getChildren().get(1);
+//	 double X =hb.getChildren().get(1).getLayoutX();
+//	 newField.setLayoutX(X);
+//	 hb.getChildren().add(newField);
+//	 GridPane temp;
+//	try {
+//		temp = (GridPane) FXMLLoader.load(getClass().getResource("Esp_button.fxml"));
+//		gp.addRow(1+ nEsp);
+//		gp.add(temp, 0, 0);
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+		
 	 System.out.println("nEsp "+nEsp);
 	}
 	
