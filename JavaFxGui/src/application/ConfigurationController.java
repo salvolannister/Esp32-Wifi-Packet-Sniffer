@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -32,9 +34,11 @@ public class ConfigurationController implements Initializable{
 	@FXML private HBox hbox;
 	@FXML private GridPane gp;
 	
-
+	ObservableList<TextField> macTextField = FXCollections.observableArrayList();
+	ObservableList<TextField> xTextField = FXCollections.observableArrayList();
+	ObservableList<TextField> yTextField = FXCollections.observableArrayList();
 	private int nEsp = 0;
-	private List<TextField> espTextField;
+//	private List<TextField> espTextField;
 	GridPane espButton ;
 	
 	
@@ -47,9 +51,27 @@ public class ConfigurationController implements Initializable{
 			gp.addRow(1);
 			gp.add(eb, x, y);
 		}
+		/* children begins with index 1 not 0)*/
 		
+		TextField nuovo = (TextField) getNodeFromGridPane(eb,1,0);
+	    macTextField.add(nuovo);
+//		
 	}
 
+	private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+	    for (Node node : gridPane.getChildren()) {
+	    	System.out.println("siamo qui");
+	    	Integer columnIndex = GridPane.getColumnIndex(node);
+	    	Integer rowIndex =  GridPane.getRowIndex(node);
+	    	if(columnIndex != null && rowIndex != null) {
+	        if (columnIndex == col && rowIndex == row) {
+	        	System.out.println("siamo qui");
+	            return node;
+	        }
+	    	}
+	    }
+	    return null;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -116,5 +138,13 @@ public class ConfigurationController implements Initializable{
 			
 		}
 	}
+	
+//	public void poundIncrementButtonPressed(ActionEvent event) {
+//	    System.out.println("You tryed to write");
+//	    TextField tf = (TextField) event.getSource();
+//	    // identifies which plate is to be incremented
+//	    int plate = poundIncrementButtons.indexOf(button);
+//	    incrementDecrementPlate(0, 0, plate);
+//	}
 }
 
