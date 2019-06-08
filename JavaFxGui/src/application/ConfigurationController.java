@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -52,20 +53,34 @@ public class ConfigurationController implements Initializable{
 			gp.add(eb, x, y);
 		}
 		/* children begins with index 1 not 0)*/
+		Node result = getNodeFromGridPane(eb,5,0);
 		
-		TextField nuovo = (TextField) getNodeFromGridPane(eb,1,0);
-	    macTextField.add(nuovo);
+		TextField mac = (TextField) getNodeFromGridPane(eb,1,0);
+		TextField X = (TextField) getNodeFromGridPane(eb,3,0);
+		TextField Y = (TextField) getNodeFromGridPane(eb,5,0);
+//	    macTextField.add(nuovo);
 //		
+		
+		ChangeListener<Object> listener = (MAC, Xi, Yi) -> 
+        printField(mac.getText(), X.getText(), Y.getText()); 
+        
+       if(X== null) System.out.println("X is null");
+       X.setText("argo");
+	}
+
+private static void printField(String text, String text2, String text3) {
+		System.out.println("You inserted this: "+"Mac "+ text+ "X "+ text2 +" y "+text3);
+		
 	}
 
 	private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
 	    for (Node node : gridPane.getChildren()) {
-	    	System.out.println("siamo qui");
+	    	
 	    	Integer columnIndex = GridPane.getColumnIndex(node);
 	    	Integer rowIndex =  GridPane.getRowIndex(node);
 	    	if(columnIndex != null && rowIndex != null) {
 	        if (columnIndex == col && rowIndex == row) {
-	        	System.out.println("siamo qui");
+	        	
 	            return node;
 	        }
 	    	}
@@ -119,7 +134,7 @@ public class ConfigurationController implements Initializable{
 //		e.printStackTrace();
 //	}
 		
-	 System.out.println("nEsp "+nEsp);
+	 System.out.println("nEsp: "+nEsp);
 	}
 	
 	public void OKButtontEvent (Event event) {
