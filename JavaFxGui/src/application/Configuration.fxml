@@ -35,7 +35,7 @@
             <GridPane fx:id="gp" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="344.0" vgap="3.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="130.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="130.0" prefWidth="150.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="30.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="35.0" />
