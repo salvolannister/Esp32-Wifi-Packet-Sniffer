@@ -2,8 +2,10 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -13,17 +15,21 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 
@@ -45,32 +51,45 @@ public class ConfigurationController implements Initializable{
 	
 	
 	private void addEspButton(int x, int y) throws IOException {
-		GridPane eb = (GridPane) FXMLLoader.load(getClass().getResource("Esp_button.fxml"));
-		if(x == 0 && y == 0)
-			gp.add(eb, x, y);//x is column index and 0 is row index
-		else {
+//		GridPane eb = (GridPane) FXMLLoader.load(getClass().getResource("Esp_button.fxml"));
+		Label macL = new Label("MAC:");
+		Label xL = new Label("X:");
+		Label yL = new Label("Y: ");
+		
+		TextField mac = new TextField();
+		TextField X = new TextField();
+		TextField Y = new TextField();
+		
+		macTextField.add(mac);
+		xTextField.add(X);
+		yTextField.add(Y);
+
+
+		
+		ChangeListener<Object> listener = (obs, oldValue, newValue) -> 
+	    printField(mac.getText(),X.getText(), Y.getText());
+	    mac.textProperty().addListener(listener);
+	    X.textProperty().addListener(listener);
+	    Y.textProperty().addListener(listener);
+		
+		
+		
+		if(x != 0 && y != 0)
 			gp.addRow(1);
-			gp.add(eb, x, y);
-		}
-		/* children begins with index 1 not 0)*/
-		Node result = getNodeFromGridPane(eb,5,0);
 		
-		TextField mac = (TextField) getNodeFromGridPane(eb,1,0);
-		TextField X = (TextField) getNodeFromGridPane(eb,3,0);
-		TextField Y = (TextField) getNodeFromGridPane(eb,5,0);
-//	    macTextField.add(nuovo);
-//		
-		
-		ChangeListener<Object> listener = (MAC, Xi, Yi) -> 
-        printField(mac.getText(), X.getText(), Y.getText()); 
-        
-       if(X== null) System.out.println("X is null");
-       X.setText("argo");
+		 	gp.add(macL, x, y);
+			gp.add(mac, x+1, y);
+			gp.add(xL, x+2, y);
+			gp.add(X, x+3,y );
+			gp.add(yL, x+4, y);
+			gp.add(Y, x+5, y);
+			
+			
 	}
 
-private static void printField(String text, String text2, String text3) {
-		System.out.println("You inserted this: "+"Mac "+ text+ "X "+ text2 +" y "+text3);
-		
+private static void printField(String mac, String X, String Y) {
+//		System.out.println("You inserted this: "+"Mac "+ text+ "X "+ text2 +" y "+text3);
+	System.out.println("You inserted this: "+"Mac "+ mac +" X:"+ X +" Y: "+Y);
 	}
 
 	private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -88,28 +107,50 @@ private static void printField(String text, String text2, String text3) {
 	    return null;
 	}
 
+	static void deleteRow(GridPane grid, final int row) {
+	    Set<Node> deleteNodes = new HashSet<>();
+	    for (Node child : grid.getChildren()) {
+	        // get index from child
+	        Integer rowIndex = GridPane.getRowIndex(child);
+
+	        // handle null values for index=0
+	        int r = rowIndex == null ? 0 : rowIndex;
+
+	        if (r > row) {
+	            // decrement rows for rows after the deleted row
+	            GridPane.setRowIndex(child, r-1);
+	        } else if (r == row) {
+	            // collect matching rows for deletion
+	            deleteNodes.add(child);
+	        }
+	    }
+
+	    // remove nodes from row
+	    grid.getChildren().removeAll(deleteNodes);
+	  
+	}
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		SpinnerValueFactory<Integer> valueFactory = 
 	                new SpinnerValueFactory.IntegerSpinnerValueFactory(3,10,3);
 		
-	
 			valueFactory.setValue(nEsp);
 			SpinnerBox.setValueFactory(valueFactory);
-			
-				
-				try {
-					
-					
-					for(int i = 0;i<3;i++) {
-					addEspButton(0,i);
+
+					try {
+						for(int i = 0;i<3;i++) {
+						addEspButton(0,i);
+						}
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+					
+//					deleteRow(gp,2);
 	
 			
 		
@@ -117,8 +158,23 @@ private static void printField(String text, String text2, String text3) {
 		
 	}
 	
-	public void getSpinnerValue(Event event) {
+	public void getSpinnerValue(Event event) throws IOException {
+	int oldValue = nEsp;
+	int diff = 0, i = 0;
 	 nEsp = SpinnerBox.getValue();
+	 diff = oldValue - nEsp;
+	 
+	 if(diff > 0) {
+		 for(i=oldValue; i>nEsp ;i--) {
+			 deleteRow(gp,i-1);
+			 xTextField.remove(i-1);
+		 }
+	 }else {
+		 diff*=-1;
+		 for(i=oldValue; i<nEsp ;i++) {
+			addEspButton(0,i);
+		 }
+	 }
 //	 TextField newField = new TextField();
 //	 HBox hb =(HBox) hbox.getChildren().get(1);
 //	 double X =hb.getChildren().get(1).getLayoutX();
@@ -139,19 +195,32 @@ private static void printField(String text, String text2, String text3) {
 	
 	public void OKButtontEvent (Event event) {
 		Parent HomePage;
-		try {
-			HomePage = FXMLLoader.load(getClass().getResource("Main.fxml"));
-			Scene HomePageScene = new Scene (HomePage);
-			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-			appStage.hide();
-			appStage.setScene(HomePageScene);
-			appStage.show();
-			/*code to send information to the database*/
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-			
+		boolean OK = false;
+		 for(TextField e : xTextField) {
+			 System.out.println("this is my text X= "+ e.getText());
+			 if(e.getText() == "") {
+				 OK = false;
+				 return;
+			 }
+		 }
+			OK = true;
+			System.out.println("WOWWWWW");
+	     if(OK==true) {
+			try {
+				HomePage = FXMLLoader.load(getClass().getResource("Main.fxml"));
+				Scene HomePageScene = new Scene (HomePage);
+				Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
+				appStage.hide();
+				appStage.setScene(HomePageScene);
+				appStage.show();
+				/*code to send information to the database*/
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+					
+				}
 		}
+     
 	}
 	
 //	public void poundIncrementButtonPressed(ActionEvent event) {
