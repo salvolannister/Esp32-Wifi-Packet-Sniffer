@@ -19,6 +19,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -42,9 +44,9 @@ public class ConfigurationController implements Initializable{
 	@FXML private GridPane gp;
 	
 	ObservableList<TextField> macTextField = FXCollections.observableArrayList();
-	ObservableList<TextField> xTextField = FXCollections.observableArrayList();
+    ObservableList<TextField> xTextField = FXCollections.observableArrayList();
 	ObservableList<TextField> yTextField = FXCollections.observableArrayList();
-	private int nEsp = 0;
+	private int nEsp = 3;
 //	private List<TextField> espTextField;
 	GridPane espButton ;
 	
@@ -63,14 +65,15 @@ public class ConfigurationController implements Initializable{
 		macTextField.add(mac);
 		xTextField.add(X);
 		yTextField.add(Y);
-
+		System.out.println("-----------");
+		System.out.println("In addEsp button size of Xarray is: " + xTextField.size());
 
 		
-		ChangeListener<Object> listener = (obs, oldValue, newValue) -> 
-	    printField(mac.getText(),X.getText(), Y.getText());
-	    mac.textProperty().addListener(listener);
-	    X.textProperty().addListener(listener);
-	    Y.textProperty().addListener(listener);
+//		ChangeListener<Object> listener = (obs, oldValue, newValue) -> 
+//	    printField(mac.getText(),X.getText(), Y.getText());
+//	    mac.textProperty().addListener(listener);
+//	    X.textProperty().addListener(listener);
+//	    Y.textProperty().addListener(listener);
 		
 		
 		
@@ -126,8 +129,10 @@ private static void printField(String mac, String X, String Y) {
 	    }
 
 	    // remove nodes from row
+	    
+	   
 	    grid.getChildren().removeAll(deleteNodes);
-	  
+	    
 	}
 	
 	
@@ -166,13 +171,19 @@ private static void printField(String mac, String X, String Y) {
 	 
 	 if(diff > 0) {
 		 for(i=oldValue; i>nEsp ;i--) {
+			System.out.println("Size of Xarray is: " + xTextField.size());
 			 deleteRow(gp,i-1);
+			 System.out.println(" After deleting row: " + xTextField.size());
 			 xTextField.remove(i-1);
+			 System.out.println(" After deleting a node " + xTextField.size());
+			 printList(xTextField);
 		 }
 	 }else {
 		 diff*=-1;
+		 System.out.println("diff is "+diff+" old value is "+ oldValue);
 		 for(i=oldValue; i<nEsp ;i++) {
 			addEspButton(0,i);
+			
 		 }
 	 }
 //	 TextField newField = new TextField();
@@ -193,12 +204,22 @@ private static void printField(String mac, String X, String Y) {
 	 System.out.println("nEsp: "+nEsp);
 	}
 	
+	private void printList(ObservableList<TextField> o) {
+		 for(TextField e : o) {
+			 System.out.println("this is my text X= "+ e.getText());
+		 }
+	}
+
 	public void OKButtontEvent (Event event) {
 		Parent HomePage;
 		boolean OK = false;
 		 for(TextField e : xTextField) {
 			 System.out.println("this is my text X= "+ e.getText());
-			 if(e.getText() == "") {
+			 if(e.getText() == null || e.getText().trim().isEmpty()) {
+				 Alert fail= new Alert(AlertType.INFORMATION);
+			        fail.setHeaderText("failure");
+			        fail.setContentText("You must fullfill the X fields");
+			        fail.showAndWait();
 				 OK = false;
 				 return;
 			 }
