@@ -6,6 +6,8 @@ module JavaFxGui {
     requires javafx.graphics;
     requires javafx.swing;
     requires javafx.media;
+    requires java.sql;
+    requires sqlite.jdbc;
 
     opens application;
 }

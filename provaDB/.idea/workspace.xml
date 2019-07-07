@@ -2,9 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07933c12-94d0-4874-b3ec-ad9524717665" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../main.c" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/.idea/libraries/lib.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/.idea/libraries/sqlite_jdbc_3_7_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/fake_db.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/src/DB/DBUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/src/DB/QueryFake.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/src/application/MacController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/src/application/Mac_button.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JavaFxGui/src/application/mac_freq.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/JavaFxGui.eml" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/JavaFxGui.eml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/JavaFxGui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/JavaFxGui.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/bin/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/bin/application/ConfigurationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/bin/application/ConfigurationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/bin/application/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/bin/application/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/bin/application/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/bin/application/Main.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/bin/application/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/bin/application/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/src/application/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/src/application/Main.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/src/application/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/src/application/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../JavaFxGui/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaFxGui/src/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/sqlite_jdbc_3_7_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/sqlite_jdbc_3_7_2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProvaDB/main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProvaDB/main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,22 +78,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="72" column="17" selection-start-line="63" selection-start-column="16" selection-end-line="72" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="15">
+              <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
+            <state relative-caret-position="360">
               <caret line="45" selection-start-line="45" selection-end-line="45" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -96,18 +116,9 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="das://915c1877-ced3-42c5-9626-ccb13ab1835e/schema/main/table/Position">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state projectRestartId="2737d482-dfd8-4680-acb0-15c4af5b7f51">
-              <filtering />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/QueryProv.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
+            <state relative-caret-position="555">
               <caret line="39" selection-start-line="39" selection-end-line="39" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -138,12 +149,12 @@
         <option value="$PROJECT_DIR$/src/QueryProv.java" />
         <option value="$PROJECT_DIR$/src/QueryFake.java" />
         <option value="$PROJECT_DIR$/src/main.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/915c1877-ced3-42c5-9626-ccb13ab1835e/console.sql" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="683" />
-    <option name="y" value="25" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="27" />
     <option name="width" value="683" />
     <option name="height" value="741" />
   </component>
@@ -153,8 +164,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -164,18 +175,33 @@
             </path>
             <path>
               <item name="ProvaDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="provaDB" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProvaDB" type="b2602c69:ProjectViewProjectNode" />
-              <item name="provaDB" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DB" type="462c0819:PsiDirectoryNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
             <path>
               <item name="ProvaDB" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="sqlite-jdbc-3.7.2" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="ProvaDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="sqlite-jdbc-3.7.2" type="70bed36:NamedLibraryElementNode" />
+              <item name="sqlite-jdbc-3.7.2.jar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProvaDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="sqlite-jdbc-3.7.2" type="70bed36:NamedLibraryElementNode" />
+              <item name="sqlite-jdbc-3.7.2.jar" type="462c0819:PsiDirectoryNode" />
+              <item name="org" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProvaDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="sqlite-jdbc-3.7.2" type="70bed36:NamedLibraryElementNode" />
+              <item name="sqlite-jdbc-3.7.2.jar" type="462c0819:PsiDirectoryNode" />
+              <item name="org" type="462c0819:PsiDirectoryNode" />
+              <item name="sqlite" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -188,12 +214,12 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="database.console.LAST_STATE" value="false" />
+    <property name="database.console.LAST_STATE" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -245,14 +271,17 @@
       <workItem from="1556469915608" duration="25000" />
       <workItem from="1557994321768" duration="1533000" />
       <workItem from="1558255235808" duration="17000" />
+      <workItem from="1562429411616" duration="130000" />
+      <workItem from="1562430752227" duration="177000" />
+      <workItem from="1562430959237" duration="88000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15243000" />
+    <option name="totallyTimeSpent" value="15638000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="683" y="25" width="683" height="741" extended-state="4" />
+    <frame x="0" y="25" width="1366" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
@@ -260,7 +289,7 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.48508635" />
+      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.25" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" weight="0.32899022" />
@@ -269,15 +298,15 @@
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" />
-      <window_info anchor="bottom" id="Run" order="7" weight="0.32810047" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.32736155" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32810047" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="12" />
-      <window_info anchor="bottom" id="Database Console" order="13" weight="0.32899022" />
+      <window_info active="true" anchor="bottom" id="Database Console" order="13" visible="true" weight="0.32899022" />
       <window_info anchor="right" id="Theme Preview" order="0" />
-      <window_info anchor="right" id="Database" order="1" weight="0.43485087" />
+      <window_info anchor="right" id="Database" order="1" weight="0.4348485" />
       <window_info anchor="right" id="Capture Analysis" order="2" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info anchor="right" id="Maven" order="4" />
@@ -320,28 +349,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/915c1877-ced3-42c5-9626-ccb13ab1835e/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="72" column="17" selection-start-line="63" selection-start-column="16" selection-end-line="72" selection-end-column="17" />
+        <state relative-caret-position="15">
+          <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/QueryProv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
+    <entry file="jar://$PROJECT_DIR$/../sqlite-jdbc-3.7.2.jar!/org/sqlite/JDBC.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#139#140#0" expanded="true" />
-            <element signature="e#166#167#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="90">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://915c1877-ced3-42c5-9626-ccb13ab1835e/schema/main/table/Position">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="1f4707f1-5642-447e-b5ee-e25f8978f1fc">
+          <filtering />
         </state>
       </provider>
     </entry>
@@ -357,19 +392,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://915c1877-ced3-42c5-9626-ccb13ab1835e/schema/main/table/Position">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="2737d482-dfd8-4680-acb0-15c4af5b7f51">
-          <filtering />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/915c1877-ced3-42c5-9626-ccb13ab1835e/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/QueryProv.java">
+    <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="360">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#139#140#0" expanded="true" />
+            <element signature="e#166#167#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -429,7 +466,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -449,6 +485,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>sqlite-jdbc-3.7.2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

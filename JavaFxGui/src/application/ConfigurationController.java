@@ -26,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -243,7 +244,26 @@ private static void printField(String mac, String X, String Y) {
 		}
      
 	}
-	
+
+    public void back(MouseEvent mouseEvent) {
+
+		Parent configurationPage;
+		try {
+			configurationPage = FXMLLoader.load(getClass().getResource("Main.fxml"));
+			Scene configurationPageScene = new Scene(configurationPage);
+			Stage appStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+			appStage.hide();
+			appStage.setScene(configurationPageScene);
+			appStage.show();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		}
+	}
+
+
 //	public void poundIncrementButtonPressed(ActionEvent event) {
 //	    System.out.println("You tryed to write");
 //	    TextField tf = (TextField) event.getSource();

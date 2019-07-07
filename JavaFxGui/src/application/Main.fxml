@@ -11,7 +11,7 @@
             <Button mnemonicParsing="false" prefHeight="156.0" prefWidth="210.0" text="Time diagram" BorderPane.alignment="CENTER" />
          </right>
          <bottom>
-            <Button mnemonicParsing="false" prefHeight="156.0" prefWidth="210.0" text="Show Mac's Frequency" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="156.0" prefWidth="210.0" text="Show Mac's Frequency" BorderPane.alignment="CENTER" onAction="#openMacFreq" onMouseClicked="#openMacFreq"/>
          </bottom>
          <left>
             <Button fx:id="cnfg" mnemonicParsing="false" onAction="#openConfiguration" onMouseClicked="#openConfiguration" prefHeight="156.0" prefWidth="210.0" text="Configuration" BorderPane.alignment="CENTER" />

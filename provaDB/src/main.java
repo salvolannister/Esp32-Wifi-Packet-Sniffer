@@ -1,6 +1,5 @@
 import DB.DBUtil;
 import DB.QueryFake;
-import org.ibex.nestedvm.util.Seekable;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;

@@ -2,4 +2,8 @@
 <component jdk="11" jdk_type="JavaSDK">
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$"/>
+	<levels>
+		<level name="javafx-swt" value="project"/>
+		<level name="sqlite-jdbc-3.7.2" value="project"/>
+	</levels>
 </component>

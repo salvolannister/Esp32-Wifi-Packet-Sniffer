@@ -50,6 +50,6 @@
             </GridPane>
          </children>
       </HBox>
-      <Button layoutX="55.0" layoutY="40.0" mnemonicParsing="false" text="&lt;-" />
+      <Button fx:id="BackButton" layoutX="55.0" layoutY="40.0" mnemonicParsing="false" text="&lt;-" onMouseClicked="#back"/>
    </children>
 </AnchorPane>
