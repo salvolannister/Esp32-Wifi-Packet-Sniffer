@@ -18,13 +18,13 @@ public class MainController {
 
 	@FXML
 	public void openMacFreq(ActionEvent event) {
-		Parent configurationPage;
+		Parent FreqPage;
 		try {
-			configurationPage = FXMLLoader.load(getClass().getResource("mac_freq.fxml"));
-			Scene configurationPageScene = new Scene(configurationPage);
+			FreqPage = FXMLLoader.load(getClass().getResource("mac_freq.fxml"));
+			Scene FreqPageScene = new Scene(FreqPage);
 			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			appStage.hide();
-			appStage.setScene(configurationPageScene);
+			appStage.setScene(FreqPageScene);
 			appStage.show();
 
 		} catch (IOException e) {

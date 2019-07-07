@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import DB.QueryFake;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +35,8 @@ public class MacController {
     //	it will tell that the controller is connected to FXML file
     @FXML private Button SearchButton;
     @FXML private TextArea AreaInfo;
-    @FXML private DatePicker DataF;
-    @FXML private DatePicker DataI;
+    @FXML private DateTimePicker DataF;
+    @FXML private DateTimePicker DataI;
     @FXML private ListView Lista;
 
     private ObservableList<Button> MacList = FXCollections.observableArrayList();
@@ -42,31 +45,51 @@ public class MacController {
     public void search(MouseEvent mouseEvent) {
 
 
-        Timestamp inizio = Timestamp.valueOf(DataI.getValue().atStartOfDay());
-        Timestamp fine = Timestamp.valueOf(DataF.getValue().atStartOfDay());
 
-        DBUtil db=new DBUtil();
-
-        if(!db.openConnection("fake_db.db")){
-            System.err.println("Errore di Connessione al DB. Impossibile Continuare");
-            System.exit(-1);
-        }
-
-        QueryFake p=new QueryFake(db.getConn());
         try {
-            risultato=p.showMac(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()));
-            if(risultato!=null){
-                System.out.println("tutto ok");
-                for (String s: risultato.keySet()){
-                    addMacButton(s);
-                }
 
+
+
+            AreaInfo.setText("");
+            Lista.getItems().remove(0, Lista.getItems().size());
+
+            Timestamp inizio = Timestamp.valueOf(DataI.getDateTimeValue());
+            Timestamp fine = Timestamp.valueOf(DataF.getDateTimeValue());
+
+            DBUtil db=new DBUtil();
+            if(!db.openConnection("fake_db.db")){
+                System.err.println("Errore di Connessione al DB. Impossibile Continuare");
+                System.exit(-1);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            QueryFake p=new QueryFake(db.getConn());
+
+            try {
+                risultato=p.showMac(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()));
+                if(risultato!=null){
+                    //System.out.println("tutto ok");
+                    for (String s: risultato.keySet()){
+                        addMacButton(s);
+                    }
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            db.closeConnection();
+            DataI.setValue(null);
+            DataF.setValue(null);
+            /*LocalDate lf=LocalDate.of(1970,1,1);
+            LocalDate li=LocalDate.of(2070,1,1);
+            DataF.setValue(lf);
+            DataI.setValue(li);*/
+            return;
+        }catch (NullPointerException n){
+            AreaInfo.setText("inserire data e ora di inizio e fine");
+            //DataF.text
+            return;
         }
 
-        db.closeConnection();
 
     }
 
@@ -74,7 +97,7 @@ public class MacController {
 
 
     private void addMacButton(String s) {
-        
+
         Button mac=new Button(s);
         mac.setPrefWidth(260);
         mac.setOnMouseClicked(new InfoEvent(risultato.get(mac.getText()), mac.getText(),AreaInfo));
