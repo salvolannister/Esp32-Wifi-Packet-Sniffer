@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -47,10 +48,11 @@ public class ConfigurationController implements Initializable{
 	ObservableList<TextField> macTextField = FXCollections.observableArrayList();
     ObservableList<TextField> xTextField = FXCollections.observableArrayList();
 	ObservableList<TextField> yTextField = FXCollections.observableArrayList();
+	LinkedList<EspInfo> espDevice = new LinkedList<EspInfo>();
 	private int nEsp = 3;
 //	private List<TextField> espTextField;
 	GridPane espButton ;
-	
+	private String confName;
 	
 	
 	private void addEspButton(int x, int y) throws IOException {
@@ -65,7 +67,9 @@ public class ConfigurationController implements Initializable{
 		
 		macTextField.add(mac);
 		xTextField.add(X);
-		yTextField.add(Y);
+		yTextField.add(Y); 
+		EspInfo ei = new EspInfo(X, Y, mac);
+		espDevice.add(ei);
 		System.out.println("-----------");
 		System.out.println("In addEsp button size of Xarray is: " + xTextField.size());
 
@@ -172,12 +176,9 @@ private static void printField(String mac, String X, String Y) {
 	 
 	 if(diff > 0) {
 		 for(i=oldValue; i>nEsp ;i--) {
-			System.out.println("Size of Xarray is: " + xTextField.size());
+			
 			 deleteRow(gp,i-1);
-			 System.out.println(" After deleting row: " + xTextField.size());
-			 xTextField.remove(i-1);
-			 System.out.println(" After deleting a node " + xTextField.size());
-			 printList(xTextField);
+			 espDevice.remove(i -1);
 		 }
 	 }else {
 		 diff*=-1;
@@ -213,21 +214,15 @@ private static void printField(String mac, String X, String Y) {
 
 	public void OKButtontEvent (Event event) {
 		Parent HomePage;
-		boolean OK = false;
-		 for(TextField e : xTextField) {
-			 System.out.println("this is my text X= "+ e.getText());
-			 if(e.getText() == null || e.getText().trim().isEmpty()) {
-				 Alert fail= new Alert(AlertType.INFORMATION);
-			        fail.setHeaderText("failure");
-			        fail.setContentText("You must fullfill the X fields");
-			        fail.showAndWait();
-				 OK = false;
+		
+		 for( EspInfo ep : espDevice) {
+			 if(!ep.textFieldCheck()) {
 				 return;
 			 }
 		 }
-			OK = true;
+		
 			System.out.println("WOWWWWW");
-	     if(OK==true) {
+	  
 			try {
 				HomePage = FXMLLoader.load(getClass().getResource("Main.fxml"));
 				Scene HomePageScene = new Scene (HomePage);
@@ -241,7 +236,7 @@ private static void printField(String mac, String X, String Y) {
 					e.printStackTrace();
 					
 				}
-		}
+		
      
 	}
 
