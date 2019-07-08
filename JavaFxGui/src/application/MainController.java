@@ -20,7 +20,7 @@ public class MainController {
 	public void openMacFreq(ActionEvent event) {
 		Parent FreqPage;
 		try {
-			FreqPage = FXMLLoader.load(getClass().getResource("mac_freq.fxml"));
+			FreqPage = FXMLLoader.load(getClass().getResource("MACfreq.fxml"));
 			Scene FreqPageScene = new Scene(FreqPage);
 			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			appStage.hide();

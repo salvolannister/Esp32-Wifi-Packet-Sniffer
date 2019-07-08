@@ -30,13 +30,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jfxtras.scene.control.LocalDateTimeTextField;
 
 public class MacController {
     //	it will tell that the controller is connected to FXML file
     @FXML private Button SearchButton;
     @FXML private TextArea AreaInfo;
-    @FXML private DateTimePicker DataF;
-    @FXML private DateTimePicker DataI;
+    @FXML private LocalDateTimeTextField DataF;
+    @FXML private LocalDateTimeTextField DataI;
     @FXML private ListView Lista;
 
     private ObservableList<Button> MacList = FXCollections.observableArrayList();
@@ -49,12 +50,11 @@ public class MacController {
         try {
 
 
-
             AreaInfo.setText("");
             Lista.getItems().remove(0, Lista.getItems().size());
 
-            Timestamp inizio = Timestamp.valueOf(DataI.getDateTimeValue());
-            Timestamp fine = Timestamp.valueOf(DataF.getDateTimeValue());
+            Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
+            Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
 
             DBUtil db=new DBUtil();
             if(!db.openConnection("fake_db.db")){
@@ -77,12 +77,10 @@ public class MacController {
             }
 
             db.closeConnection();
-            DataI.setValue(null);
-            DataF.setValue(null);
-            /*LocalDate lf=LocalDate.of(1970,1,1);
-            LocalDate li=LocalDate.of(2070,1,1);
-            DataF.setValue(lf);
-            DataI.setValue(li);*/
+            DataI.setText("");
+            DataI.setLocalDateTime(null);
+            DataF.setText("");
+            DataF.setLocalDateTime(null);
             return;
         }catch (NullPointerException n){
             AreaInfo.setText("inserire data e ora di inizio e fine");
