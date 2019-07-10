@@ -8,17 +8,20 @@
    <children>
       <BorderPane prefHeight="488.0" prefWidth="690.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
          <right>
-            <Button mnemonicParsing="false" prefHeight="156.0" prefWidth="210.0" text="Time diagram" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#openRoom" onMouseClicked="#openRoom" prefHeight="110.0" prefWidth="160.0" text="Room diagram" BorderPane.alignment="CENTER" />
          </right>
          <bottom>
-            <Button mnemonicParsing="false" prefHeight="156.0" prefWidth="210.0" text="Show Mac's Frequency" BorderPane.alignment="CENTER" onAction="#openMacFreq" onMouseClicked="#openMacFreq"/>
+            <Button mnemonicParsing="false" onAction="#openMacFreq" onMouseClicked="#openMacFreq" prefHeight="110.0" prefWidth="160.0" text="Show Mac's Frequency" BorderPane.alignment="CENTER" />
          </bottom>
          <left>
-            <Button fx:id="cnfg" mnemonicParsing="false" onAction="#openConfiguration" onMouseClicked="#openConfiguration" prefHeight="156.0" prefWidth="210.0" text="Configuration" BorderPane.alignment="CENTER" />
+            <Button fx:id="cnfg" mnemonicParsing="false" onAction="#openTimeDiag" onMouseClicked="#openTimeDiag" prefHeight="110.0" prefWidth="160.0" text="TimeDiagram" BorderPane.alignment="CENTER" />
          </left>
          <center>
-            <Button mnemonicParsing="false" text="Start" onAction="#startServer"  BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#startServer" text="Start" BorderPane.alignment="CENTER" />
          </center>
+         <top>
+            <Button fx:id="cnfg1" mnemonicParsing="false" onAction="#openConfiguration" onMouseClicked="#openConfiguration" prefHeight="110.0" prefWidth="160.0" text="Configuration" BorderPane.alignment="CENTER" />
+         </top>
       </BorderPane>
    </children>
 </AnchorPane>

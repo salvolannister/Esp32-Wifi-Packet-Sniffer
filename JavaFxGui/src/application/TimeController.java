@@ -1,48 +1,58 @@
 package application;
 
-import java.io.Console;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import DB.QueryFake;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-
 import DB.DBUtil;
+import DB.QueryFake;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
+import DTO.Polo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.chart.*;
+import javafx.scene.control.Button;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.LocalDateTimeTextField;
 
-public class MacController {
-    //	it will tell that the controller is connected to FXML file
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+
+public class TimeController implements Initializable {
+
     @FXML private Button SearchButton;
-    @FXML private TextArea AreaInfo;
+    @FXML private Pane graph_container;
     @FXML private LocalDateTimeTextField DataF;
     @FXML private LocalDateTimeTextField DataI;
-    @FXML private ListView Lista;
 
+
+    private LineChart<Number, Number> grafico;
     private ObservableList<Button> MacList = FXCollections.observableArrayList();
     private Map<String, Long> risultato= new HashMap<>();
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        final NumberAxis xAxis = new NumberAxis(0, 10, 1);
+        //final ValueAxis<String> xAxis =new ValueAxis<String>();
+        final NumberAxis yAxis = new NumberAxis(0, 50, 1);
+        xAxis.setLabel("Mac");
+        yAxis.setLabel("posY");
+        grafico=new LineChart<Number, Number>(xAxis, yAxis);
+        grafico.setTitle("Posizione");
+        graph_container.getChildren().add(grafico); //aggiungo un grafico vuoto
+    }
 
 
     public void search(MouseEvent mouseEvent) {
@@ -50,8 +60,7 @@ public class MacController {
         try {
 
 
-            AreaInfo.setText("");
-            Lista.getItems().remove(0, Lista.getItems().size());
+
 
             Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
             Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
@@ -67,9 +76,18 @@ public class MacController {
                 risultato=p.showMac(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()));
                 if(risultato!=null){
                     //System.out.println("tutto ok");
+                    XYChart.Series series = new XYChart.Series();
+                    int i=0;
                     for (String s: risultato.keySet()){
-                        addMacButton(s);
+                        series.getData().add(new XYChart.Data(i, risultato.get(s)));
+                        i++;
+
+
+
                     }
+                    graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
+                    grafico.getData().add(series);
+                    graph_container.getChildren().add(grafico);
 
                 }
             } catch (SQLException e) {
@@ -83,7 +101,9 @@ public class MacController {
             DataF.setLocalDateTime(null);
             return;
         }catch (NullPointerException n){
-            AreaInfo.setText("inserire data e ora di inizio e fine");
+
+            //AreaInfo.setText("inserire data e ora di inizio e fine");
+
             //DataF.text
             return;
         }
@@ -91,20 +111,6 @@ public class MacController {
 
     }
 
-
-
-
-    private void addMacButton(String s) {
-
-        Button mac=new Button(s);
-        mac.setPrefWidth(260);
-        mac.setOnMouseClicked(new InfoEvent(risultato.get(mac.getText()), mac.getText(),AreaInfo));
-        MacList.add(mac);
-        System.out.println("-----------");
-        System.out.println("ho aggiunto un bottone " + MacList.size());
-
-        Lista.setItems(MacList);
-    }
 
     @FXML
     public void back(MouseEvent mouseEvent) {

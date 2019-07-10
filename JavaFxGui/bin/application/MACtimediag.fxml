@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import jfxtras.scene.control.LocalDateTimeTextField?>
+
+<AnchorPane prefHeight="593.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.TimeController">
+   <children>
+      <LocalDateTimeTextField fx:id="DataI" layoutX="602.0" layoutY="429.0" prefHeight="26.0" prefWidth="274.0" />
+      <Label layoutX="704.0" layoutY="405.0" text="data inizio" />
+      <LocalDateTimeTextField fx:id="DataF" layoutX="602.0" layoutY="491.0" prefHeight="26.0" prefWidth="275.0" />
+      <Label layoutX="704.0" layoutY="465.0" text="data fine" />
+      <Button fx:id="SearchButton" layoutX="716.0" layoutY="537.0" mnemonicParsing="false" onMouseClicked="#search" text="Cerca" />
+      <Button fx:id="BackButton" layoutX="43.0" layoutY="32.0" mnemonicParsing="false" onMouseClicked="#back" text="&lt;-" />
+      <Pane fx:id="graph_container" layoutX="92.0" layoutY="48.0" prefHeight="367.0" prefWidth="489.0" />
+   </children>
+</AnchorPane>

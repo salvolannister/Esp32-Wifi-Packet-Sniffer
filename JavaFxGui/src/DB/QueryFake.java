@@ -1,5 +1,7 @@
 package DB;
 
+import DTO.Polo;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,6 +69,50 @@ public class QueryFake {
                         risultato.put(res.getString("MAC"), res.getLong("val"));
                         //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
                     }
+
+
+                System.out.println(risultato);
+
+                if(risultato.isEmpty()==false){
+                    conn.commit();
+                    return risultato;
+                }
+                return null;
+
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+
+        }catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+            System.out.println("errore");
+            return null;
+        }
+
+    }
+
+
+    public Map<String, Polo> showPosition(String timeI, String timeF) throws SQLException {
+
+        PreparedStatement pstmt;
+        Map<String, Polo> risultato= new HashMap<>();
+
+        try {
+            conn.setAutoCommit(false);
+
+            String s=new String("SELECT MAC, AVG(X) AS posX, AVG(Y) AS posY FROM Position WHERE Timestamp >= ? AND Timestamp <= ? GROUP BY MAC ORDER BY count(*) DESC");
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+                pstmt.setString(1,  timeI);
+                pstmt.setString(2, timeF);
+                ResultSet res=pstmt.executeQuery();
+
+                while (res.next()){
+                    risultato.put(res.getString("MAC"),new Polo(res.getFloat("posX"),res.getFloat("posY")));
+                    //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
+                }
 
 
                 System.out.println(risultato);
