@@ -57,6 +57,7 @@ public class Distance {
 
         double x = (conf.getPx() - rssi)/(10 * conf.getN());
         double distance = Math.pow(10,x);
+        // DEBUG System.out.println("RSSI value: " + rssi + " while computed distance is: " + distance);
         return distance;
 
     }

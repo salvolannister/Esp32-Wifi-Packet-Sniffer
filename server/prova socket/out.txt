@@ -1,1 +1,1 @@
-Configuration{mac_tab={24:0a:c4:9a:9f:3c=Payload{lastTime=1562858349732, posizione=Polo{x=0.0, y=0.0}}, 24:0a:c4:9b:4f:ac=Payload{lastTime=-9223372036854775808, posizione=Polo{x=3.0, y=0.0}}, 3c:71:bf:0c:b5:38=Payload{lastTime=-9223372036854775808, posizione=Polo{x=0.0, y=0.0}}}, n=2.5, Px=-62}
+Configuration{mac_tab={24:0a:c4:9a:9f:3c=Payload{lastTime=1562862376448, posizione=Polo{x=0.0, y=0.0}}, 24:0a:c4:9b:4f:ac=Payload{lastTime=1562862374965, posizione=Polo{x=0.0, y=0.0}}, 3c:71:bf:0c:b5:38=Payload{lastTime=1562862376638, posizione=Polo{x=0.0, y=0.0}}}, n=2.5, Px=-62}

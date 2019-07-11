@@ -76,30 +76,33 @@ public class Receiver extends Thread {
                         synchronized (EchoServer.conf){
                             if(EchoServer.conf.getMac_tab().containsKey(mac[1])==false){
 
-                                if (mac[1].compareTo(MacESPDavide) != 0) {
-                                    Payload pack = new Payload(TimeLong, new Polo(0.0, 0.0));
+                                if (mac[1].compareTo(MacESPDavide) == 0) {
+                                    Polo p = new Polo(0.0, 0.0);
+                                    //DEBUG System.out.println("Creation of polo!! " + p.toString());
+                                    Payload pack = new Payload(TimeLong, p);
                                     EchoServer.conf.getMac_tab().put(mac[1], pack);
-
-                                }else if(mac[1].compareTo(MacESPUmb) != 0) {
-                                    Payload pack = new Payload(TimeLong, new Polo(3.0, 0.0));
+                                    //DEBUG System.out.println("Actual MAC MUP: " + EchoServer.conf.getMac_tab().toString());
+                                }else if(mac[1].compareTo(MacESPUmb) == 0) {
+                                    Polo p = new Polo(3.0, 0.0);
+                                    //DEBUG System.out.println("Creation of polo!! " + p.toString());
+                                    Payload pack = new Payload(TimeLong, p);
                                     EchoServer.conf.getMac_tab().put(mac[1], pack);
-
-                                }else if(mac[1].compareTo(MacESPMar) != 0) {
-                                    Payload pack = new Payload(TimeLong, new Polo(0.0, 2.0));
+                                    //DEBUG System.out.println("Actual MAC MUP: " + EchoServer.conf.getMac_tab().toString());
+                                }else if(mac[1].compareTo(MacESPMar) == 0) {
+                                    //DEBUG System.out.println("ENTRATO NELL'ULTIMO FOR!!!!");
+                                    Polo p = new Polo(0.0, 2.0);
+                                    //DEBUG System.out.println("Creation of polo!! " + p.toString());
+                                    Payload pack = new Payload(TimeLong, p);
                                     EchoServer.conf.getMac_tab().put(mac[1], pack);
-
+                                    //DEBUG System.out.println("Actual MAC MUP: " + EchoServer.conf.getMac_tab().toString());
                                 }
-
-
                             }
                             EchoServer.conf.getMac_tab().get(mac[1]).setLastTime(TimeLong);
-
 
                             for(String x: EchoServer.conf.getMac_tab().keySet()) {
                                 if (EchoServer.conf.getMac_tab().get(x).getLastTime() != Long.MIN_VALUE) {
                                     if ((TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()) > 60000) {//5 min=300000
                                         EchoServer.conf.getMac_tab().get(x).setLastTime(Long.MIN_VALUE);
-
                                     }
                                 }
                             }
@@ -107,14 +110,7 @@ public class Receiver extends Thread {
                                 EchoServer.conf.setNumEsp(l.intValue());
                                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  n_esp = " + EchoServer.conf.getNumEsp());
                                 writeFile3(EchoServer.conf, "out.txt");
-
-
                         }
-
-
-
-
-
                         /*
                             trilaterazione+db da aggiungere
 
@@ -126,6 +122,7 @@ public class Receiver extends Thread {
                                 for(String s:p.getRSSI().keySet()){
                                     synchronized (EchoServer.conf){
                                         dist.add(new Distance(EchoServer.conf.getMac_tab().get(s).getPosizione(), p.getRSSI().get(s)));
+                                        // DEBUG System.out.println("Distance value before calling computeDistance: " + EchoServer.conf.getMac_tab().get(s).getPosizione().toString());
                                     }
 
                                 }
@@ -284,13 +281,14 @@ public class Receiver extends Thread {
 
                 //distanza
                 distances[i] = d.get(i).getDistance(EchoServer.conf);
+                //DEBUG System.out.println("Esp " + i + " XPos = "+ positions[i][0] + " YPos = "+ positions[i][1] + " and Computed distance: " + distances[i]);
             }
 
             TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
             NonLinearLeastSquaresSolver nlSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());
             Optimum nonLinearOptimum = nlSolver.solve();
-            RealVector x = nonLinearOptimum.getPoint();
-            Polo pos = new Polo(x.getEntry(0), x.getEntry(1));
+            RealVector computedPOS = nonLinearOptimum.getPoint();
+            Polo pos = new Polo(computedPOS.getEntry(0), computedPOS.getEntry(1));
             return pos;
         }
     }

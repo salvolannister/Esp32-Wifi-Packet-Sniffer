@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Serverino_jar2</output-path>
     <root id="archive" name="Serverino.jar">
       <element id="module-output" name="Serverino" />
-      <element id="library" level="project" name="sqlite-jdbc-3.7.2" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/sqlite-jdbc-3.7.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/lombok-1.18.2.jar" path-in-jar="/" />
     </root>
