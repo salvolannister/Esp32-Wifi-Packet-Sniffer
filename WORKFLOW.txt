@@ -1,22 +1,32 @@
 ----CLIENT----
 
-~Azzerare base dei tempi
-~Sniffare per un minuto (Probe request, Beacon)
-~Fermarsi e inviare dati al server(MAC source, SSID, Time, Hash, RSSI)
-~Manutenere base dei tempi
-~ricominciare
+~test
+
+INTEGRAZIONE(jar, DB e sincronizzazione)
 
 ----SERVER----
 
 ~configurarsi(#schede, riferimenti spaziali)
-~inviare base dei tempi alle N schede
-~ricevere le catture dalle N schede
-~elaborare i dati (contare i device, stimarne la posizione)
-~memorizzare in DB
+~elaborare i dati (stimarne la posizione)
+~mac variabili
+~test
 
 ----GRAFICA----
 
-~plottare dati nel DB
+CONFIGURATION
+~salvare la configurazione sul DB 
+
+TIME DIAGRAM
+~asseX:vari MAC
+~asseY:in funzione del numero di dispositivi
+~variare di 5 min alla volta
+
+SHOW's MAC FREQUENCY
+~aggiungere info temporale nel riquadro
+
+ROOM DIAGRAM
+~variare di 5 min alla volta
+~una sorta di animazione per il movimento
 
 
 
@@ -24,18 +34,3 @@
 
 
 
-SALVA-DAVE:
-- correzione errori
-- sniffing per tot secondi (60?) + eventuale loop per 5
-- hash
-- scrittura del file
-
-
-UMBERTO-MARGARET
-- connessione Client-Server
-- sistema ricezione file
-
-
-
-
-seconda prova 

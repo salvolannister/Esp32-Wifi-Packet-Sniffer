@@ -8,7 +8,7 @@ public class Configuration {
     private Double n; //parametro di configurazione che tiene conto dell'ambiente in cui avviene lo sniffing
     /* Potenza del segnale ricevuto alla distanza di riferimento di un metro */
     /* Settato a questo valore dopo varie misurazioni fatte */
-    private final Integer Px = 62;
+    private final Integer Px = -62;
     private int numEsp;
 
 

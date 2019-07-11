@@ -25,6 +25,8 @@ public class Receiver extends Thread {
 
         int waitSec = 10;
         String MacESPDavide = "24:0a:c4:9b:4f:ac";
+        String MacESPMar= "3c:71:bf:0c:b5:38";
+        String MacESPUmb= "24:0a:c4:9a:9f:3c";
 
 
 
@@ -73,8 +75,22 @@ public class Receiver extends Thread {
 
                         synchronized (EchoServer.conf){
                             if(EchoServer.conf.getMac_tab().containsKey(mac[1])==false){
-                                Payload pack=new Payload(TimeLong, new Polo( Math.random(), Double.valueOf("1.0")));
-                                EchoServer.conf.getMac_tab().put(mac[1], pack);
+
+                                if (mac[1].compareTo(MacESPDavide) != 0) {
+                                    Payload pack = new Payload(TimeLong, new Polo(0.0, 0.0));
+                                    EchoServer.conf.getMac_tab().put(mac[1], pack);
+
+                                }else if(mac[1].compareTo(MacESPUmb) != 0) {
+                                    Payload pack = new Payload(TimeLong, new Polo(3.0, 0.0));
+                                    EchoServer.conf.getMac_tab().put(mac[1], pack);
+
+                                }else if(mac[1].compareTo(MacESPMar) != 0) {
+                                    Payload pack = new Payload(TimeLong, new Polo(0.0, 2.0));
+                                    EchoServer.conf.getMac_tab().put(mac[1], pack);
+
+                                }
+
+
                             }
                             EchoServer.conf.getMac_tab().get(mac[1]).setLastTime(TimeLong);
 
@@ -97,8 +113,7 @@ public class Receiver extends Thread {
 
 
 
-                        if (mac[1].compareTo(MacESPDavide) != 0)
-                            System.out.println("---------- MAC HAS CHANGED!!!!!!!!!");
+
 
                         /*
                             trilaterazione+db da aggiungere

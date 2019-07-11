@@ -7,36 +7,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1b871214-de53-4ad8-bf0c-77c3757c0e5d" name="Default Changelist" comment="Inserita Funzione TimeStamp">
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/lib1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/fake_db.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/src/DB/DBUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/src/DB/QueryFake.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/MacController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/Mac_button.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/mac_freq.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.classpath" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.eml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.eml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/ConfigurationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/ConfigurationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/Main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../provaDB/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../provaDB/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../provaDB/.idea/dataSources/915c1877-ced3-42c5-9626-ccb13ab1835e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../provaDB/.idea/dataSources/915c1877-ced3-42c5-9626-ccb13ab1835e.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../provaDB/.idea/libraries/sqlite_jdbc_3_7_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../provaDB/.idea/libraries/sqlite_jdbc_3_7_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../provaDB/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../provaDB/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../provaDB/out/production/ProvaDB/main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../provaDB/out/production/ProvaDB/main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../provaDB/src/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../provaDB/src/main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../WORKFLOW.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../WORKFLOW.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fake_db.db" beforeDir="false" afterPath="$PROJECT_DIR$/fake_db.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Serverino/Configuration.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/Configuration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Serverino/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/Receiver.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prova.txt" beforeDir="false" afterPath="$PROJECT_DIR$/prova.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,8 +47,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Receiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1065">
-              <caret line="78" column="89" selection-start-line="78" selection-start-column="89" selection-end-line="78" selection-end-column="89" />
+            <state relative-caret-position="1177">
+              <caret line="90" column="33" lean-forward="true" selection-start-line="90" selection-start-column="33" selection-end-line="90" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -88,7 +68,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Distance.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
+            <state relative-caret-position="570">
               <caret line="48" selection-start-line="48" selection-end-line="48" />
               <folding>
                 <element signature="e#858#859#0" expanded="true" />
@@ -125,11 +105,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="150">
+              <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#624#625#0" expanded="true" />
@@ -153,10 +133,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="67">
+            <state relative-caret-position="435">
               <caret line="29" selection-start-line="29" selection-end-line="29" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -168,7 +148,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
+            <state relative-caret-position="495">
               <caret line="36" selection-start-line="36" selection-end-line="36" />
             </state>
           </provider>
@@ -218,8 +198,8 @@
         <option value="$PROJECT_DIR$/src/Payload.java" />
         <option value="$PROJECT_DIR$/src/Distance.java" />
         <option value="$PROJECT_DIR$/src/EchoServer.java" />
-        <option value="$PROJECT_DIR$/src/Configuration.java" />
         <option value="$PROJECT_DIR$/src/Receiver.java" />
+        <option value="$PROJECT_DIR$/src/Configuration.java" />
       </list>
     </option>
   </component>
@@ -374,6 +354,7 @@
       <workItem from="1562486297980" duration="55000" />
       <workItem from="1562486372964" duration="22000" />
       <workItem from="1562486519174" duration="182000" />
+      <workItem from="1562854948322" duration="3375000" />
     </task>
     <task id="LOCAL-00001" summary="prova git">
       <created>1553873564913</created>
@@ -407,7 +388,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75019000" />
+    <option name="totallyTimeSpent" value="78394000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -421,7 +402,7 @@
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1366" height="743" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18333334" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18636364" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -549,25 +530,25 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Receiver.java</url>
-          <line>45</line>
+          <line>47</line>
           <properties />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Receiver.java</url>
-          <line>116</line>
+          <line>131</line>
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Receiver.java</url>
-          <line>86</line>
+          <line>102</line>
           <properties />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Receiver.java</url>
-          <line>83</line>
+          <line>99</line>
           <properties />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
@@ -704,20 +685,21 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainClass.java" />
-    <entry file="file://$PROJECT_DIR$/src/Receiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1065">
-          <caret line="78" column="89" selection-start-line="78" selection-start-column="89" selection-end-line="78" selection-end-column="89" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/out.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="68" selection-start-column="68" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Distance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="e#858#859#0" expanded="true" />
+            <element signature="e#910#911#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -742,10 +724,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Sum_PacketRec.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Receiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1177">
+          <caret line="90" column="33" lean-forward="true" selection-start-line="90" selection-start-column="33" selection-end-line="90" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="150">
+          <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#624#625#0" expanded="true" />
@@ -764,44 +783,6 @@
             <element signature="e#1609#1610#0" expanded="true" />
             <element signature="e#1647#1648#0" expanded="true" />
             <element signature="e#1674#1675#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Sum_PacketRec.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="33" selection-start-line="33" selection-end-line="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Distance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
-          <folding>
-            <element signature="e#858#859#0" expanded="true" />
-            <element signature="e#910#911#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="67">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
