@@ -68,7 +68,7 @@ public class MacController {
                 if(risultato!=null){
                     //System.out.println("tutto ok");
                     for (String s: risultato.keySet()){
-                        addMacButton(s);
+                        addMacButton(s, DataI.getText(), DataF.getText());
                     }
 
                 }
@@ -94,11 +94,11 @@ public class MacController {
 
 
 
-    private void addMacButton(String s) {
+    private void addMacButton(String s, String dataI,  String dataF) {
 
         Button mac=new Button(s);
         mac.setPrefWidth(260);
-        mac.setOnMouseClicked(new InfoEvent(risultato.get(mac.getText()), mac.getText(),AreaInfo));
+        mac.setOnMouseClicked(new InfoEvent(risultato.get(mac.getText()), mac.getText(),AreaInfo, dataI, dataF));
         MacList.add(mac);
         System.out.println("-----------");
         System.out.println("ho aggiunto un bottone " + MacList.size());

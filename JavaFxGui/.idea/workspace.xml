@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1a11b77-13bc-4908-ade6-20b2505631e7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../server/prova socket/.idea/libraries/commons_math3_3_6_1_javadoc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/artifacts/Serverino_jar2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/.idea/artifacts/Serverino_jar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/libraries/sqlite_jdbc_3_7_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/InfoEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/InfoEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/MacController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/MacController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/Serverino.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/Serverino.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/fake_db.db" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/fake_db.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/out/production/Serverino/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/out/production/Serverino/Receiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/prova.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/prova.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/src/Distance.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/src/Distance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/src/Receiver.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -62,94 +52,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/application/MacController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
+            <state relative-caret-position="-518">
+              <caret line="70" column="55" lean-forward="true" selection-start-line="70" selection-start-column="55" selection-end-line="70" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/application/Main.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="19" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/application/MainController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/application/MACtimediag.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/application/TimeController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/application/TimeMAC.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/application/Main.java">
+        <entry file="file://$PROJECT_DIR$/src/application/InfoEvent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="39" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="39" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/application/Configuration.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="52" column="33" selection-start-line="52" selection-start-column="33" selection-end-line="52" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/module-info.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DB/QueryFake.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1751">
-              <caret line="112" column="103" selection-start-line="112" selection-start-column="103" selection-end-line="112" selection-end-column="103" />
+            <state relative-caret-position="234">
+              <caret line="27" column="85" selection-start-line="27" selection-start-column="85" selection-end-line="27" selection-end-column="85" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -182,7 +98,6 @@
         <option value="$PROJECT_DIR$/src/DB/DBUtil.java" />
         <option value="$PROJECT_DIR$/src/application/ConfigurationController.java" />
         <option value="$PROJECT_DIR$/src/application/Configuration.fxml" />
-        <option value="$PROJECT_DIR$/src/application/InfoEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/browniebytes/javafx/control/HoursPicker.java" />
         <option value="$PROJECT_DIR$/src/datetimepicker/java/com/browniebytes/javafx/control/HoursPicker.java" />
         <option value="$PROJECT_DIR$/src/datetimepicker/resources/com/browniebytes/javafx/control/DateTimePickerPopup.fxml" />
@@ -191,11 +106,12 @@
         <option value="$PROJECT_DIR$/src/application/mac_freq.fxml" />
         <option value="$PROJECT_DIR$/src/module-info.java" />
         <option value="$PROJECT_DIR$/src/application/MACfreq.fxml" />
-        <option value="$PROJECT_DIR$/src/application/MacController.java" />
         <option value="$PROJECT_DIR$/src/application/MainController.java" />
         <option value="$PROJECT_DIR$/src/DTO/Polo.java" />
         <option value="$PROJECT_DIR$/src/DB/QueryFake.java" />
         <option value="$PROJECT_DIR$/src/application/Main.fxml" />
+        <option value="$PROJECT_DIR$/src/application/MacController.java" />
+        <option value="$PROJECT_DIR$/src/application/InfoEvent.java" />
       </list>
     </option>
   </component>
@@ -210,8 +126,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -235,10 +149,16 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="application" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="JavaFxGui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -339,17 +259,18 @@
       <workItem from="1562769219547" duration="599000" />
       <workItem from="1562834284239" duration="50000" />
       <workItem from="1562852092857" duration="1456000" />
+      <workItem from="1562858705143" duration="1121000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46849000" />
+    <option name="totallyTimeSpent" value="47970000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="25" width="1366" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26492536" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23257576" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -358,7 +279,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924242" weight="0.28990227" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924242" visible="true" weight="0.28990227" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.57166123" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -436,8 +357,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/931cca2c-77d3-4549-bcfe-46c826f989e1/console.sql" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3a24c457-dc10-44d8-b00d-e9871da76404/console.sql" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/931cca2c-77d3-4549-bcfe-46c826f989e1/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3a24c457-dc10-44d8-b00d-e9871da76404/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/build.fxbuild">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -460,16 +385,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/JavaFxGui.iml">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/application/InfoEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="22" column="26" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/datetimepicker/java/com/browniebytes/javafx/control/HoursPicker.java" />
     <entry file="file://$PROJECT_DIR$/src/datetimepicker/java/com/browniebytes/javafx/control/DateTimePickerPopup.java" />
@@ -509,7 +424,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Documenti/openjfx-11.0.2_linux-x64_bin-sdk/javafx-sdk-11.0.2/lib/javafx.fxml.jar!/javafx/fxml/FXMLLoader.class" />
+    <entry file="jar://$USER_HOME$/Documenti/openjfx-11.0.2_linux-x64_bin-sdk/javafx-sdk-11.0.2/lib/javafx.fxml.jar!/javafx/fxml/FXMLLoader.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="1211" selection-start-line="1211" selection-end-line="1211" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -534,26 +455,24 @@
     <entry file="file://$PROJECT_DIR$/src/application/Configuration.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
+        <state relative-caret-position="688">
           <caret line="52" column="33" selection-start-line="52" selection-start-column="33" selection-end-line="52" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/application/mac_freq.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/application/MacController.java">
+    <entry file="file://$PROJECT_DIR$/src/application/Main.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="300">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/application/MainController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+        <state relative-caret-position="855">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
         </state>
       </provider>
     </entry>
@@ -563,7 +482,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/application/TimeController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
+        <state relative-caret-position="75">
           <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -571,16 +490,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/application/RoomController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/application/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
+        <state relative-caret-position="255">
           <caret line="17" column="39" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -593,7 +505,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DB/QueryFake.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1751">
+        <state relative-caret-position="1545">
           <caret line="112" column="103" selection-start-line="112" selection-start-column="103" selection-end-line="112" selection-end-column="103" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -601,18 +513,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/application/Main.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
+    <entry file="file://$PROJECT_DIR$/src/module-info.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="19" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
+        <state relative-caret-position="180">
+          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/module-info.java">
+    <entry file="file://$PROJECT_DIR$/src/application/RoomController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+        <state relative-caret-position="-218">
+          <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/MacController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-518">
+          <caret line="70" column="55" lean-forward="true" selection-start-line="70" selection-start-column="55" selection-end-line="70" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/InfoEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="27" column="85" selection-start-line="27" selection-start-column="85" selection-end-line="27" selection-end-column="85" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
