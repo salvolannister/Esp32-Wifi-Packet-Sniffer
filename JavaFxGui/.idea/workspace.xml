@@ -2,8 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1a11b77-13bc-4908-ade6-20b2505631e7" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/application/RoomMAC.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/RoomMAC.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/application/InfoEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/InfoEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/application/RoomController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/RoomController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/application/RoomMAC.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/RoomMAC.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/RoomMAC.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/RoomMAC.fxml" afterDir="false" />
+>>>>>>> master
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -50,9 +59,16 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/application/RoomMAC.fxml">
+<<<<<<< HEAD
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
               <caret line="18" column="131" selection-start-line="18" selection-start-column="131" selection-end-line="18" selection-end-column="131" />
+=======
+          <provider editor-type-id="JavaFX-Scene-Builder" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="132" selection-start-line="18" selection-start-column="132" selection-end-line="18" selection-end-column="132" />
+>>>>>>> master
             </state>
           </provider>
           <provider editor-type-id="JavaFX-Scene-Builder" />
@@ -122,7 +138,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
       <pane id="PackagesPane" />
+=======
+>>>>>>> master
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -155,6 +174,10 @@
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
+=======
+      <pane id="PackagesPane" />
+>>>>>>> master
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -258,12 +281,19 @@
       <workItem from="1562858705143" duration="1830000" />
       <workItem from="1562860653135" duration="1733000" />
       <workItem from="1562867731214" duration="19000" />
+<<<<<<< HEAD
       <workItem from="1562932589568" duration="663000" />
+=======
+>>>>>>> master
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="51094000" />
+=======
+    <option name="totallyTimeSpent" value="50431000" />
+>>>>>>> master
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -276,9 +306,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1366" height="743" extended-state="6" />
-    <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2439394" />
+=======
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24015151" />
+>>>>>>> master
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -545,6 +578,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/application/MACfreq.fxml">
+<<<<<<< HEAD
       <provider selected="true" editor-type-id="text-editor" />
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
@@ -559,6 +593,22 @@
         </state>
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
+=======
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/TimeMAC.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/RoomMAC.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="132" selection-start-line="18" selection-start-column="132" selection-end-line="18" selection-end-column="132" />
+        </state>
+      </provider>
+>>>>>>> master
     </entry>
     <entry file="file://$PROJECT_DIR$/src/application/RoomController.java">
       <provider selected="true" editor-type-id="text-editor">
