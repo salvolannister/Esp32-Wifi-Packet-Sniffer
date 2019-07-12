@@ -83,7 +83,7 @@ public class Receiver extends Thread {
                                     EchoServer.conf.getMac_tab().put(mac[1], pack);
                                     //DEBUG System.out.println("Actual MAC MUP: " + EchoServer.conf.getMac_tab().toString());
                                 }else if(mac[1].compareTo(MacESPUmb) == 0) {
-                                    Polo p = new Polo(3.0, 0.0);
+                                    Polo p = new Polo(2.0, 0.0);
                                     //DEBUG System.out.println("Creation of polo!! " + p.toString());
                                     Payload pack = new Payload(TimeLong, p);
                                     EchoServer.conf.getMac_tab().put(mac[1], pack);

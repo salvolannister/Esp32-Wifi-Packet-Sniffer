@@ -13,7 +13,9 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -33,6 +35,7 @@ public class RoomController implements Initializable {
     @FXML private Pane graph_container;
     @FXML private LocalDateTimeTextField DataF;
     @FXML private LocalDateTimeTextField DataI;
+    @FXML private Slider nav;
     private ScatterChart<Number, Number> grafico;
 
     private Map<String, Polo> risultato= new HashMap<>();
@@ -68,6 +71,7 @@ public class RoomController implements Initializable {
             QueryFake p=new QueryFake(db.getConn());
 
             try {
+                nav.getValue();
                 risultato=p.showPosition(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()));
                 if(risultato!=null) {
                     //System.out.println("tutto ok");
@@ -124,5 +128,11 @@ public class RoomController implements Initializable {
             e.printStackTrace();
 
         }
+    }
+
+
+    public void printValue(MouseEvent mouseEvent) {
+        System.out.println(nav.getValue());
+
     }
 }

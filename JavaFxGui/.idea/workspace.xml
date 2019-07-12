@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1a11b77-13bc-4908-ade6-20b2505631e7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/application/InfoEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/InfoEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/MacController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/MacController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/prova socket/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/application/InfoEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/InfoEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/application/RoomController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/RoomController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/application/RoomMAC.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/RoomMAC.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/RoomMAC.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/RoomMAC.fxml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -50,25 +53,20 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/application/MacController.java">
+        <entry file="file://$PROJECT_DIR$/src/application/RoomMAC.fxml">
+          <provider editor-type-id="JavaFX-Scene-Builder" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-518">
-              <caret line="70" column="55" lean-forward="true" selection-start-line="70" selection-start-column="55" selection-end-line="70" selection-end-column="55" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="270">
+              <caret line="18" column="132" selection-start-line="18" selection-start-column="132" selection-end-line="18" selection-end-column="132" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/application/InfoEvent.java">
+        <entry file="file://$PROJECT_DIR$/src/application/RoomController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="27" column="85" selection-start-line="27" selection-start-column="85" selection-end-line="27" selection-end-column="85" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="427">
+              <caret line="135" selection-start-line="135" selection-end-line="135" />
             </state>
           </provider>
         </entry>
@@ -112,6 +110,8 @@
         <option value="$PROJECT_DIR$/src/application/Main.fxml" />
         <option value="$PROJECT_DIR$/src/application/MacController.java" />
         <option value="$PROJECT_DIR$/src/application/InfoEvent.java" />
+        <option value="$PROJECT_DIR$/src/application/RoomController.java" />
+        <option value="$PROJECT_DIR$/src/application/RoomMAC.fxml" />
       </list>
     </option>
   </component>
@@ -126,6 +126,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -157,7 +158,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -259,18 +259,28 @@
       <workItem from="1562769219547" duration="599000" />
       <workItem from="1562834284239" duration="50000" />
       <workItem from="1562852092857" duration="1456000" />
-      <workItem from="1562858705143" duration="1121000" />
+      <workItem from="1562858705143" duration="1830000" />
+      <workItem from="1562860653135" duration="1733000" />
+      <workItem from="1562867731214" duration="19000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47970000" />
+    <option name="totallyTimeSpent" value="50431000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1366" height="743" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23257576" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24015151" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -279,11 +289,11 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924242" visible="true" weight="0.28990227" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924242" weight="0.28990227" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.57166123" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32899022" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49848485" weight="0.32899022" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
@@ -434,10 +444,6 @@
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/application/MACfreq.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DTO/Polo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -520,13 +526,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/application/RoomController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-218">
-          <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/application/MacController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-518">
@@ -544,6 +543,29 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/MACfreq.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/TimeMAC.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/RoomMAC.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="132" selection-start-line="18" selection-start-column="132" selection-end-line="18" selection-end-column="132" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/application/RoomController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="135" selection-start-line="135" selection-end-line="135" />
         </state>
       </provider>
     </entry>
