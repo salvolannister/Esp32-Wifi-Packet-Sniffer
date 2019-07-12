@@ -7,7 +7,7 @@ INTEGRAZIONE(jar, DB e sincronizzazione)
 ----SERVER----
 
 ~configurarsi(#schede, riferimenti spaziali)
-~elaborare i dati (stimarne la posizione)
+~pulire db
 ~mac variabili
 ~test
 
@@ -22,7 +22,6 @@ TIME DIAGRAM
 ~variare di 5 min alla volta
 
 SHOW's MAC FREQUENCY
-~aggiungere info temporale nel riquadro
 
 ROOM DIAGRAM
 ~variare di 5 min alla volta
