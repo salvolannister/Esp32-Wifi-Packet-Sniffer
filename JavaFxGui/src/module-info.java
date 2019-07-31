@@ -11,6 +11,6 @@ module JavaFxGui {
     requires transitive jfxtras.fxml;
     requires transitive jfxtras.common;
     requires transitive jfxtras.controls;
-
+    
     opens application;
 }

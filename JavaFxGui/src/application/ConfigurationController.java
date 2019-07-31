@@ -44,7 +44,8 @@ public class ConfigurationController implements Initializable{
 	@FXML private Spinner<Integer> SpinnerBox; 
 	@FXML private HBox hbox;
 	@FXML private GridPane gp;
-	
+	@FXML private TextField name;
+
 	ObservableList<TextField> macTextField = FXCollections.observableArrayList();
     ObservableList<TextField> xTextField = FXCollections.observableArrayList();
 	ObservableList<TextField> yTextField = FXCollections.observableArrayList();
@@ -156,7 +157,7 @@ private static void printField(String mac, String X, String Y) {
 						}
 						
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						/* TODO Auto-generated catch block */
 						e.printStackTrace();
 					}
 					
@@ -212,15 +213,24 @@ private static void printField(String mac, String X, String Y) {
 		 }
 	}
 
+
+
 	public void OKButtontEvent (Event event) {
 		Parent HomePage;
-		
+
 		 for( EspInfo ep : espDevice) {
 			 if(!ep.textFieldCheck()) {
 				 return;
 			 }
 		 }
-		
+		// check of name field;
+		 if( name.getText() == null){
+		     System.out.println(" No name was inserted ") ;
+		 return;
+		 }else{
+		     String id = name.getText();
+         }
+
 			System.out.println("WOWWWWW");
 	  
 			try {
