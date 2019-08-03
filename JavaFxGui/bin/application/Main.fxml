@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -20,7 +21,10 @@
             <Button mnemonicParsing="false" onAction="#startServer" text="Start" BorderPane.alignment="CENTER" />
          </center>
          <top>
-            <Button fx:id="cnfg1" mnemonicParsing="false" onAction="#openConfiguration" onMouseClicked="#openConfiguration" prefHeight="110.0" prefWidth="160.0" text="Configuration" BorderPane.alignment="CENTER" />
+            <Button fx:id="cnfg1" mnemonicParsing="false" onAction="#openSetting" onMouseClicked="#openSetting" prefHeight="110.0" prefWidth="160.0" text="Settings" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin></Button>
          </top>
       </BorderPane>
    </children>
