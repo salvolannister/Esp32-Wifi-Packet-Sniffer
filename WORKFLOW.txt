@@ -17,9 +17,6 @@ INTEGRAZIONE(jar, DB e sincronizzazione)
 ----GRAFICA----
 
 CONFIGURATION(ConfigurationController)
-
-- inserire nome ROOM
-~salvare la configurazione sul DB 
 ~caricare configurazione esistente
 ~richiamarla dal server
 

@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a8575da2-cee1-4b1d-a700-1d7c25512939" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DB/QueryConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB/QueryConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/MacController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/MacController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WORKFLOW.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../WORKFLOW.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
