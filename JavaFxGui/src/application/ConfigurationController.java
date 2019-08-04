@@ -2,12 +2,15 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import DB.DBUtil;
+import DB.QueryConfiguration;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -215,7 +218,7 @@ private static void printField(String mac, String X, String Y) {
 
 
 
-	public void OKButtontEvent (Event event) {
+	public void OKButtontEvent (Event event) throws SQLException {
 		Parent HomePage;
 
 		 for( EspInfo ep : espDevice) {
@@ -227,30 +230,44 @@ private static void printField(String mac, String X, String Y) {
 		 if( name.getText() == null){
 		     System.out.println(" No name was inserted ") ;
 		 return;
-		 }else{
-		     String id = name.getText();
-         }
+		 }
 
 			System.out.println("WOWWWWW");
-	  
-			try {
-				HomePage = FXMLLoader.load(getClass().getResource("Main.fxml"));
-				Scene HomePageScene = new Scene (HomePage);
-				Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-				appStage.hide();
-				appStage.setScene(HomePageScene);
-				appStage.show();
-				/*code to send information to the database*/
+	  			/*write in the DB */
+			boolean go = writeData();
+
+			if( go) {
+				try {
+					HomePage = FXMLLoader.load(getClass().getResource("Main.fxml"));
+					Scene HomePageScene = new Scene(HomePage);
+					Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+					appStage.hide();
+					appStage.setScene(HomePageScene);
+					appStage.show();
+					/*code to send information to the database*/
 				} catch (IOException e) {
-					
+
 					e.printStackTrace();
-					
+
 				}
-		
+			}
      
 	}
 
-    public void back(MouseEvent mouseEvent) {
+	private boolean writeData() throws SQLException {
+		String confName = name.getText();
+		DBUtil db = new DBUtil();
+		db.openConnection("database.db");
+		QueryConfiguration qC  = new QueryConfiguration(db.getConn());
+		for (EspInfo ep: espDevice
+			 ) {
+			qC.addConfiguration(ep.getMAC(),confName,ep.getX(),ep.getY());
+		}
+
+		return true;
+	}
+
+	public void back(MouseEvent mouseEvent) {
 
 		Parent configurationPage;
 		try {
