@@ -2,25 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a8575da2-cee1-4b1d-a700-1d7c25512939" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DB/QueryConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DB/QueryRoom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/DB/DBUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/DB/DBUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/application/ConfigurationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/ConfigurationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/application/EspInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/EspInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/application/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/application/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/application/TimeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/application/TimeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DB/DBUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB/DBUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/ConfigurationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/ConfigurationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/EspInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/EspInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/NewRoom.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/NewRoom.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/NewRoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/NewRoomController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/TimeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/TimeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../provaDB/fake_db.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DB/QueryConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB/QueryConfiguration.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
