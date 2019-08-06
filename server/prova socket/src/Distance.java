@@ -4,6 +4,12 @@ public class Distance {
     private Polo posizione;
     private Integer rssi;
 
+    /**
+     * Distance rappresenta, dato un pacchetto, la posizione della schedina che lo ha catturato e
+     * il valore di RSSI rivelato dalla stessa per quel pacchetto specifico.
+     * @param posizione
+     * @param rssi
+     */
     public Distance(Polo posizione, Integer rssi) {
         this.posizione = posizione;
         this.rssi = rssi;

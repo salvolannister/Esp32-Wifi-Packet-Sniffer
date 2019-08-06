@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Configuration {
 
+    //the string value is the MAC ADDRESS
     private Map<String, Payload> mac_tab;
     private Double n; //parametro di configurazione che tiene conto dell'ambiente in cui avviene lo sniffing
     /* Potenza del segnale ricevuto alla distanza di riferimento di un metro */

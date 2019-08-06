@@ -16,6 +16,6 @@
       <Button fx:id="SearchButton" layoutX="716.0" layoutY="537.0" mnemonicParsing="false" onMouseClicked="#search" text="Cerca" />
       <Button fx:id="BackButton" layoutX="43.0" layoutY="32.0" mnemonicParsing="false" onMouseClicked="#back" text="&lt;-" />
       <Pane fx:id="graph_container" layoutX="92.0" layoutY="48.0" prefHeight="367.0" prefWidth="489.0" />
-      <Slider fx:id="nav" blockIncrement="5.0" layoutX="92.0" layoutY="457.0" max="25.0" minorTickCount="5"  onMouseDragReleased="#printValue" prefHeight="16.0" prefWidth="489.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Slider fx:id="nav" blockIncrement="5.0" layoutX="92.0" layoutY="457.0" majorTickUnit="5.0" max="30.0" minorTickCount="0" onMouseDragReleased="#printValue" prefHeight="16.0" prefWidth="412.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
    </children>
 </AnchorPane>

@@ -66,11 +66,11 @@ public class Sum_PacketRec {
 
     @Override
     public String toString() {
-        return "Sum_PacketRec{" +
+        return "\nSum_PacketRec{\n" +
                 "RSSI=" + RSSI +
-                ", MacSource='" + MacSource + '\'' +
-                ", digest='" + digest + '\'' +
-                ", TimeStamp='" + TimeStamp + '\'' +
+                ", \nMacSource='" + MacSource + '\'' +
+                ", \ndigest='" + digest + '\'' +
+                ", \nTimeStamp='" + TimeStamp + '\'' + "\n"+
                 '}';
     }
 }

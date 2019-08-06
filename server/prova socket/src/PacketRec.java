@@ -5,6 +5,11 @@ import java.util.*;
 
 public class PacketRec {
 
+    /***
+     * RSSI: string -> MAC della schedina che ha sniffato il pacchetto. Integer -> valore dell'RSSI
+     * n_ESP: numero di ESP che hanno catturato lo stesso pacchetto.
+     */
+
     private Map<String, Integer> RSSI;
     private Integer n_ESP;
     private String MacSource;
@@ -32,13 +37,13 @@ public class PacketRec {
 
     @Override
     public String toString() {
-        return "PacketRec{" +
-                "RSSI=" + RSSI +
-                ", n_ESP=" + n_ESP +
-                ", MacSource='" + MacSource + '\'' +
-                ", SSID='" + SSID + '\'' +
-                ", Digest='" + Digest + '\'' +
-                ", TimeStamp='"+ TimeStamp +'\''+
+        return "\nPacketRec{" +
+                "\nRSSI=" + RSSI +
+                ", \nn_ESP=" + n_ESP +
+                ", \nMacSource='" + MacSource + '\'' +
+                ", \nSSID='" + SSID + '\'' +
+                ", \nDigest='" + Digest + '\'' +
+                ", \nTimeStamp='"+ TimeStamp +'\''+"\n"+
                 '}';
     }
 
@@ -109,7 +114,8 @@ public class PacketRec {
      * @param id
      * @param rssi
      *
-     * Aggiornamento della Mappa contenente MAC, RSSI
+     * Aggiornamento della Mappa contenente MAC, RSSI. Ovvero aggiunta di un'entry nella mappa RSSI e aggiornamento numero di ESP
+     * che hanno ricevuto quel determinato pacchetto.
      */
     public void newSignal(String id,int rssi) {
         setN_ESP(getN_ESP()+1);
