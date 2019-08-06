@@ -56,4 +56,34 @@ public class QueryRoom {
         else
             return false;
     }
+
+    public String[] getRoomName() throws SQLException {
+        String[] rooms = new String[];
+        String sql = "SELECT Name FROM Room ";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        int i = 0;
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        /* is Before first check if the pointer is before first,
+        if it is this means there is data in
+        result set
+         */
+
+        if (!resultSet.isBeforeFirst() ) {
+            System.out.println("No data in Room");
+            return null;
+        }
+        while(resultSet.next()) {
+          rooms[i] = resultSet.getString(0);
+          i++;
+      }
+
+
+        return rooms;
+    }
+
+    public ArrayList[] getRoomDim(String Name){
+        
+    }
+
 }
