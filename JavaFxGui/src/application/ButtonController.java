@@ -15,7 +15,7 @@ public class ButtonController implements Initializable{
 
 	@FXML private TextField mac;
 	@FXML private GridPane gp;
-	@Override
+	//@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		

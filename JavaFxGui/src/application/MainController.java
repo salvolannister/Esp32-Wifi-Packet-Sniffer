@@ -35,14 +35,14 @@ public class MainController {
 //	it will tell that the controller is connected to FXML file
 	@FXML
 		
-		public void openConfiguration(ActionEvent event) {
-		Parent configurationPage;
+		public void openSetting(ActionEvent event) {
+		Parent settingPage;
 		try {
-			configurationPage = FXMLLoader.load(getClass().getResource("Configuration.fxml"));
-			Scene configurationPageScene = new Scene (configurationPage);
+			settingPage = FXMLLoader.load(getClass().getResource("newSetting.fxml"));
+			Scene settingPageScene = new Scene (settingPage);
 			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
 			appStage.hide();
-			appStage.setScene(configurationPageScene);
+			appStage.setScene(settingPageScene);
 			appStage.show();
 			
 		} catch (IOException e) {

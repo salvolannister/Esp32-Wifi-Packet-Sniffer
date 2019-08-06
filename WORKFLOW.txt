@@ -1,11 +1,14 @@
 ----CLIENT----
 
+
+~sniffing di un minuto
 ~test
 
 INTEGRAZIONE(jar, DB e sincronizzazione)
 
 ----SERVER----
 
+~costante per il timeout
 ~configurarsi(#schede, riferimenti spaziali)
 ~pulire db
 ~mac variabili
@@ -13,17 +16,24 @@ INTEGRAZIONE(jar, DB e sincronizzazione)
 
 ----GRAFICA----
 
-CONFIGURATION
-~salvare la configurazione sul DB 
+CONFIGURATION(ConfigurationController)
+~caricare configurazione esistente
+~richiamarla dal server
 
-TIME DIAGRAM
-~asseX:vari MAC
-~asseY:in funzione del numero di dispositivi
-~variare di 5 min alla volta
+TIME DIAGRAM(TimeController)
+~asseX:tempo fisso(discreto 1-5 minuti)
+~asseY:numero di dispositivi totali
+~solo data e ora inizio
+~BUG date picker che si disabilitano
 
 SHOW's MAC FREQUENCY
+~modificare output: non ci sono risultati nell'intervallo x
+~disabilitare
+
 
 ROOM DIAGRAM
+~il server dopo aver scritto le posizione dell'ultima cattura, richiama la grafica.
+
 ~variare di 5 min alla volta
 ~una sorta di animazione per il movimento
 

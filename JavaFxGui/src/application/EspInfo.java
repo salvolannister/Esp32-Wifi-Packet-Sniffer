@@ -11,6 +11,19 @@ public class EspInfo {
 	private TextField x;
 	private TextField y;
 	private TextField mac;
+
+	public String getMAC() {
+		return MAC;
+	}
+
+	public float getX() {
+		return X;
+	}
+
+	public float getY() {
+		return Y;
+	}
+
 	private String MAC;
 	private float X;
 	private float Y;
@@ -25,8 +38,10 @@ public class EspInfo {
 	public boolean textFieldCheck(){
 	
 		
-		if(checkFieldXY(x,X)) {
-			if(checkFieldXY(y,Y)){
+		if(checkFieldXY(x) ){
+			X =  Float.parseFloat(x.getText());
+			if(checkFieldXY(y)){
+				Y = Float.parseFloat(x.getText());
 				/*check mac address*/
 				if(mac.getText() == null || mac.getText().trim().isEmpty()){
 					 Alert fail= new Alert(AlertType.INFORMATION);
@@ -54,7 +69,7 @@ public class EspInfo {
 		}
 	}
 	
-	private static boolean checkFieldXY( TextField o, float N) {
+	private static boolean checkFieldXY( TextField o) {
 		
 		if(o.getText() == null || o.getText().trim().isEmpty()) {
 			 Alert fail= new Alert(AlertType.INFORMATION);
@@ -65,7 +80,6 @@ public class EspInfo {
 		}else {
 		
 			try {
-			N = Float.parseFloat(o.getText());
 			
 			}catch ( NumberFormatException e) {
 				o.setText("Must be a float or Integer");

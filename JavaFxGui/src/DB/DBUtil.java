@@ -28,9 +28,11 @@ public class DBUtil {
 
             //rendo indipendente il db dalpercorso
             File f=new File(".");
-            f.getAbsolutePath();
-            String url ="jdbc:sqlite:"+f.getAbsolutePath()+"//"+DbName;
+            String path = f.getAbsolutePath();
 
+            String url ="jdbc:sqlite:"+f.getAbsolutePath() +"//"+DbName;
+           // url = url.replaceFirst("\\.","");
+           System.out.println("URL "+url);
             //conenssione al db
             conn=DriverManager.getConnection(url);
 
