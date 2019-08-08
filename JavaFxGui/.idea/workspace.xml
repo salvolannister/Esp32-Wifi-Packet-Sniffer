@@ -5,10 +5,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_swt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/javafx_swt.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/jfxtras_common_9_0_r1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/jfxtras_common_9_0_r1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/DB/QueryRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB/QueryRoom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/MacController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/MacController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/RoomController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../WORKFLOW.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../WORKFLOW.txt" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/src/DB/QueryConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB/QueryConfiguration.java" afterDir="false" />
+>>>>>>> parent of 1e67d47... aggioranto workflow, update del nome del DB
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
