@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Serverino1">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/bin/Serverino.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

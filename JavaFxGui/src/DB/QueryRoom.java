@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -57,8 +59,8 @@ public class QueryRoom {
             return false;
     }
 
-    public String[] getRoomName() throws SQLException {
-        String[] rooms = new String[];
+    public List<String> getRoomName() throws SQLException {
+        List<String> rooms = new ArrayList<>();
         String sql = "SELECT Name FROM Room ";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         int i = 0;
@@ -74,16 +76,18 @@ public class QueryRoom {
             return null;
         }
         while(resultSet.next()) {
-          rooms[i] = resultSet.getString(0);
-          i++;
+          rooms.add(resultSet.getString(0));
+
       }
 
 
         return rooms;
     }
 
+    
+
     public ArrayList[] getRoomDim(String Name){
-        
+        return  null;
     }
 
 }
