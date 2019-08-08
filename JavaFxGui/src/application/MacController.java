@@ -57,7 +57,7 @@ public class MacController {
             Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
 
             DBUtil db=new DBUtil();
-            if(!db.openConnection("database.db")){
+            if(!db.openConnection("fake_db.db")){
                 System.err.println("Errore di Connessione al DB. Impossibile Continuare");
                 System.exit(-1);
             }
