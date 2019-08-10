@@ -95,6 +95,53 @@ public class QueryFake {
     }
 
 
+
+    public Map<String, Long> showMacPerRoom(String timeI, String timeF, String room) throws SQLException {
+
+        PreparedStatement pstmt;
+        Map<String, Long> risultato= new HashMap<>();
+
+        try {
+            conn.setAutoCommit(false);
+
+            String s=new String("SELECT MAC, count(*) AS val FROM Position WHERE Timestamp >= ? AND Timestamp <= ? AND Room = ? GROUP BY MAC ORDER BY count(*) DESC");
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+                pstmt.setString(1,  timeI);
+                pstmt.setString(2, timeF);
+                pstmt.setString(3, room);
+                ResultSet res=pstmt.executeQuery();
+
+                while (res.next()){
+                    risultato.put(res.getString("MAC"), res.getLong("val"));
+                    //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
+                }
+
+
+                System.out.println(risultato);
+
+                if(risultato.isEmpty()==false){
+                    conn.commit();
+                    return risultato;
+                }
+                return null;
+
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+
+        }catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+            System.out.println("errore");
+            return null;
+        }
+
+    }
+
+
+
     public Map<String, Polo> showPosition(String timeI, String timeF) throws SQLException {
 
         PreparedStatement pstmt;

@@ -17,7 +17,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="sqlite-jdbc-3.7.2.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/sqlite-jdbc-3.7.2.jar!/" />
@@ -26,86 +26,103 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx-swt.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/jfxtras-controls-9.0-r1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.base.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/jfxtras-fxml-9.0-r1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.controls.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/jfxtras-common-9.0-r1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.fxml.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx.web.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.graphics.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx.swing.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.media.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx.media.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.swing.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx.graphics.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.web.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx.fxml.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="file://C:/Program Files/Java/jfxtras" />
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx.controls.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://C:/Program Files/Java/jfxtras" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx.base.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/javafx-sdk-12.0.2/lib/javafx-swt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>

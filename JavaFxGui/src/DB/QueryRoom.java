@@ -62,9 +62,12 @@ public class QueryRoom {
     public List<String> getRoomName() throws SQLException {
         List<String> rooms = new ArrayList<>();
         String sql = "SELECT Name FROM Room ";
+
+
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         int i = 0;
         ResultSet resultSet = preparedStatement.executeQuery();
+
 
         /* is Before first check if the pointer is before first,
         if it is this means there is data in
@@ -76,11 +79,9 @@ public class QueryRoom {
             return null;
         }
         while(resultSet.next()) {
-          rooms.add(resultSet.getString(0));
+          rooms.add(resultSet.getString(1));
 
       }
-
-
         return rooms;
     }
 
