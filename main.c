@@ -644,7 +644,7 @@ static void tcp_sendPacket()
 		sprintf(string_to_send, "CHAN=%02d/RSSI=%02d", x.channel, x.rssi); //final string = CHAN+RSSI
 
 		if (x.length_ssid != 0) {
-			sprintf(temp, "/SSID_length=%d/SSID_%s", x.length_ssid, x.ssid);
+			sprintf(temp, "/SSID_length=%d/SSID_=%s", x.length_ssid, x.ssid);
 			strcat(string_to_send, temp);
 		}
 		else
