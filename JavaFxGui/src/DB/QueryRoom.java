@@ -87,8 +87,29 @@ public class QueryRoom {
 
     
 
-    public ArrayList[] getRoomDim(String Name){
-        return  null;
+    public ArrayList<Float> getRoomDim(String Name) throws SQLException {
+
+        String sql = "SELECT X,Y FROM Room WHERE Name = ? ";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1, Name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        /* is Before first check if the pointer is before first,
+        if it is this means there is data in
+        result set
+         */
+
+        if (!resultSet.isBeforeFirst() ) {
+            System.out.println("No Room with this name");
+            return null;
+        }
+
+        Float X = resultSet.getFloat(1);
+        Float Y = resultSet.getFloat( 2);
+        ArrayList<Float> dim = new ArrayList<>();
+        dim.add(X);
+        dim.add(Y);
+        return  dim;
     }
 
 }
