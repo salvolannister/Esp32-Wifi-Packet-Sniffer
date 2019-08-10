@@ -144,9 +144,19 @@ public class Packet {
 	 */
 	private void extractSSID(String packetChar) {
 		String[] begin = packetChar.split("SSID_length=");
-		String[] ssid = begin[1].split("/");
-		if(ssid[0]!="0")
-			setSSID(ssid[0]);
+		String[] ssid_len = begin[1].split("/");
+		//System.out.println("SSID LENGHT = " + ssid_len[0]);
+		//if(ssid_len[0]!="0"){
+		//TODO check if ssid capture is correct!!!!
+		if(ssid_len[0].compareTo("0") != 0){
+			String[] _ssid = packetChar.split("SSID_=");
+			String ssid = _ssid[1].split("/")[0];
+			if(ssid!=null){
+				System.out.println("SSID = " + ssid);
+				setSSID(ssid);
+			}
+			//setSSID(ssid[0]);
+		}
 		else
 			setSSID(null);
 	}
