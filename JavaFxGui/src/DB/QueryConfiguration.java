@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class QueryConfiguration {
@@ -49,6 +50,7 @@ public class QueryConfiguration {
         }
     }
 
+    /* Reads MAC, X, Y belonging to a determinated Configuration Name */
     public Map<String, ArrayList<Float>> readConfiguration(String name) {
         PreparedStatement pstmt;
         HashMap<String, ArrayList<Float>> risultato = new HashMap<>();
@@ -83,4 +85,37 @@ public class QueryConfiguration {
         }
     }
 
+    public List<String> getConfNames(){
+
+        PreparedStatement pstmt;
+        List<String> risultato = new ArrayList<>();
+
+        try {
+            conn.setAutoCommit(false);
+
+            String sql = new String("SELECT Name FROM Configuration GROUP BY NAME");
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(sql)) {
+
+                ResultSet res = pstmt.executeQuery();
+
+                while (res.next()) {
+
+                    String name = res.getString("Name");
+                    risultato.add(name);
+                    //System.out.println("Name " +name);
+                }
+
+
+                if (risultato.isEmpty() == false) {
+                    conn.commit();
+                    return risultato;
+                }
+                return null;
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }
