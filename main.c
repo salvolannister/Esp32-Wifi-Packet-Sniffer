@@ -30,7 +30,7 @@
 #define	WIFI_CHANNEL_MAX		(13)
 #define	WIFI_CHANNEL_SWITCH_INTERVAL	(500)
 #define NO_SSID "no ssid"
-#define SNIFFING_TIME 15 // tempo di sniffamento in secondi
+#define SNIFFING_TIME 40 // tempo di sniffamento in secondi
 #define PORT "8080" //Server port
 
 
@@ -43,10 +43,10 @@
 //DAVIDE AP configuration
 #define EXAMPLE_WIFI_SSID "Ntani"
 #define EXAMPLE_WIFI_PASS "davidedavide"
-//#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
+#define HOST_IP_ADDR "192.168.43.7" //Server ip addres
 
 //SERVER ADDRESS UMBERTO!!
-#define HOST_IP_ADDR "192.168.43.26" //Server ip addres
+//#define HOST_IP_ADDR "192.168.43.26" //Server ip addres
 
 
 static bool FIRST = true; /* Only used in startup: if obtain_time() can't set current time for the first time -> reboot() */
@@ -155,6 +155,8 @@ app_main(void)
 	esp_efuse_mac_get_default(espMac); //get mac address
 
 	int waitingTime = tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
+	if (waitingTime <= 0)
+		reboot("time error");
 	//wait
 	printf("--------------- %d SECONDS WAITING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
 	vTaskDelay(waitingTime*1000 / portTICK_PERIOD_MS);
