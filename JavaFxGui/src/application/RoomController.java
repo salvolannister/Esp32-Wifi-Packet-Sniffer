@@ -1,8 +1,12 @@
 package application;
 
 import DB.DBUtil;
+import DB.QueryConfiguration;
 import DB.QueryFake;
+import DB.QueryRoom;
 import DTO.Polo;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,6 +17,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.DragEvent;
@@ -25,9 +30,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class RoomController implements Initializable {
 
@@ -36,9 +39,16 @@ public class RoomController implements Initializable {
     @FXML private LocalDateTimeTextField DataF;
     @FXML private LocalDateTimeTextField DataI;
     @FXML private Slider nav;
+    @FXML private ComboBox<String> roomCB;
+    @FXML private ComboBox<String> configCB;
+    @FXML private Button start;
+    @FXML private Button stop;
     private ScatterChart<Number, Number> grafico;
 
     private Map<String, Polo> risultato= new HashMap<>();
+    private ObservableList<String> roomList = FXCollections.observableArrayList();
+    private List<String> readList = new ArrayList<>();
+    private ObservableList<String> configList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,6 +59,45 @@ public class RoomController implements Initializable {
         grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
         grafico.setTitle("Posizione");
         graph_container.getChildren().add(grafico); //aggiungo un grafico vuoto
+
+        /* setting content in Room and Configuration button*/
+        try {
+            DBUtil db = new DBUtil();
+            if (!db.openConnection("database.db")) {
+                System.err.println("Errore di Connessione al DB. Impossibile Continuare");
+                System.exit(-1);
+            }
+
+            QueryRoom p = new QueryRoom(db.getConn());
+            QueryConfiguration qC = new QueryConfiguration(db.getConn());
+
+            try {
+             readList = p.getRoomName();
+
+                if (readList != null) {
+                    for (String room : readList) {
+                        roomList.add(room);
+                        System.out.println(room);
+                    }
+                }
+                List<String> readListConf = qC.getConfNames();
+                if (readListConf != null) {
+                    for (String config : readListConf) {
+                        configList.add(config);
+                       // System.out.println(config);
+                    }
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            db.closeConnection();
+            configCB.setItems(configList);
+            roomCB.setItems(roomList);
+        }catch(NullPointerException n){
+            return;
+        }
     }
 
     public void search(MouseEvent mouseEvent) {
