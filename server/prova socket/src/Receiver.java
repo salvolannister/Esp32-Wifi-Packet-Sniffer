@@ -141,9 +141,12 @@ public class Receiver extends Thread {
                         //Si sfrutta in questo modo il tempo di sniffing della schedina per l'elaborazione lato Server.
                         //Dunque si calcola la distanza
                         //e si aggiungono le info sul DB
+                        EchoServer.computeAvarage();
                         synchronized (EchoServer.sum_tab){
                             if(EchoServer.getNEsp()>2){
                                 System.out.println("MINUMUM # OF ESP OK!!!");
+                                //todo debug
+                                computeAvarage();
                                 for(Sum_PacketRec p:EchoServer.sum_tab){
                                     List<Distance> dist=new ArrayList<>();
                                     for(String s:p.getRSSI().keySet()){
@@ -247,18 +250,65 @@ public class Receiver extends Thread {
             }
             if(esito==true) {
                 synchronized (EchoServer.sum_tab) {
+                    boolean trovato = false;
                     if (tab.get(p.getDigest()).getN_ESP() == EchoServer.getNEsp()) { //una volta inserito controllo se il pacchetto è stato inviato da tutte le schedine
-                        Sum_PacketRec s = new Sum_PacketRec(tab.get(p.getDigest()).getRSSI(),
-                                tab.get(p.getDigest()).getMacSource(),
-                                tab.get(p.getDigest()).getDigest(),
-                                tab.get(p.getDigest()).getTimeStamp());
-                        EchoServer.sum_tab.add(s);
-                        //EchoServer.tab.remove(p.getDigest());
+
+                        //si verifica se è stato già rilevato quel determinato mac tramite altri pacchetti ricevuti da tutte le schedine.
+                        //ovvero, se esiste già un'entry in sum_tab che contiene quel determinato mac.
+                        for(Sum_PacketRec pkt:EchoServer.sum_tab){
+                            if(tab.get(p.getDigest()).getMacSource().compareTo(pkt.getMacSource())==0){
+                                //si aggiunge al primo pacchetto sniffato e insierito in sum_tab un nuovo elemento nella
+                                //lista RSSIs in modo da collezionare tutti i pacchetti relativi ad uno stesso mac address
+                                //e ricevuto da tutte le schedine
+                                pkt.addRSSI(tab.get(p.getDigest()).getRSSI());
+                                trovato = true;
+                                System.out.println("MAC già catturato nell'arco del minuto -> aggiungo info a packet esistente");
+                                break;
+                            }
+                        }
+
+                        if(!trovato)
+                        {
+                            System.out.println("Nuovo MAC catturato");
+                            Sum_PacketRec s = new Sum_PacketRec(tab.get(p.getDigest()).getRSSI(),
+                                    tab.get(p.getDigest()).getMacSource(),
+                                    tab.get(p.getDigest()).getDigest(),
+                                    tab.get(p.getDigest()).getTimeStamp());
+
+                            EchoServer.sum_tab.add(s);
+                            //EchoServer.tab.remove(p.getDigest());
+                        }
                     }
                 }
             }
             return esito;
         }
+
+    private void computeAvarage(){
+        for(Sum_PacketRec pkt: EchoServer.sum_tab) {
+            if (pkt.getRSSIs().size() > 1) //se invece il mac è stato catturato una sola volta non è possibile calcolare la media
+            {
+                Iterator it = pkt.getRSSI().entrySet().iterator();
+                //iteriamo su tutte le entry nella map rssi di sumPacketRec. La usiamo per accedere alle chiavi (ovvero MAC della schedina).
+                while (it.hasNext()){
+                    Map.Entry pair = (Map.Entry)it.next();
+                    String key = (String) pair.getKey(); //ESP mac address
+                    pair.setValue(0);
+                    for (Map<String, Integer> rssi: pkt.getRSSIs()){
+                        Integer rssiSum = rssi.get(key);
+                        rssiSum += (Integer) pair.getValue();
+                        pair.setValue(rssiSum);
+                    }
+                    System.out.println("key = " + key + " Somma calcolata = " + pair.getValue());
+                    System.out.println("media calocata per key = " + key + " Come: " + (Integer)pair.getValue() + " / " + pkt.getRSSIs().size());
+                    pair.setValue((Integer)pair.getValue()/pkt.getRSSIs().size());
+                }
+                System.out.println("lista di Map = " + pkt.getRSSIs());
+                System.out.println("Map con media calcolata = " + pkt.getRSSI());
+            }
+        }
+
+    }
 
     private Polo computePosition(List<Distance> d) {
 
