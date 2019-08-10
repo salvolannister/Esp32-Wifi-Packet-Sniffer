@@ -1,5 +1,7 @@
 package DB;
 
+import application.EspInfo;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,24 +53,22 @@ public class QueryConfiguration {
     }
 
     /* Reads MAC, X, Y belonging to a determinated Configuration Name */
-    public Map<String, ArrayList<Float>> readConfiguration(String name) {
+    public ArrayList<EspInfo> readConfiguration(String name) {
         PreparedStatement pstmt;
-        HashMap<String, ArrayList<Float>> risultato = new HashMap<>();
+        ArrayList<EspInfo> risultato = new ArrayList<>();
 
         try {
             conn.setAutoCommit(false);
 
-            String s = new String("SELCET MAC, X, Y FROM Configuration WHERE Name = ?");
+            String s = new String("SELECT MAC, X, Y FROM Configuration WHERE Name = ?");
             try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
                 pstmt.setString(1, name);
                 ResultSet res = pstmt.executeQuery();
 
                 while (res.next()) {
-                    ArrayList<Float> coordinates = new ArrayList<>();
-                    String MAC = res.getString("MAC");
-                    coordinates.add(res.getFloat("X"));
-                    coordinates.add(res.getFloat("Y"));
-                    System.out.println("MAC " + MAC + "X " + coordinates.get(0) + "Y " + coordinates.get(1));
+                    EspInfo eI = new EspInfo( res.getFloat("X"), res.getFloat("Y"), res.getString("MAC"));
+                    risultato.add(eI);
+                    System.out.println("MAC " + eI.getMAC() + "X " + eI.getX() + "Y " + eI.getY());
                 }
 
 

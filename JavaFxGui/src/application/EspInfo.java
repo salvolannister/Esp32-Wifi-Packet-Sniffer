@@ -7,10 +7,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
 public class EspInfo {
-	
+	/* Classe usata per memorizzare dati relativi ai dispositivi
+	Esp
+	 */
+
 	private TextField x;
 	private TextField y;
 	private TextField mac;
+
+
 
 	public String getMAC() {
 		return MAC;
@@ -34,7 +39,13 @@ public class EspInfo {
 		this.y = y;
 		this.mac = mac;
 	}
-	
+
+	public EspInfo(Float X, Float Y, String MAC){
+		this.X = X;
+		this.Y = Y;
+		this.MAC = MAC;
+	}
+
 	public boolean textFieldCheck(){
 	
 		

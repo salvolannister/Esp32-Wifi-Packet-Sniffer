@@ -118,26 +118,58 @@ public class RoomController implements Initializable {
                 System.exit(-1);
             }
             QueryFake p=new QueryFake(db.getConn());
+            QueryRoom qR = new QueryRoom(db.getConn());
+            QueryConfiguration qC = new QueryConfiguration(db.getConn());
 
             try {
+                /*slider con il tempo*/
+
                 nav.getValue();
                 risultato=p.showPosition(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()));
+                ArrayList<Float> roomDim = qR.getRoomDim(roomCB.getValue());
+                /* aggiusto gli assi in base
+                alla dimensione della stanza */
+                final NumberAxis xAxis = new NumberAxis(0, roomDim.get(0), 0.01);
+                final NumberAxis yAxis = new NumberAxis(0, roomDim.get(1), 0.01);
+                xAxis.setLabel("posX");
+                yAxis.setLabel("posY");
+                graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
+                grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
+                grafico.setTitle("Posizione");
+
                 if(risultato!=null) {
                     //System.out.println("tutto ok");
 
+                    /* add a collection of points
+                    with a determinated color*/
+                    XYChart.Series series1 = new XYChart.Series();
+                    XYChart.Series series2 = new XYChart.Series();
+                    series1.setName("device");
+                    series2.setName("Esp");
 
-
-
-                    XYChart.Series series = new XYChart.Series();
+                    /*aggiunge la posizione delle schedine*/
                     for (String s : risultato.keySet()) {
-
-                        series.getData().add(new XYChart.Data(risultato.get(s).getX(), risultato.get(s).getY()));
+                        /*aggiunge i dati delle schedine al grafico
+                        .getX() è un metodo di Polo
+                         */
+                        series1.getData().add(new XYChart.Data(risultato.get(s).getX(), risultato.get(s).getY()));
 
                     }
-                    graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
-                    grafico.getData().add(series);
-                    graph_container.getChildren().add(grafico);
 
+                    ArrayList<EspInfo> espInfos = qC.readConfiguration(configCB.getValue());
+                   if(espInfos !=  null) {
+
+                       for (EspInfo eI: espInfos) {
+                        /*aggiunge i dati delle schedine al grafico
+                        .getX() è un metodo di Polo
+                         */
+                           series2.getData().add(new XYChart.Data(eI.getX(), eI.getY()));
+
+                       }
+                       grafico.getData().add(series1);
+                       grafico.getData().add(series2);
+                       graph_container.getChildren().add(grafico);
+                   }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

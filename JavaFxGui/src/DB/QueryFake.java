@@ -149,7 +149,7 @@ public class QueryFake {
 
         try {
             conn.setAutoCommit(false);
-
+            /* DESC sta per descendant */
             String s=new String("SELECT MAC, AVG(X) AS posX, AVG(Y) AS posY FROM Position WHERE Timestamp >= ? AND Timestamp <= ? GROUP BY MAC ORDER BY count(*) DESC");
             try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
                 pstmt.setString(1,  timeI);
