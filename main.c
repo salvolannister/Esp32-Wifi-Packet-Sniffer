@@ -20,6 +20,7 @@
 #include "esp_log.h"
 #include "apps/sntp/sntp.h"
 #include <stdlib.h>
+#include <stdatomic.h>
 //tcp connection
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -116,6 +117,7 @@ void ComputHashMD5();
 
 P_array Sniffed_packet;
 bool stopSniffing = false;
+atomic_bool stopSniff;
 int rebooted = 1;
 //mac address
 uint8_t espMac[6];
@@ -134,6 +136,7 @@ static void reboot(char *msg_err);
 void
 app_main(void)
 {
+	atomic_store(&stopSniff, false);
     int start_time;
     time_t now; /*struttura che viene aggiornata con time, mostra il tempo passato da una det. data*/
    // struct tm timeinfo;/*struttura per accedere ai campi di now*//*struttura per accedere ai campi di now*/
@@ -172,7 +175,8 @@ app_main(void)
 		//after tot seconds stop sniffing packets, print the result and send message to server. Then, restart sniffing packets.
 		vTaskDelay(sleep_time/portTICK_PERIOD_MS);
 		printf("--------------- %d SEC PASSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", (int)SNIFFING_TIME);
-		stopSniffing = true;
+		//stopSniffing = true;
+		atomic_store(&stopSniff, true);
 		if (Sniffed_packet.dim > 0)
 		{
 			P_printer(Sniffed_packet);
@@ -190,7 +194,8 @@ app_main(void)
 		vTaskDelay(waitingTime * 1000 / portTICK_PERIOD_MS);
 		printf("--------------- RESTART SNIFFING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
 
-		stopSniffing = false;
+		//stopSniffing=false;
+		atomic_store(&stopSniff, false);
 
 		/*vTaskDelay(WIFI_CHANNEL_SWITCH_INTERVAL / portTICK_PERIOD_MS);
 		wifi_sniffer_set_channel(channel);
@@ -723,7 +728,8 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 		return;
 
 	//when time is over
-	if (stopSniffing)
+	//if (stopSniffing)
+	if(atomic_load(&stopSniff))
 		return;
 
 	const wifi_promiscuous_pkt_t *ppkt = (wifi_promiscuous_pkt_t *)buff;
