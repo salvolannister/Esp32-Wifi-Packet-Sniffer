@@ -59,9 +59,6 @@ public class TimeController implements Initializable {
 
         try {
 
-
-
-
             Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
             Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
 
