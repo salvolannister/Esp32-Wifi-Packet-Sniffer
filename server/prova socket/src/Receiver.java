@@ -3,6 +3,8 @@ import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 import org.apache.commons.math3.linear.RealVector;
@@ -147,29 +149,59 @@ public class Receiver extends Thread {
                                 System.out.println("MINUMUM # OF ESP OK!!!");
                                 //todo debug
                                 computeAvarage();
-                                for(Sum_PacketRec p:EchoServer.sum_tab){
-                                    List<Distance> dist=new ArrayList<>();
-                                    for(String s:p.getRSSI().keySet()){
-                                        synchronized (EchoServer.conf){
+                                for(Sum_PacketRec p:EchoServer.sum_tab) {
+                                    List<Distance> dist = new ArrayList<>();
+                                    for (String s : p.getRSSI().keySet()) {
+                                        synchronized (EchoServer.conf) {
                                             //creo ed aggiungo alla lista, un oggetto Distance costituito dalla posizione di una schedina e il valore di RSSI
                                             dist.add(new Distance(EchoServer.conf.getMac_tab().get(s).getPosizione(), p.getRSSI().get(s)));
                                             // DEBUG System.out.println("Distance value before calling computeDistance: " + EchoServer.conf.getMac_tab().get(s).getPosizione().toString());
                                         }
                                     }
-                                    Polo pos=computePosition(dist);
+                                    Polo pos = computePosition(dist);
                                     //double average=p.getRSSI().values().stream().mapToInt(i->i).average().getAsDouble();
-                                    try {
-                                        QueryFake q = new QueryFake(db.getConn());
+                                    synchronized (EchoServer.final_tab) {
+                                        if (isLocal(p.getMacSource()) == true) {
+                                            Long duplicate = EchoServer.final_tab.values().stream()
+                                                    .filter(x -> x.getPosX() == pos.getX()).filter(y -> y.getPosY() == pos.getY())
+                                                    .count();
+                                            if (duplicate == 0) {
+                                                EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY()));
+                                                try {
+                                                    QueryFake q = new QueryFake(db.getConn());
 
-                                        if (!q.aggiungiTupla(p.getdigest(),p.getMacSource(), Long.parseLong(p.getTimeStamp())*1000, 1, (float) pos.getX(),(float) pos.getY())) {
-                                            System.err.println("Errore nell'inserimento");
-                                            System.exit(-1);
+                                                    if (!q.aggiungiTupla(p.getdigest(), p.getMacSource(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY())) {
+                                                        System.err.println("Errore nell'inserimento");
+                                                        System.exit(-1);
+                                                    }
+                                                } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
                                         }
-                                    } catch (SQLException e) {
-                                        e.printStackTrace();
-                                    }
-                                    dist.clear();
-                                }
+                                        else {
+                                            EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY()));
+                                            try {
+                                                QueryFake q = new QueryFake(db.getConn());
+
+                                                if (!q.aggiungiTupla(p.getdigest(), p.getMacSource(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY())) {
+                                                    System.err.println("Errore nell'inserimento");
+                                                    System.exit(-1);
+                                                }
+                                            } catch (SQLException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+
+                                        dist.clear();
+                                    }//fine for di sumpacket
+
+                                    //todo inviare final_tab alla gui
+
+                                    writeFileFinalTab(EchoServer.final_tab, "Final.txt");
+                                    EchoServer.final_tab.clear();
+                                }//fine synchronized finaltab
                             }
                             else
                                 System.out.println("Not enaugh data to process Location!!");
@@ -350,6 +382,20 @@ public class Receiver extends Thread {
         return val;
     }
 
+    public static void writeFileFinalTab(Map<String, DBPacket> tab, String path){
+        File f=new File(".");
+        f.getAbsolutePath();
+        String url =f.getAbsolutePath()+"//"+path;
+        try {
+            File file = new File(url);
+            FileWriter fw = new FileWriter(file);
+            fw.write(tab.toString());
+            fw.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static void writeFileTab(Map<String, PacketRec> tab, String path){
         File f=new File(".");
         f.getAbsolutePath();
@@ -396,7 +442,29 @@ public class Receiver extends Thread {
         }
     }
 
+    /***
+     *
+     * @param mac
+     * @return true/false
+     *
+     * test su mac locale/globale
+     */
 
+
+    public static Boolean isLocal(String mac){
+        String[] octets = mac.split(":");
+        char test=octets[0].charAt(1);
+        String lower=Integer.toBinaryString(test);
+        //System.out.println(lower);
+        if(lower.charAt(4)=='1'){
+           // System.out.println("local");
+            return true;
+        }
+        else{
+            //System.out.println("global");
+            return false;
+        }
+    }
 
 
 }
