@@ -7,37 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1b871214-de53-4ad8-bf0c-77c3757c0e5d" name="Default Changelist" comment="Inserita Funzione TimeStamp">
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/javafx_swt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/sqlite_jdbc_3_7_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/jfxtras_common_9_0_r1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/jfxtras_common_9_0_r1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/jfxtras_controls_9_0_r1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/lib.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/lib1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/lib__2_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/RoomMAC.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/RoomMAC.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fake_db.db" beforeDir="false" afterPath="$PROJECT_DIR$/fake_db.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Serverino/Configuration.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/Configuration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Serverino/Distance.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/Distance.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Serverino/EchoServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/EchoServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Serverino/PacketRec.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/PacketRec.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Serverino/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/Receiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Serverino/Sum_PacketRec.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/Sum_PacketRec.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prova.txt" beforeDir="false" afterPath="$PROJECT_DIR$/prova.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Configuration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Distance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Distance.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/EchoServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EchoServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PacketRec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PacketRec.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sum_PacketRec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sum_PacketRec.java" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,75 +54,6 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1921">
-              <caret line="124" column="14" selection-start-line="124" selection-start-column="14" selection-end-line="124" selection-end-column="14" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#updateTime2#0;class#EchoServer#0" />
-                <element signature="docComment;method#writeFile#0;class#EchoServer#0" />
-                <element signature="method#writeFile#0;class#EchoServer#0" />
-                <element signature="method#writeFile2#0;class#EchoServer#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Receiver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="739">
-              <caret line="143" column="57" lean-forward="true" selection-start-line="143" selection-start-column="57" selection-end-line="143" selection-end-column="57" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3447#4788#1" />
-                <element signature="e#5341#6208#1" />
-                <element signature="e#8179#10495#0" />
-                <element signature="e#10549#10803#0" />
-                <element signature="docComment;method#checkInsert#0;class#Receiver#0" />
-                <element signature="method#checkInsert#0;class#Receiver#0" />
-                <element signature="method#computePosition#0;class#Receiver#0" />
-                <element signature="docComment;method#trunc#0;class#Receiver#0" />
-                <element signature="method#trunc#0;class#Receiver#0" />
-                <element signature="method#writeFileTab#0;class#Receiver#0" />
-                <element signature="method#writeFileSumTab#0;class#Receiver#0" />
-                <element signature="method#writeFileConf#0;class#Receiver#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Sum_PacketRec.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
-              <caret line="72" column="60" selection-start-line="72" selection-start-column="60" selection-end-line="72" selection-end-column="60" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/PacketRec.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="731">
-              <caret line="45" column="54" selection-start-line="45" selection-start-column="54" selection-end-line="45" selection-end-column="54" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#equals#0;class#PacketRec#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -172,67 +80,8 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/Packet.java" />
-        <option value="$PROJECT_DIR$/src/prova.txt" />
-        <option value="$PROJECT_DIR$/out.txt" />
-        <option value="$PROJECT_DIR$/prova.txt" />
-        <option value="$PROJECT_DIR$/src/QueryFake.java" />
-        <option value="$PROJECT_DIR$/src/Polo.java" />
-        <option value="$PROJECT_DIR$/src/Payload.java" />
-        <option value="$PROJECT_DIR$/src/Configuration.java" />
-        <option value="$PROJECT_DIR$/src/Distance.java" />
-        <option value="$PROJECT_DIR$/src/Sum_PacketRec.java" />
-        <option value="$PROJECT_DIR$/src/PacketRec.java" />
-        <option value="$PROJECT_DIR$/src/Receiver.java" />
-        <option value="$PROJECT_DIR$/src/EchoServer.java" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="953" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
-  </component>
+  <component name="ProjectId" id="1PHmkUSBuCyNOs8Mp4DPZEfohfA" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="prova socket" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prova socket" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="prova socket" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prova socket" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="prova socket" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prova socket" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="prova socket" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prova socket" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DB" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-    </panes>
-  </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="Downloaded.Files.Path.Enabled" value="true" />
@@ -355,6 +204,7 @@
       <workItem from="1563607049741" duration="4800000" />
       <workItem from="1563612564664" duration="2627000" />
       <workItem from="1563619040558" duration="33000" />
+      <workItem from="1565539545426" duration="6043000" />
     </task>
     <task id="LOCAL-00001" summary="prova git">
       <created>1553873564913</created>
@@ -387,9 +237,6 @@
     <option name="localTasksCounter" value="5" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="130174000" />
-  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -398,42 +245,6 @@
       <are-packages-shown value="true" />
       <is-autoscroll-to-source value="true" />
     </todo-panel>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15991472" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49834436" weight="0.32394367" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.5846906" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32899022" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49880287" weight="0.21776815" />
-      <window_info anchor="bottom" id="Database Changes" order="9" weight="0.32827735" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49960095" weight="0.32736155" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50165564" side_tool="true" weight="0.32899022" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49720672" weight="0.32899022" />
-      <window_info anchor="bottom" id="Database Console" order="13" weight="0.32899022" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Database" order="4" weight="0.32782516" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Maven" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -454,20 +265,7 @@
         <entry key="MAIN">
           <value>
             <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
+              <option name="COLUMN_ORDER" />
             </State>
           </value>
         </entry>
@@ -537,202 +335,6 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="47" column="14" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Serverino.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="10" lean-forward="true" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/modules.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk-11.0.2/lib/src.zip!/java.base/java/net/PlainSocketImpl.java" />
-    <entry file="jar:///usr/lib/jvm/jdk-11.0.2/lib/src.zip!/jdk.net/jdk/net/ExtendedSocketOptions.java" />
-    <entry file="file://$PROJECT_DIR$/src/prova.txt" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/f985fd29-5a0b-43b8-8369-04c10437b5fb/console.sql" />
-    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TrilaterationFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-525">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MainClass.java" />
-    <entry file="file://$PROJECT_DIR$/src/Polo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DB/DBUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/QueryFake.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="61" column="19" selection-start-line="61" selection-start-column="19" selection-end-line="61" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-12/lib/src.zip!/java.base/java/io/File.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="147" column="13" selection-start-line="147" selection-start-column="13" selection-end-line="147" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Payload.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/out.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="14" lean-forward="true" selection-start-column="14" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/prova.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="59" column="17" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Distance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-281">
-          <caret line="8" column="76" selection-start-line="8" selection-start-column="76" selection-end-line="8" selection-end-column="76" />
-          <folding>
-            <element signature="e#325#326#0" expanded="true" />
-            <element signature="e#357#358#0" expanded="true" />
-            <element signature="e#405#406#0" expanded="true" />
-            <element signature="e#447#448#0" expanded="true" />
-            <element signature="e#479#480#0" expanded="true" />
-            <element signature="e#506#507#0" expanded="true" />
-            <element signature="e#547#548#0" expanded="true" />
-            <element signature="e#579#580#0" expanded="true" />
-            <element signature="e#925#926#0" expanded="true" />
-            <element signature="e#977#978#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conf_.txt" />
-    <entry file="file://$PROJECT_DIR$/sum_tab_" />
-    <entry file="das://f985fd29-5a0b-43b8-8369-04c10437b5fb/schema/main/table/Position">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="aab835b9-31ab-458a-a095-ccfbe0a1e3be">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Packet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1784">
-          <caret line="15" column="90" selection-start-line="15" selection-start-column="90" selection-end-line="15" selection-end-column="90" />
-          <folding>
-            <element signature="method#equals#0;class#Packet#0" />
-            <element signature="method#toString#0;class#Packet#0" />
-            <element signature="e#1761#1762#0" expanded="true" />
-            <element signature="e#1784#1785#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/EchoServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1921">
-          <caret line="124" column="14" selection-start-line="124" selection-start-column="14" selection-end-line="124" selection-end-column="14" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#updateTime2#0;class#EchoServer#0" />
-            <element signature="docComment;method#writeFile#0;class#EchoServer#0" />
-            <element signature="method#writeFile#0;class#EchoServer#0" />
-            <element signature="method#writeFile2#0;class#EchoServer#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Sum_PacketRec.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="72" column="60" selection-start-line="72" selection-start-column="60" selection-end-line="72" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PacketRec.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="45" column="54" selection-start-line="45" selection-start-column="54" selection-end-line="45" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#equals#0;class#PacketRec#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Receiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="739">
-          <caret line="143" column="57" lean-forward="true" selection-start-line="143" selection-start-column="57" selection-end-line="143" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3447#4788#1" />
-            <element signature="e#5341#6208#1" />
-            <element signature="e#8179#10495#0" />
-            <element signature="e#10549#10803#0" />
-            <element signature="docComment;method#checkInsert#0;class#Receiver#0" />
-            <element signature="method#checkInsert#0;class#Receiver#0" />
-            <element signature="method#computePosition#0;class#Receiver#0" />
-            <element signature="docComment;method#trunc#0;class#Receiver#0" />
-            <element signature="method#trunc#0;class#Receiver#0" />
-            <element signature="method#writeFileTab#0;class#Receiver#0" />
-            <element signature="method#writeFileSumTab#0;class#Receiver#0" />
-            <element signature="method#writeFileConf#0;class#Receiver#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
   </component>
   <component name="masterDetails">
     <states>

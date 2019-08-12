@@ -14,6 +14,8 @@ public class EchoServer {
     /**
      * @tab: struttura utilizzata per immagazzinare tutti i pacchetti ricevuti dall'ESP. String = DIGEST
      * @sum_tab: lista che raccoglie tutti i pacchetti che sono stati ricevuti da tutte le schedine
+     * @final_tab: una struttura che ricalca la struttura del db e avente la duplice funzione di agevolare
+     *              la visualizzazione in tempo reale e la ricerca di mac duplicati. String = Mac
      * @start_time: l'ultimo valora inviato alle schedine per definire il tempo di inizio di sniffing
      * @delta_time: quando si calcola start_time si aggiunge un delta per evitare che i tempi di latenza diano problemi
      * @sniffing_time: il tempo di sniffing della schedina allo scadere del quale ci sarà un messaggio di STOP -> aggiornamento start_time successivo
@@ -23,6 +25,7 @@ public class EchoServer {
 
     public  static Map<String, PacketRec> tab= new HashMap<String, PacketRec>();
     public  static List<Sum_PacketRec> sum_tab= new ArrayList<Sum_PacketRec>();
+    public  static Map<String, DBPacket> final_tab= new HashMap<String, DBPacket>();
     public  static Configuration conf= new Configuration(2.5);
     public  static Long start_time = Long.valueOf(0);
     public static int delta_time = 25;
