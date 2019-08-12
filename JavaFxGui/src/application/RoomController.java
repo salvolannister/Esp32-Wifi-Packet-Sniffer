@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class RoomController implements Initializable {
@@ -45,10 +46,12 @@ public class RoomController implements Initializable {
     @FXML private Button stop;
     private ScatterChart<Number, Number> grafico;
 
-    private Map<String, Polo> risultato= new HashMap<>();
+
     private ObservableList<String> roomList = FXCollections.observableArrayList();
     private List<String> readList = new ArrayList<>();
     private ObservableList<String> configList = FXCollections.observableArrayList();
+    private  Timestamp inizio;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -103,16 +106,13 @@ public class RoomController implements Initializable {
     public void search(MouseEvent mouseEvent) {
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
-
+        Map<String, Polo> risultato= new HashMap<>();
 
         try {
-
-
-
-            /* Timestamp e' una classe per gestire il temo in millesecondi
-
+            /* Timestamp e' una classe per gestire il temo in millisecondi
              */
-            Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
+            LocalDateTime dataI = DataI.getLocalDateTime();
+            inizio = Timestamp.valueOf(dataI);
             //Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
 
             DBUtil db=new DBUtil();
@@ -141,40 +141,41 @@ public class RoomController implements Initializable {
                 grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
                 grafico.setTitle("Posizione");
 
-                if(risultato!=null) {
-                    //System.out.println("tutto ok");
+                /*inserisco la
+                configurazione */
 
-                    /* add a collection of points
-                    with a determinated color*/
-                    XYChart.Series series1 = new XYChart.Series();
-                    XYChart.Series series2 = new XYChart.Series();
-                    series1.setName("device");
-                    series2.setName("Esp");
+                XYChart.Series series2 = new XYChart.Series();
+                series2.setName("Esp");
+                ArrayList<EspInfo> espInfos = qC.readConfiguration(confName);
+                if(espInfos !=  null) {
 
-                    /*aggiunge la posizione delle schedine*/
-                    for (String s : risultato.keySet()) {
+                    for (EspInfo eI: espInfos) {
                         /*aggiunge i dati delle schedine al grafico
                         .getX() è un metodo di Polo
                          */
-                        series1.getData().add(new XYChart.Data(risultato.get(s).getX(), risultato.get(s).getY()));
+                        series2.getData().add(new XYChart.Data(eI.getX(), eI.getY()));
 
                     }
 
-                    ArrayList<EspInfo> espInfos = qC.readConfiguration(confName);
-                   if(espInfos !=  null) {
+                    grafico.getData().add(series2);
 
-                       for (EspInfo eI: espInfos) {
-                        /*aggiunge i dati delle schedine al grafico
-                        .getX() è un metodo di Polo
-                         */
-                           series2.getData().add(new XYChart.Data(eI.getX(), eI.getY()));
-
-                       }
-                       grafico.getData().add(series1);
-                       grafico.getData().add(series2);
-                       graph_container.getChildren().add(grafico);
-                   }
+                }else{
+                    //TODO
+                    return;
                 }
+
+
+
+                if(risultato!=null) {
+                    //System.out.println("tutto ok");
+
+                    graphAdd(risultato);
+
+
+                }
+                /*in ogni caso mostra
+                 la posizione dei dispositivi */
+                graph_container.getChildren().add(grafico);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -182,8 +183,6 @@ public class RoomController implements Initializable {
             db.closeConnection();
             DataI.setText("");
             DataI.setLocalDateTime(null);
-            DataF.setText("");
-            DataF.setLocalDateTime(null);
             return;
         }catch (NullPointerException n){
             //AreaInfo.setText("inserire data e ora di inizio e fine");
@@ -215,9 +214,59 @@ public class RoomController implements Initializable {
         }
     }
 
-    public void onSliderClick(MouseEvent mouseEvent){
+    public void onSliderClick(MouseEvent mouseEvent) throws SQLException {
         double value = nav.getValue();
-        /* trasformare questo valore in microsecondi?? */
+        long lValue = (long) value;
+        long minutInMillisec = 60000*lValue;
+        System.out.println("valore nav: "+lValue+ " valore in Millisec :"+minutInMillisec);
+        String minutField = String.valueOf(minutInMillisec);
+        Timestamp later = new Timestamp(inizio.getTime() + minutInMillisec);
+
+        /*   leggere i dati dal DB
+            rimuovere i dati vecchi
+            mettere i nuovi
+         */
+        DBUtil db=new DBUtil();
+
+        if(!db.openConnection("prova.db")){
+            System.err.println("Errore di Connessione al DB. Impossibile Continuare");
+            System.exit(-1);
+        }
+        QueryFake p=new QueryFake(db.getConn());
+        String roomName = roomCB.getValue();
+        String confName = configCB.getValue();
+        Map<String, Polo> risultato = p.showPosition(String.valueOf(later.getTime()), roomName, confName);
+        if(grafico.getData().size() == 2){
+            grafico.getData().remove(1);
+        };
+
+        if(risultato!=null) {
+            //System.out.println("tutto ok");
+            graphAdd(risultato);
+
+        }
+
+    }
+
+    private void graphAdd(Map<String, Polo> risultato){
+                /* add a collection of points
+                    with a determinated color*/
+        XYChart.Series series1 = new XYChart.Series();
+
+        series1.setName("device");
+
+
+        /*aggiunge la posizione delle schedine*/
+        for (String s : risultato.keySet()) {
+                        /*aggiunge i dati delle schedine al grafico
+                        .getX() è un metodo di Polo
+                         */
+            series1.getData().add(new XYChart.Data(risultato.get(s).getX(), risultato.get(s).getY()));
+
+        }
+
+
+        grafico.getData().add(series1);
 
     }
 

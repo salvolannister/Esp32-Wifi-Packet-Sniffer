@@ -197,15 +197,20 @@ public class QueryFake {
         try {
             conn.setAutoCommit(false);
             /* DESC sta per descendant */
-            String s=new String("SELECT MAC, X, Y FROM Position WHERE Timestamp = ? AND Room = ? AND Configuration = ? ");
+            String s=new String("SELECT MAC, X, Y FROM Position WHERE Timestamp >= ? AND Timestamp < ? AND Room = ? AND Configuration = ? ");
                 try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
                 pstmt.setString(1,  timeI);
-                pstmt.setString(2, room);
-                pstmt.setString(3, conf);
+                Long timeF = Long.parseLong(timeI);
+                Long minuto =(long) 60000;
+                timeF = timeF + minuto;
+
+                pstmt.setLong(2,  timeF);
+                pstmt.setString(3, room);
+                pstmt.setString(4, conf);
                 ResultSet res=pstmt.executeQuery();
 
                 while (res.next()){
-                    risultato.put(res.getString("MAC"),new Polo(res.getFloat("posX"),res.getFloat("posY")));
+                    risultato.put(res.getString("MAC"),new Polo(res.getFloat("X"),res.getFloat("Y")));
                     //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
                 }
 
@@ -216,6 +221,7 @@ public class QueryFake {
                     conn.commit();
                     return risultato;
                 }
+                System.out.println("No device was found form this time: "+ timeI+ "to this "+timeF);
                 return null;
 
 
@@ -233,6 +239,9 @@ public class QueryFake {
 
     }
 
+    /* stamap il contenuto di Position a scopi di debugging
+    il codice che la richiama e' presente in TimeDatabaseSet
+    * */
     public void printTable() throws SQLException {
         PreparedStatement pstmt;
 
@@ -245,8 +254,8 @@ public class QueryFake {
                 ResultSet res=pstmt.executeQuery();
 
                 while (res.next()){
-                    int timeInt = res.getInt("Timestamp");
-                    Timestamp tS = new Timestamp(timeInt);
+                    long timeLong = res.getLong("Timestamp");
+                    Timestamp tS = new Timestamp(timeLong);
 
                     String t = tS.toString();
                     System.out.println(res.getString("MAC")+
