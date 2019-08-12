@@ -17,13 +17,13 @@ public class main {
     public static void main(String[] args) throws NoSuchAlgorithmException {
         //apro una nuova connessione con il DB
         DBUtil db=new DBUtil();
-        if(!db.openConnection("fake_db.db")){
+        if(!db.openConnection("prova.db")){
             System.err.println("Errore di Connessione al DB. Impossibile Continuare");
             System.exit(-1);
         }
 
 
-        int c=0;
+        int c=50;
         //input di prova
         int i, j;
         long time;
@@ -44,8 +44,8 @@ public class main {
 
         for(j=0; j<5; j++) {//scorro di un giorno
             time+=24*60*60*1000;
-            for (i = 0; i < 5; i++) {//scorro di 5 minuti nell'arco dello stesso giorno
-                time+=5*60*1000;
+            for (i = 0; i < 5; i++) {//scorro di 1 minuto nell'arco dello stesso giorno
+                time+=1*60*1000;
 /*
                 ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
                 buffer.putLong(time);
@@ -63,7 +63,7 @@ public class main {
                 try {
                     QueryFake q = new QueryFake(db.getConn());
 
-                    if (!q.aggiungiTupla(String.valueOf(c++),ListMAC[i], time, 1, x, y)) {
+                    if (!q.aggiungiTupla(String.valueOf(c++),ListMAC[i], time, "Kitchen", x, y,"Salvatore")) {
                         System.err.println("Errore nell'inserimento");
                         System.exit(-1);
                     }

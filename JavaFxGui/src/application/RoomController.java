@@ -101,19 +101,23 @@ public class RoomController implements Initializable {
     }
 
     public void search(MouseEvent mouseEvent) {
-
+        String roomName = roomCB.getValue();
+        String confName = configCB.getValue();
 
 
         try {
 
 
 
+            /* Timestamp e' una classe per gestire il temo in millesecondi
 
+             */
             Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
-            Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
+            //Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
 
             DBUtil db=new DBUtil();
-            if(!db.openConnection("database.db")){
+
+            if(!db.openConnection("prova.db")){
                 System.err.println("Errore di Connessione al DB. Impossibile Continuare");
                 System.exit(-1);
             }
@@ -124,9 +128,9 @@ public class RoomController implements Initializable {
             try {
                 /*slider con il tempo*/
 
-                nav.getValue();
-                risultato=p.showPosition(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()));
-                ArrayList<Float> roomDim = qR.getRoomDim(roomCB.getValue());
+                nav.setDisable(false);
+                risultato=p.showPosition(String.valueOf(inizio.getTime()),roomName,confName);
+                ArrayList<Float> roomDim = qR.getRoomDim(roomName);
                 /* aggiusto gli assi in base
                 alla dimensione della stanza */
                 final NumberAxis xAxis = new NumberAxis(0, roomDim.get(0), 0.01);
@@ -156,7 +160,7 @@ public class RoomController implements Initializable {
 
                     }
 
-                    ArrayList<EspInfo> espInfos = qC.readConfiguration(configCB.getValue());
+                    ArrayList<EspInfo> espInfos = qC.readConfiguration(confName);
                    if(espInfos !=  null) {
 
                        for (EspInfo eI: espInfos) {
@@ -210,6 +214,19 @@ public class RoomController implements Initializable {
 
         }
     }
+
+    public void onSliderClick(MouseEvent mouseEvent){
+        double value = nav.getValue();
+        /* trasformare questo valore in microsecondi?? */
+
+    }
+
+    public void onStartClick(MouseEvent mouseEvent){
+        start.setDisable(true);
+        stop.setDisable(false);
+        // TODO
+    }
+
 
 
     public void printValue(MouseEvent mouseEvent) {

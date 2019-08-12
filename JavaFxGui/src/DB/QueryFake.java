@@ -2,10 +2,7 @@ package DB;
 
 import DTO.Polo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,7 +138,10 @@ public class QueryFake {
     }
 
 
+    /*query creata da Umberto
+    considerando anche un tempo di fine
 
+     */
     public Map<String, Polo> showPosition(String timeI, String timeF) throws SQLException {
 
         PreparedStatement pstmt;
@@ -185,4 +185,89 @@ public class QueryFake {
 
     }
 
+    /*query che in un determinato minuto, det stanza
+    e configurazione
+    restituisce i dati del dispositivo
+     */
+    public Map<String, Polo> showPosition(String timeI, String room,String conf) throws SQLException {
+
+        PreparedStatement pstmt;
+        Map<String, Polo> risultato= new HashMap<>();
+
+        try {
+            conn.setAutoCommit(false);
+            /* DESC sta per descendant */
+            String s=new String("SELECT MAC, X, Y FROM Position WHERE Timestamp = ? AND Room = ? AND Configuration = ? ");
+                try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+                pstmt.setString(1,  timeI);
+                pstmt.setString(2, room);
+                pstmt.setString(3, conf);
+                ResultSet res=pstmt.executeQuery();
+
+                while (res.next()){
+                    risultato.put(res.getString("MAC"),new Polo(res.getFloat("posX"),res.getFloat("posY")));
+                    //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
+                }
+
+
+                System.out.println(risultato);
+
+                if(risultato.isEmpty()==false){
+                    conn.commit();
+                    return risultato;
+                }
+                return null;
+
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+
+        }catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+            System.out.println("errore");
+            return null;
+        }
+
+    }
+
+    public void printTable() throws SQLException {
+        PreparedStatement pstmt;
+
+        try {
+            conn.setAutoCommit(false);
+            /* DESC sta per descendant */
+            String s=new String("SELECT * FROM Position ");
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+
+                ResultSet res=pstmt.executeQuery();
+
+                while (res.next()){
+                    int timeInt = res.getInt("Timestamp");
+                    Timestamp tS = new Timestamp(timeInt);
+
+                    String t = tS.toString();
+                    System.out.println(res.getString("MAC")+
+                            " Timestamp "+t+" X: "+
+                            res.getInt("X")+" Y: "+
+                                    res.getInt("Y")+" Room: "+res.getString("Room")+
+                                    " Configuration: "+ res.getString("Configuration"));
+                }
+
+
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+
+            }
+
+        }catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+            System.out.println("errore");
+
+        }
+    }
 }
