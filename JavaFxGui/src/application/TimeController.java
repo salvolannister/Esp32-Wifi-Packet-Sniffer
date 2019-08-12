@@ -2,6 +2,7 @@ package application;
 
 import DB.DBUtil;
 import DB.QueryFake;
+import DB.QueryRoom;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import DTO.Polo;
@@ -16,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -25,9 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class TimeController implements Initializable {
@@ -36,22 +36,57 @@ public class TimeController implements Initializable {
     @FXML private Pane graph_container;
     @FXML private LocalDateTimeTextField DataF;
     @FXML private LocalDateTimeTextField DataI;
+    @FXML private ComboBox<String> ComboRoom;
 
 
     private LineChart<Number, Number> grafico;
     private ObservableList<Button> MacList = FXCollections.observableArrayList();
     private Map<String, Long> risultato= new HashMap<>();
+    private ObservableList<String> Roomlist = FXCollections.observableArrayList();
+    private List<String> ReadList = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final NumberAxis xAxis = new NumberAxis(0, 10, 1);
+
+        /*inizializza il grafico*/
+        final NumberAxis xAxis = new NumberAxis(0, 30, 1);
         //final ValueAxis<String> xAxis =new ValueAxis<String>();
         final NumberAxis yAxis = new NumberAxis(0, 50, 1);
-        xAxis.setLabel("Mac");
-        yAxis.setLabel("posY");
+        xAxis.setLabel("Time");
+        yAxis.setLabel("People Number");
         grafico=new LineChart<Number, Number>(xAxis, yAxis);
-        grafico.setTitle("Posizione");
+        grafico.setTitle("People Number Per Time");
         graph_container.getChildren().add(grafico); //aggiungo un grafico vuoto
+
+        /*Inizializza i valori di selezione per la stanza*/
+        try {
+            DBUtil db = new DBUtil();
+            if (!db.openConnection("database.db")) {
+                System.err.println("Errore di Connessione al DB. Impossibile Continuare");
+                System.exit(-1);
+            }
+
+            QueryRoom p = new QueryRoom(db.getConn());
+
+            try {
+                ReadList = p.getRoomName();
+
+                if (ReadList != null) {
+                    for (String room : ReadList) {
+                        Roomlist.add(room);
+                        //System.out.println(room);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            db.closeConnection();
+
+            ComboRoom.setItems(Roomlist);
+        }catch(NullPointerException n){
+            return;
+        }
     }
 
 
@@ -127,4 +162,5 @@ public class TimeController implements Initializable {
 
         }
     }
+
 }
