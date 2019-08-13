@@ -202,6 +202,10 @@ public class QueryFake {
                 pstmt.setString(1,  timeI);
                 Long timeF = Long.parseLong(timeI);
                 Long minuto =(long) 60000;
+                /* aggiungo un minuto come tempo finale
+                perché vengono contati anche i microsecondi quindi
+                non ci sara' mai un pacchetto nell'esatto minuto
+                 */
                 timeF = timeF + minuto;
 
                 pstmt.setLong(2,  timeF);

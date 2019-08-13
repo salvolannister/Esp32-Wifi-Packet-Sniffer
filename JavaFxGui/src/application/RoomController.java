@@ -7,6 +7,8 @@ import DB.QueryRoom;
 import DTO.Polo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,7 +39,6 @@ public class RoomController implements Initializable {
 
     @FXML private Button SearchButton;
     @FXML private Pane graph_container;
-    @FXML private LocalDateTimeTextField DataF;
     @FXML private LocalDateTimeTextField DataI;
     @FXML private Slider nav;
     @FXML private ComboBox<String> roomCB;
@@ -51,6 +52,7 @@ public class RoomController implements Initializable {
     private List<String> readList = new ArrayList<>();
     private ObservableList<String> configList = FXCollections.observableArrayList();
     private  Timestamp inizio;
+    private boolean stopCliked = false;
 
 
     @Override
@@ -107,6 +109,7 @@ public class RoomController implements Initializable {
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
         Map<String, Polo> risultato= new HashMap<>();
+
 
         try {
             /* Timestamp e' una classe per gestire il temo in millisecondi
@@ -236,13 +239,16 @@ public class RoomController implements Initializable {
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
         Map<String, Polo> risultato = p.showPosition(String.valueOf(later.getTime()), roomName, confName);
+        System.out.println("size: "+grafico.getData().size());
         if(grafico.getData().size() == 2){
             grafico.getData().remove(1);
+
         };
 
         if(risultato!=null) {
             //System.out.println("tutto ok");
             graphAdd(risultato);
+
 
         }
 
@@ -251,11 +257,8 @@ public class RoomController implements Initializable {
     private void graphAdd(Map<String, Polo> risultato){
                 /* add a collection of points
                     with a determinated color*/
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("device");
-
-
+        XYChart.Series series1 =new XYChart.Series<>();
+        series1.setName("Device");
         /*aggiunge la posizione delle schedine*/
         for (String s : risultato.keySet()) {
                         /*aggiunge i dati delle schedine al grafico
@@ -265,18 +268,57 @@ public class RoomController implements Initializable {
 
         }
 
-
         grafico.getData().add(series1);
 
     }
 
     public void onStartClick(MouseEvent mouseEvent){
         start.setDisable(true);
+        roomCB.setDisable(true);
+        configCB.setDisable(true);
         stop.setDisable(false);
-        // TODO
+        DataI.setDisable(true);
+        SearchButton.setDisable(true);
+        // TODO put the start function you mentioned end add a new graph
+
+        startService.reset();
+        startService.start();
     }
 
+    /* crea un thread in modo tale da non
+    fermare l'interfaccia
+     */
+    Service<Void>  startService = new Service<Void>() {
 
+        @Override
+        protected Task<Void> createTask() {
+
+            return new Task<Void>(){
+
+                @Override
+                protected Void call() throws Exception {
+
+                    while(!isCancelled()) {
+                        int randomInt = (int )(Math.random() * 37 + 1);
+                        System.out.println(randomInt);
+                        /* qui mettere il codice che dovrebbe fare start*/
+                    }
+                    return null;
+                }
+            };
+        }
+    };
+
+    public void onStopCLick(MouseEvent mouseEvent){
+        start.setDisable(false);
+        roomCB.setDisable(false);
+        configCB.setDisable(false);
+        stop.setDisable(true);
+        DataI.setDisable(false);
+        SearchButton.setDisable(false);
+        stopCliked = true;
+        startService.cancel();
+    }
 
     public void printValue(MouseEvent mouseEvent) {
         System.out.println(nav.getValue());
