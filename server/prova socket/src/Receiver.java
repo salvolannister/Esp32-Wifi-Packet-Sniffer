@@ -166,6 +166,7 @@ public class Receiver extends Thread {
                                                     .filter(x -> x.getPosX() == pos.getX()).filter(y -> y.getPosY() == pos.getY())
                                                     .count();
                                             if (duplicate == 0) {
+                                                System.out.println("Local MAC, ma nessun elemento nella stessa posizione trovato -> carico nel DB un nuovo dispositivo!");
                                                 EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY()));
                                                 try {
                                                     QueryFake q = new QueryFake(db.getConn());
@@ -178,8 +179,12 @@ public class Receiver extends Thread {
                                                     e.printStackTrace();
                                                 }
                                             }
+                                            else{
+                                                // TODO: 14/08/2019 inserire calcolo che aggiorna una qualche misura di errore
+                                                System.out.println("Torvato local MAC con posizione identica ad altro dispositivo -> si suppone sia lo stesso");
+                                            }
                                         }
-                                        else {
+                                        else { //MAC NON LOCALE
                                             EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY()));
                                             try {
                                                 QueryFake q = new QueryFake(db.getConn());
@@ -192,7 +197,6 @@ public class Receiver extends Thread {
                                                 e.printStackTrace();
                                             }
                                         }
-
 
                                         dist.clear();
                                     }//fine for di sumpacket
@@ -457,7 +461,7 @@ public class Receiver extends Thread {
         String lower=Integer.toBinaryString(test);
         //System.out.println(lower);
         if(lower.charAt(4)=='1'){
-           // System.out.println("local");
+            System.out.println("local MAC foud!");
             return true;
         }
         else{
