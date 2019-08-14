@@ -18,10 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -37,6 +34,8 @@ import java.util.*;
 
 public class RoomController implements Initializable {
 
+    @FXML private Button ahead;
+    @FXML private Button behind;
     @FXML private Button SearchButton;
     @FXML private Pane graph_container;
     @FXML private LocalDateTimeTextField DataI;
@@ -109,7 +108,18 @@ public class RoomController implements Initializable {
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
         Map<String, Polo> risultato= new HashMap<>();
+        nav.setValue(0);
 
+        if(roomName == null){
+            errorShower("You must select a Room first");
+            return;
+        }else if(confName == null){
+            errorShower("You must select a Configuration first");
+            return;
+        }else if(DataI.getLocalDateTime() == null){
+            errorShower("You must insert a date first");
+            return;
+        }
 
         try {
             /* Timestamp e' una classe per gestire il temo in millisecondi
@@ -130,7 +140,8 @@ public class RoomController implements Initializable {
 
             try {
                 /*slider con il tempo*/
-
+                ahead.setDisable(false);
+                behind.setDisable(false);
                 nav.setDisable(false);
                 risultato=p.showPosition(String.valueOf(inizio.getTime()),roomName,confName);
                 ArrayList<Float> roomDim = qR.getRoomDim(roomName);
@@ -184,8 +195,8 @@ public class RoomController implements Initializable {
             }
 
             db.closeConnection();
-            DataI.setText("");
-            DataI.setLocalDateTime(null);
+           // DataI.setText("");
+           // DataI.setLocalDateTime(null);
             return;
         }catch (NullPointerException n){
             //AreaInfo.setText("inserire data e ora di inizio e fine");
@@ -196,7 +207,28 @@ public class RoomController implements Initializable {
 
     }
 
+    public void timeManager(MouseEvent mouseEvent) throws SQLException {
+        Button clicked= (Button) mouseEvent.getSource();
+        String name = clicked.getText();
+        if(name.equals(">>")){
+            System.out.println("You clicked >>");
+            nav.setValue(0);
+            long minutInMillisec = 60000*10;
+            inizio = new Timestamp(inizio.getTime() + minutInMillisec);
+            onSliderClick(mouseEvent);
+            DataI.setLocalDateTime(inizio.toLocalDateTime());
 
+            //TODO put the time ahead in DAtaI
+        }else if(name.equals("<<")){
+            //TODO put the time behind in
+            System.out.println("You clicked <<");
+            nav.setValue(0);
+            long minutInMillisec = 60000*10;
+            inizio = new Timestamp(inizio.getTime() - minutInMillisec);
+            onSliderClick(mouseEvent);
+            DataI.setLocalDateTime(inizio.toLocalDateTime());
+        }
+    }
 
     @FXML
     public void back(MouseEvent mouseEvent) {
@@ -219,12 +251,13 @@ public class RoomController implements Initializable {
 
     public void onSliderClick(MouseEvent mouseEvent) throws SQLException {
         double value = nav.getValue();
+
         long lValue = (long) value;
         long minutInMillisec = 60000*lValue;
         System.out.println("valore nav: "+lValue+ " valore in Millisec :"+minutInMillisec);
         String minutField = String.valueOf(minutInMillisec);
         Timestamp later = new Timestamp(inizio.getTime() + minutInMillisec);
-
+        DataI.setLocalDateTime(later.toLocalDateTime());
         /*   leggere i dati dal DB
             rimuovere i dati vecchi
             mettere i nuovi
@@ -249,7 +282,6 @@ public class RoomController implements Initializable {
             //System.out.println("tutto ok");
             graphAdd(risultato);
 
-
         }
 
     }
@@ -273,6 +305,8 @@ public class RoomController implements Initializable {
     }
 
     public void onStartClick(MouseEvent mouseEvent){
+        ahead.setDisable(true);
+        behind.setDisable(true);
         start.setDisable(true);
         roomCB.setDisable(true);
         configCB.setDisable(true);
@@ -323,5 +357,19 @@ public class RoomController implements Initializable {
     public void printValue(MouseEvent mouseEvent) {
         System.out.println(nav.getValue());
 
+    }
+
+    public void errorShower(String text){
+
+            Alert fail= new Alert(Alert.AlertType.INFORMATION);
+            fail.setHeaderText("failure");
+            fail.setContentText(text);
+            fail.showAndWait();
+
+    }
+
+    private boolean checkDataUpper(Timestamp newData){
+        LocalDateTime actual = DataI.getLocalDateTime();
+       return true;
     }
 }
