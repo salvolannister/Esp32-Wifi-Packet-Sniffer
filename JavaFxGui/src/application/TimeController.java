@@ -40,8 +40,11 @@ public class TimeController implements Initializable {
 
 
     private LineChart<Number, Number> grafico;
-    private ObservableList<Button> MacList = FXCollections.observableArrayList();
     private Map<String, Long> risultato= new HashMap<>();
+    private Map<String, Long> secres= new HashMap<>();
+    private Map<String, Long> thirdres= new HashMap<>();
+    private Map<String, Long> fourcres= new HashMap<>();
+
     private ObservableList<String> Roomlist = FXCollections.observableArrayList();
     private List<String> ReadList = new ArrayList<>();
 
@@ -49,10 +52,10 @@ public class TimeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         /*inizializza il grafico*/
-        final NumberAxis xAxis = new NumberAxis(0, 30, 1);
+        final NumberAxis xAxis = new NumberAxis(0, 30, 5);
         //final ValueAxis<String> xAxis =new ValueAxis<String>();
-        final NumberAxis yAxis = new NumberAxis(0, 50, 1);
-        xAxis.setLabel("Time");
+        final NumberAxis yAxis = new NumberAxis(0, 30, 1);
+        xAxis.setLabel("Time (min)");
         yAxis.setLabel("People Number");
         grafico=new LineChart<Number, Number>(xAxis, yAxis);
         grafico.setTitle("People Number Per Time");
@@ -95,7 +98,13 @@ public class TimeController implements Initializable {
         try {
 
             Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
-            Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
+            Timestamp afterfive = new Timestamp(inizio.getTime() + 5*60000);
+            Timestamp afterten = new Timestamp(afterfive.getTime() + 5*60000);
+            Timestamp afterfifteen = new Timestamp(afterten.getTime() + 5*60000);
+            Timestamp aftertwenty = new Timestamp(afterfifteen.getTime() + 5*60000);
+
+            /*ricavo la stanza selezionata*/
+            String roomselected = ComboRoom.getValue();
 
             DBUtil db=new DBUtil();
             if(!db.openConnection("database.db")){
@@ -105,23 +114,72 @@ public class TimeController implements Initializable {
             QueryFake p=new QueryFake(db.getConn());
 
             try {
-                risultato=p.showMac(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()));
+                risultato=p.showNumberMacPerRoom(String.valueOf(inizio.getTime()), String.valueOf(afterfive.getTime()), roomselected);
+
                 if(risultato!=null){
                     //System.out.println("tutto ok");
                     XYChart.Series series = new XYChart.Series();
-                    int i=0;
-                    for (String s: risultato.keySet()){
-                        series.getData().add(new XYChart.Data(i, risultato.get(s)));
-                        i++;
+
+                    int numbermac = 0;
+                    /*ricavo il valore per ogni chiave dell'hashmap e incremento una variabile solo se
+                     * se è = 5*/
+                    for (Map.Entry<String, Long> s: risultato.entrySet()){
+                        long val = s.getValue();
+                        System.out.println(val);
+                        if(val == 5)
+                            numbermac++;
+                    }
+                    System.out.println("numero MAC presenti in TUTTI i primi 5 min:" + numbermac);
+
+                    series.getData().add(new XYChart.Data(5, numbermac));
+
+                    secres = p.showMacPerRoom(String.valueOf(afterfive.getTime()), String.valueOf(afterten.getTime()), roomselected);
+                    if(secres != null){
+                        numbermac = 0;
+                        for (Map.Entry<String, Long> s: secres.entrySet()){
+                            long val = s.getValue();
+                            System.out.println(val);
+                            System.out.println(secres);
+                            if(val == 5)
+                                numbermac++;
+                        }
+                        System.out.println("numero MAC presenti in TUTTI i primi 10 min:" + numbermac);
+                        series.getData().add(new XYChart.Data(10, numbermac));
 
 
+                        thirdres = p.showMacPerRoom(String.valueOf(afterten.getTime()), String.valueOf(afterfifteen.getTime()), roomselected);
+                        if(thirdres != null){
+                            numbermac = 0;
+                            for (Map.Entry<String, Long> s: thirdres.entrySet()){
+                                long val = s.getValue();
+                                System.out.println(val);
+                                System.out.println(thirdres);
+                                if(val == 5)
+                                    numbermac++;
+                            }
+                            System.out.println("numero MAC presenti in TUTTI i primi 15 min:" + numbermac);
+                            series.getData().add(new XYChart.Data(15, numbermac));
 
+
+                            fourcres = p.showMacPerRoom(String.valueOf(afterfifteen.getTime()), String.valueOf(aftertwenty.getTime()), roomselected);
+                            if(fourcres != null){
+                                numbermac = 0;
+                                for (Map.Entry<String, Long> s: fourcres.entrySet()){
+                                    long val = s.getValue();
+                                    System.out.println(val);
+                                    System.out.println(fourcres);
+                                    if(val == 5)
+                                        numbermac++;
+                                }
+                                System.out.println("numero MAC presenti in TUTTI i primi 20 min:" + numbermac);
+                                series.getData().add(new XYChart.Data(20, numbermac));
+                            }
+                        }
                     }
                     graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                     grafico.getData().add(series);
                     graph_container.getChildren().add(grafico);
-
-                }
+                    }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
