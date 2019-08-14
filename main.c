@@ -83,6 +83,7 @@ typedef struct reduced_wifi_pkt_rx_ctrl_t{
     char *ssid;
     uint8_t length_ssid;
     int time;
+	uint16_t seq_n;
 }reduced_info;
 
 //dynamic data structure to contain sniffed packets
@@ -274,6 +275,7 @@ void P_printer(P_array sniffed_packet) {
 		printf(" MAC_SRC=%02x:%02x:%02x:%02x:%02x:%02x",
 			x.mac_src[0], x.mac_src[1], x.mac_src[2],
 			x.mac_src[3], x.mac_src[4], x.mac_src[5]);
+		printf(" Sequence number = %d", x.seq_n);
         printf(" t: %d\n",x.time);
 	}
 }
@@ -638,19 +640,20 @@ static void tcp_sendPacket()
 
 	for (i = 0; i < Sniffed_packet.count; i++)
 	{
-		char temp[1000];
+		char temp[500];
+		char ssid[200];
 		char string_to_send[1000];
 		x = Sniffed_packet.array[i];
 		sprintf(string_to_send, "CHAN=%02d/RSSI=%02d", x.channel, x.rssi); //final string = CHAN+RSSI
 
 		if (x.length_ssid != 0) {
-			sprintf(temp, "/SSID_length=%d/SSID_=%s", x.length_ssid, x.ssid);
-			strcat(string_to_send, temp);
+			sprintf(ssid, "/SSID_length=%d/SSID_=%s", x.length_ssid, x.ssid);
+			strcat(string_to_send, ssid);
 		}
 		else
 		{
-			sprintf(temp, "/SSID_length=0");
-			strcat(string_to_send, temp);
+			sprintf(ssid, "/SSID_length=0");
+			strcat(string_to_send, ssid);
 		}
 		//final string = CHAN+RSSI+SSID_lenght+[SSID]
 
@@ -664,7 +667,8 @@ static void tcp_sendPacket()
 		char time[500];
 		sprintf(time, " TimeStamp=%d/", x.time);
 
-		strcat(temp, time); //now temp is the mac address + timestamp -> values that have to be hashed
+		strcat(temp, time); //now temp is the mac source address + timestamp 
+		strcat(temp, ssid); //now temp is the mac source address + timestamp + ssid -> values that have to be hashed
 
 		strcat(string_to_send, temp); //now string to send have all data except digest
 
@@ -677,6 +681,8 @@ static void tcp_sendPacket()
 
 		strcat(string_to_send, "Digest=");
 		strcat(string_to_send, digest);
+		sprintf(temp, "/Sequence_Number=%d", x.seq_n);
+		strcat(string_to_send, temp);
 		strcat(string_to_send, "/\n");
 
 		result = write(s, string_to_send, strlen(string_to_send));
@@ -759,8 +765,7 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 	}
 	ssid[i]='\0';
 
-	 /*potrebbero esserci dei problemi perché non sappiamo cos'è :8 */
-        x.channel=ppkt->rx_ctrl.channel;
+    x.channel=ppkt->rx_ctrl.channel;
     x.length_ssid=len;
     for(i = 0; i < 6 ; i ++)
         x.mac_src[i] = hdr->addr2[i];
@@ -774,6 +779,13 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
     }
     x.time=(int) ts;
 
+	//sequence number:
+	uint16_t seq_n = hdr->sequence_ctrl;
+	if (seq_n != NULL) {
+		uint16_t mask_seqN = 0xFFF0;
+		seq_n = seq_n & mask;
+		x.seq_n = seq_n;
+	}
     /* only probe request are memorized */
     P_push(&Sniffed_packet,x);
 //

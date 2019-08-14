@@ -8,6 +8,7 @@ public class Packet {
 	private String Digest;
 	private String TimeStamp;
 	private String IdMac;
+	private Integer SequenceNumber;
 
 	/***
 	 *
@@ -22,6 +23,7 @@ public class Packet {
 		extractDigest(packetChar);
 		extractTimeStamp(packetChar);
 		extractIdMac(packetChar);
+		extractSequenceNumber(packetChar);
 		System.out.println(this.toString());
 	}
 
@@ -31,16 +33,17 @@ public class Packet {
 		if (o == null || getClass() != o.getClass()) return false;
 		Packet packet = (Packet) o;
 		return RSSI == packet.RSSI &&
-				MacSource.equals(packet.MacSource) &&
-				SSID.equals(packet.SSID) &&
-				Digest.equals(packet.Digest) &&
-				TimeStamp.equals(packet.TimeStamp)&&
-				IdMac.equals(packet.IdMac);
+				Objects.equals(MacSource, packet.MacSource) &&
+				Objects.equals(SSID, packet.SSID) &&
+				Objects.equals(Digest, packet.Digest) &&
+				Objects.equals(TimeStamp, packet.TimeStamp) &&
+				Objects.equals(IdMac, packet.IdMac) &&
+				Objects.equals(SequenceNumber, packet.SequenceNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(RSSI, MacSource, SSID, Digest, TimeStamp, IdMac);
+		return Objects.hash(RSSI, MacSource, SSID, Digest, TimeStamp, IdMac, SequenceNumber);
 	}
 
 	@Override
@@ -52,6 +55,7 @@ public class Packet {
 				", Digest='" + Digest + '\'' +
 				", TimeStamp='" + TimeStamp + '\'' +
 				", IdMac='" + IdMac + '\'' +
+				", SequenceNumber=" + SequenceNumber +
 				'}';
 	}
 
@@ -99,7 +103,13 @@ public class Packet {
 
 	public void setTimeStamp(String timeStamp) { TimeStamp = timeStamp; }
 
+	public Integer getSequenceNumber() {
+		return SequenceNumber;
+	}
 
+	public void setSequenceNumber(Integer sequenceNumber) {
+		SequenceNumber = sequenceNumber;
+	}
 	/***
 	 *
 	 * @param packetChar
@@ -152,7 +162,6 @@ public class Packet {
 			String[] _ssid = packetChar.split("SSID_=");
 			String ssid = _ssid[1].split("/")[0];
 			if(ssid!=null){
-				System.out.println("SSID = " + ssid);
 				setSSID(ssid);
 			}
 			//setSSID(ssid[0]);
@@ -189,6 +198,12 @@ public class Packet {
 		String[] begin = packetChar.split("TimeStamp=");
 		String[] hash = begin[1].split("/");
 		setTimeStamp(hash[0]);
+	}
+
+	private void extractSequenceNumber(String packetChar) {
+		String[] begin = packetChar.split("Sequence_Number=");
+		String[] seq_n = begin[1].split("/");
+		setSequenceNumber(Integer.parseInt(seq_n[0]));
 	}
 	
 
