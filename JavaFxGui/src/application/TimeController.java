@@ -35,7 +35,6 @@ public class TimeController implements Initializable {
 
     @FXML private Button SearchButton;
     @FXML private Pane graph_container;
-    @FXML private LocalDateTimeTextField DataF;
     @FXML private LocalDateTimeTextField DataI;
     @FXML private ComboBox<String> ComboRoom;
     @FXML private TextArea AreaInfo;
@@ -55,13 +54,16 @@ public class TimeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         /*inizializza il grafico*/
-        final NumberAxis xAxis = new NumberAxis(0, 30, 5);
+        final NumberAxis xAxis = new NumberAxis(0, 20, 5);
         //final ValueAxis<String> xAxis =new ValueAxis<String>();
-        final NumberAxis yAxis = new NumberAxis(0, 30, 1);
+        final NumberAxis yAxis = new NumberAxis(0, 50, 1);
         xAxis.setLabel("Time (min)");
         yAxis.setLabel("People Number");
         grafico=new LineChart<Number, Number>(xAxis, yAxis);
         grafico.setTitle("People Number Per Time");
+        //grafico.setCreateSymbols(false); per togliere i cerchietti su ogni valore y
+        grafico.setLegendVisible(false);
+        grafico.setAnimated(false);
         graph_container.getChildren().add(grafico); //aggiungo un grafico vuoto
 
         /*Inizializza i valori di selezione per la stanza*/
@@ -99,6 +101,7 @@ public class TimeController implements Initializable {
     public void search(MouseEvent mouseEvent) {
 
         try {
+            grafico.getData().removeAll(grafico.getData()); //rimuove il vecchio risultato
             AreaInfo.setText("");
 
             Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
@@ -190,6 +193,15 @@ public class TimeController implements Initializable {
                         graph_container.getChildren().add(grafico);
                     }else{
                         AreaInfo.appendText("Nessun MAC rilevato per la stanza " + roomselected + "\n" + "A partire dalla data e ora seguenti:\n" + "TS Inizio: " + inizio);
+                        XYChart.Series serie = new XYChart.Series();
+                        serie.getData().add(new XYChart.Data(0, 0));
+                        serie.getData().add(new XYChart.Data(5, 0));
+                        serie.getData().add(new XYChart.Data(10, 0));
+                        serie.getData().add(new XYChart.Data(15, 0));
+                        serie.getData().add(new XYChart.Data(20, 0));
+                        graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
+                        grafico.getData().add(serie);
+                        graph_container.getChildren().add(grafico);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
