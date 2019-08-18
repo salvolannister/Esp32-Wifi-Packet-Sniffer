@@ -149,6 +149,7 @@ public class Receiver extends Thread {
                                 System.out.println("MINUMUM # OF ESP OK!!!");
                                 //todo debug
                                 computeAvarage();
+                                synchronized (EchoServer.final_tab) {
                                 for(Sum_PacketRec p:EchoServer.sum_tab) {
                                     List<Distance> dist = new ArrayList<>();
                                     for (String s : p.getRSSI().keySet()) {
@@ -160,7 +161,7 @@ public class Receiver extends Thread {
                                     }
                                     Polo pos = computePosition(dist);
                                     //double average=p.getRSSI().values().stream().mapToInt(i->i).average().getAsDouble();
-                                    synchronized (EchoServer.final_tab) {
+
                                         if (isLocal(p.getMacSource()) == true) {
                                             Long duplicate = EchoServer.final_tab.values().stream()
                                                     .filter(x -> x.getPosX() == pos.getX()).filter(y -> y.getPosY() == pos.getY())
@@ -199,10 +200,8 @@ public class Receiver extends Thread {
                                         }
 
                                         dist.clear();
-                                    }//fine for di sumpacket
-
+                                }//fine for di sumpacket
                                     //todo inviare final_tab alla gui
-
                                     writeFileFinalTab(EchoServer.final_tab, "Final.txt");
                                     EchoServer.final_tab.clear();
                                 }//fine synchronized finaltab

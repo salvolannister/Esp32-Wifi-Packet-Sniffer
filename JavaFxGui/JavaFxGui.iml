@@ -16,7 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="12" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library" exported="">
       <library name="sqlite-jdbc-3.7.2.jar">
         <CLASSES>
@@ -207,5 +207,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jfxtras-common-9.0-r1" level="project" />
   </component>
 </module>

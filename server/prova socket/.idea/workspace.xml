@@ -7,12 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1b871214-de53-4ad8-bf0c-77c3757c0e5d" name="Default Changelist" comment="Inserita Funzione TimeStamp">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/jfxtras_common_9_0_r1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/META-INF/JavaFxGui.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Serverino/EchoServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/EchoServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Serverino/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Serverino/Receiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EchoServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EchoServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -205,6 +208,13 @@
       <workItem from="1563612564664" duration="2627000" />
       <workItem from="1563619040558" duration="33000" />
       <workItem from="1565539545426" duration="6043000" />
+      <workItem from="1565709176620" duration="998000" />
+      <workItem from="1565974548557" duration="15000" />
+      <workItem from="1566073811588" duration="626000" />
+      <workItem from="1566108616090" duration="17000" />
+      <workItem from="1566113565052" duration="377000" />
+      <workItem from="1566136160273" duration="9000" />
+      <workItem from="1566137024954" duration="1708000" />
     </task>
     <task id="LOCAL-00001" summary="prova git">
       <created>1553873564913</created>

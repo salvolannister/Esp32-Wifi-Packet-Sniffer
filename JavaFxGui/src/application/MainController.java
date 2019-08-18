@@ -38,7 +38,7 @@ public class MainController {
 		public void openSetting(ActionEvent event) {
 		Parent settingPage;
 		try {
-			settingPage = FXMLLoader.load(getClass().getResource("newSetting.fxml"));
+			settingPage = FXMLLoader.load(getClass().getResource("NewSetting.fxml"));
 			Scene settingPageScene = new Scene (settingPage);
 			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
 			appStage.hide();

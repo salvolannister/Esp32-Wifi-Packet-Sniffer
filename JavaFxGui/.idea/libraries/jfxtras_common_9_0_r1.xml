@@ -1,0 +1,37 @@
+<component name="libraryTable">
+  <library name="jfxtras-common-9.0-r1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-common-9.0-r1.jar!/" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-controls-9.0-r1.jar!/" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-fxml-9.0-r1.jar!/" />
+      <root url="file://$USER_HOME$/Documenti/openjfx-11.0.2_linux-x64_bin-sdk/javafx-sdk-11.0.2/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$USER_HOME$/Documenti/openjfx-11.0.2_linux-x64_bin-sdk/javafx-sdk-11.0.2/lib" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-agenda/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-agenda/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-common/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-common/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-controls/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-controls/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-font-roboto/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-font-roboto/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-fxml/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-gauge-linear/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-gauge-linear/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-icalendaragenda/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-icalendaragenda/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-icalendarfx/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-icalendarfx/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-menu/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-menu/src/test/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-test-support/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-window/src/main/java" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-9.0.zip!/jfxtras-9.0/jfxtras-window/src/test/java" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Documenti/openjfx-11.0.2_linux-x64_bin-sdk/javafx-sdk-11.0.2/lib" recursive="false" />
+  </library>
+</component>
