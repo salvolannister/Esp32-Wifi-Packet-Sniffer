@@ -159,6 +159,7 @@ public class RoomController implements Initializable {
                 configurazione */
 
                 XYChart.Series series2 = new XYChart.Series();
+
                 series2.setName("Esp");
                 ArrayList<EspInfo> espInfos = qC.readConfiguration(confName);
                 if(espInfos !=  null) {
@@ -167,8 +168,10 @@ public class RoomController implements Initializable {
                         /*aggiunge i dati delle schedine al grafico
                         .getX() è un metodo di Polo
                          */
-                        series2.getData().add(new XYChart.Data(eI.getX(), eI.getY()));
+                        XYChart.Data<Number, Number > data = new XYChart.Data<>(eI.getX(), eI.getY());
+                        series2.getData().add(data);
 
+                        //data.getNode().setOnMouseClicked( e -> System.out.println("X "+ data.getXValue()));
                     }
 
                     grafico.getData().add(series2);
@@ -306,6 +309,7 @@ public class RoomController implements Initializable {
 
     public void onStartClick(MouseEvent mouseEvent){
         ahead.setDisable(true);
+        nav.setDisable(true);
         behind.setDisable(true);
         start.setDisable(true);
         roomCB.setDisable(true);
@@ -346,6 +350,7 @@ public class RoomController implements Initializable {
     public void onStopCLick(MouseEvent mouseEvent){
         start.setDisable(false);
         roomCB.setDisable(false);
+        nav.setDisable(false);
         configCB.setDisable(false);
         stop.setDisable(true);
         DataI.setDisable(false);
