@@ -173,7 +173,7 @@ public class RoomController implements Initializable {
                         XYChart.Data<Number, Number > data = new XYChart.Data<>(eI.getX(), eI.getY());
                         data.setNode(
                                 new HoverNode(
-                                        "ciao "
+                                        eI.getMAC()
                                 )
                         );
 
