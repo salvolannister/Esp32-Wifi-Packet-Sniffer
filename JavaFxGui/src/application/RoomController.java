@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -59,8 +60,8 @@ public class RoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final NumberAxis xAxis = new NumberAxis(0, 10, 0.05);
-        final NumberAxis yAxis = new NumberAxis(0, 10, 0.05);
+        final NumberAxis xAxis = new NumberAxis(0, 10, 0.5);
+        final NumberAxis yAxis = new NumberAxis(0, 10, 0.5);
         xAxis.setLabel("posX");
         yAxis.setLabel("posY");
         grafico= new ScatterChart<>(xAxis, yAxis);
@@ -151,13 +152,14 @@ public class RoomController implements Initializable {
                 ArrayList<Float> roomDim = qR.getRoomDim(roomName);
                 /* aggiusto gli assi in base
                 alla dimensione della stanza */
-                final NumberAxis xAxis = new NumberAxis(0, roomDim.get(0), 0.01);
-                final NumberAxis yAxis = new NumberAxis(0, roomDim.get(1), 0.01);
+                final NumberAxis xAxis = new NumberAxis(0, roomDim.get(0), 0.5);
+                final NumberAxis yAxis = new NumberAxis(0, roomDim.get(1), 0.5);
                 xAxis.setLabel("posX");
                 yAxis.setLabel("posY");
                 graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                 grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
                 grafico.setTitle("Devices's positions");
+
 
                 /*inserisco la
                 configurazione */
@@ -203,6 +205,7 @@ public class RoomController implements Initializable {
                 }
                 /*in ogni caso mostra
                  la posizione dei dispositivi */
+                grafico.setPadding(new Insets(10,10,10,10));
                 graph_container.getChildren().add(grafico);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -253,6 +256,7 @@ public class RoomController implements Initializable {
         else label.getStyleClass().addAll("default-color1", "chart-line-symbol", "chart-series-line");
 
         label.setStyle("-fx-font-size: 8; -fx-font-weight: bold;");
+        
         label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
         return label;
 
