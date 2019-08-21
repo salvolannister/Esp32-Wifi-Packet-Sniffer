@@ -14,6 +14,19 @@ public class Sum_PacketRec {
     private String MacSource;
     private String digest;
     private String TimeStamp;
+    private String SSID;
+
+    public Sum_PacketRec(Map<String, Integer> RSSI, String macSource, String digest, String timeStamp, String ssid) {
+        //todo cancellare se funziona
+        this.RSSI = RSSI;
+        //todo debug
+        Map<String, Integer> copyRssi = new HashMap<String,Integer>(RSSI);
+        this.RSSIs.add(copyRssi);
+        MacSource = macSource;
+        this.digest = digest;
+        TimeStamp = timeStamp;
+        SSID = ssid;
+    }
 
     public Sum_PacketRec(Map<String, Integer> RSSI, String macSource, String digest, String timeStamp) {
         //todo cancellare se funziona
@@ -24,7 +37,9 @@ public class Sum_PacketRec {
         MacSource = macSource;
         this.digest = digest;
         TimeStamp = timeStamp;
+        SSID = null;
     }
+
     //todo debug
     public void addRSSI(Map<String, Integer> rssi){
         RSSIs.add(rssi);
@@ -32,6 +47,14 @@ public class Sum_PacketRec {
     //todo debug
     public ArrayList<Map<String, Integer>> getRSSIs(){
         return this.RSSIs;
+    }
+
+    public String getSSID() {
+        return SSID;
+    }
+
+    public void setSSID(String SSID) {
+        this.SSID = SSID;
     }
 
     public Map<String, Integer> getRSSI() {

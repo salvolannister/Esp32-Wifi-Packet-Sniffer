@@ -134,9 +134,6 @@ public class EchoServer {
         return conf.getNumEsp();
     }
 
-    public static synchronized void computeAvarage(){
-
-    }
     /***
      *
      * @param tab
