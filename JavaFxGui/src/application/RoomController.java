@@ -9,9 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.LocalDateTimeTextField;
 
@@ -56,11 +59,12 @@ public class RoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final NumberAxis xAxis = new NumberAxis(0, 10, 0.01);
-        final NumberAxis yAxis = new NumberAxis(0, 10, 0.01);
+        final NumberAxis xAxis = new NumberAxis(0, 10, 0.05);
+        final NumberAxis yAxis = new NumberAxis(0, 10, 0.05);
         xAxis.setLabel("posX");
         yAxis.setLabel("posY");
-        grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
+        grafico= new ScatterChart<>(xAxis, yAxis);
+        grafico.setCursor(Cursor.CROSSHAIR);
         grafico.setTitle("Posizione");
         graph_container.getChildren().add(grafico); //aggiungo un grafico vuoto
 
@@ -100,7 +104,7 @@ public class RoomController implements Initializable {
             configCB.setItems(configList);
             roomCB.setItems(roomList);
         }catch(NullPointerException n){
-            return;
+            System.out.println("there was a null pointer exception trying to open a connection");
         }
     }
 
@@ -143,7 +147,7 @@ public class RoomController implements Initializable {
                 ahead.setDisable(false);
                 behind.setDisable(false);
                 nav.setDisable(false);
-                risultato=p.showPosition(String.valueOf(inizio.getTime()),roomName,confName);
+                risultato =p.showPosition(String.valueOf(inizio.getTime()),roomName,confName);
                 ArrayList<Float> roomDim = qR.getRoomDim(roomName);
                 /* aggiusto gli assi in base
                 alla dimensione della stanza */
@@ -153,13 +157,12 @@ public class RoomController implements Initializable {
                 yAxis.setLabel("posY");
                 graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                 grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
-                grafico.setTitle("Posizione");
+                grafico.setTitle("Devices's positions");
 
                 /*inserisco la
                 configurazione */
 
-                XYChart.Series series2 = new XYChart.Series();
-                series2.setName("Esp");
+                ObservableList<XYChart.Data<Number, Number>> dataset = FXCollections.observableArrayList();
                 ArrayList<EspInfo> espInfos = qC.readConfiguration(confName);
                 if(espInfos !=  null) {
 
@@ -167,9 +170,20 @@ public class RoomController implements Initializable {
                         /*aggiunge i dati delle schedine al grafico
                         .getX() è un metodo di Polo
                          */
-                        series2.getData().add(new XYChart.Data(eI.getX(), eI.getY()));
+                        XYChart.Data<Number, Number > data = new XYChart.Data<>(eI.getX(), eI.getY());
+                        data.setNode(
+                                new HoverNode(
+                                        eI.getMAC(), 0
+                                )
+                        );
 
+                        dataset.add(data);
+
+                        //data.getNode().setOnMouseClicked( e -> System.out.println("X "+ data.getXValue()));
                     }
+
+                    XYChart.Series series2 = new XYChart.Series("Esp",dataset);
+
 
                     grafico.getData().add(series2);
 
@@ -204,6 +218,43 @@ public class RoomController implements Initializable {
             return;
         }
 
+
+    }
+
+    /*creates the event and uses the ID to distinguish from ESP device
+    or phone
+     */
+    class HoverNode extends StackPane {
+        HoverNode(String MAC, int id ){
+            setPrefSize(12, 12);
+
+            final Label label =createDataMacLabel(MAC,id);
+
+            setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                    getChildren().setAll(label);
+                    setCursor(Cursor.NONE);
+                    toFront();
+                }
+            });
+            setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                    getChildren().clear();
+                    setCursor(Cursor.CROSSHAIR);
+                }
+            });
+        }
+    }
+
+    private Label createDataMacLabel(String MAC, int id){
+        final Label label = new Label(MAC);
+        if(id == 0)
+        label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
+        else label.getStyleClass().addAll("default-color1", "chart-line-symbol", "chart-series-line");
+
+        label.setStyle("-fx-font-size: 8; -fx-font-weight: bold;");
+        label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
+        return label;
 
     }
 
@@ -289,16 +340,25 @@ public class RoomController implements Initializable {
     private void graphAdd(Map<String, Polo> risultato){
                 /* add a collection of points
                     with a determinated color*/
-        XYChart.Series series1 =new XYChart.Series<>();
-        series1.setName("Device");
+        ObservableList<XYChart.Data<Number, Number>> dataset = FXCollections.observableArrayList();
         /*aggiunge la posizione delle schedine*/
         for (String s : risultato.keySet()) {
                         /*aggiunge i dati delle schedine al grafico
                         .getX() è un metodo di Polo
                          */
-            series1.getData().add(new XYChart.Data(risultato.get(s).getX(), risultato.get(s).getY()));
 
+
+            XYChart.Data<Number, Number > data = new XYChart.Data<>(risultato.get(s).getX(),risultato.get(s).getY());
+            data.setNode(
+                    new HoverNode(
+                           s, 1
+                    )
+            );
+
+            dataset.add(data);
         }
+
+        XYChart.Series series1 =new XYChart.Series<>("Device",dataset);
 
         grafico.getData().add(series1);
 
@@ -306,6 +366,7 @@ public class RoomController implements Initializable {
 
     public void onStartClick(MouseEvent mouseEvent){
         ahead.setDisable(true);
+        nav.setDisable(true);
         behind.setDisable(true);
         start.setDisable(true);
         roomCB.setDisable(true);
@@ -346,6 +407,7 @@ public class RoomController implements Initializable {
     public void onStopCLick(MouseEvent mouseEvent){
         start.setDisable(false);
         roomCB.setDisable(false);
+        nav.setDisable(false);
         configCB.setDisable(false);
         stop.setDisable(true);
         DataI.setDisable(false);

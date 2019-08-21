@@ -4,7 +4,7 @@ import java.util.Objects;
 public class Polo {
     private Double x;
     private Double y;
-
+    private String MAC;
 
     public double getX() {
         return x;
@@ -22,9 +22,17 @@ public class Polo {
         this.y = y;
     }
 
+    public String getMAC(){ return MAC;}
+
     public Polo(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Polo(double x, double y, String MAC) {
+        this.x = x;
+        this.y = y;
+        this.MAC = MAC;
     }
 
     @Override

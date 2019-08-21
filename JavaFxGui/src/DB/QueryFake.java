@@ -185,6 +185,9 @@ public class QueryFake {
 
     }
 
+
+
+
     /*query che in un determinato minuto, det stanza
     e configurazione
     restituisce i dati del dispositivo
