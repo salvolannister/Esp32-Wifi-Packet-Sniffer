@@ -8,7 +8,7 @@ public class Packet {
 	private String Digest;
 	private String TimeStamp;
 	private String IdMac;
-	private Integer SequenceNumber;
+	private Integer SequenceNumber=null;
 
 	/***
 	 *
@@ -23,7 +23,7 @@ public class Packet {
 		extractDigest(packetChar);
 		extractTimeStamp(packetChar);
 		extractIdMac(packetChar);
-		extractSequenceNumber(packetChar);
+		//extractSequenceNumber(packetChar);
 		System.out.println(this.toString());
 	}
 
