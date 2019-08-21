@@ -59,11 +59,11 @@ public class RoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final NumberAxis xAxis = new NumberAxis(0, 10, 0.01);
-        final NumberAxis yAxis = new NumberAxis(0, 10, 0.01);
+        final NumberAxis xAxis = new NumberAxis(0, 10, 0.05);
+        final NumberAxis yAxis = new NumberAxis(0, 10, 0.05);
         xAxis.setLabel("posX");
         yAxis.setLabel("posY");
-        grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
+        grafico= new ScatterChart<>(xAxis, yAxis);
         grafico.setCursor(Cursor.CROSSHAIR);
         grafico.setTitle("Posizione");
         graph_container.getChildren().add(grafico); //aggiungo un grafico vuoto
@@ -104,7 +104,7 @@ public class RoomController implements Initializable {
             configCB.setItems(configList);
             roomCB.setItems(roomList);
         }catch(NullPointerException n){
-            return;
+            System.out.println("there was a null pointer exception trying to open a connection");
         }
     }
 
@@ -173,7 +173,7 @@ public class RoomController implements Initializable {
                         XYChart.Data<Number, Number > data = new XYChart.Data<>(eI.getX(), eI.getY());
                         data.setNode(
                                 new HoverNode(
-                                        eI.getMAC()
+                                        eI.getMAC(), 0
                                 )
                         );
 
@@ -221,11 +221,14 @@ public class RoomController implements Initializable {
 
     }
 
+    /*creates the event and uses the ID to distinguish from ESP device
+    or phone
+     */
     class HoverNode extends StackPane {
-        HoverNode(String MAC){
-            setPrefSize(15, 15);
+        HoverNode(String MAC, int id ){
+            setPrefSize(12, 12);
 
-            final Label label =createDataMacLabel(MAC);
+            final Label label =createDataMacLabel(MAC,id);
 
             setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override public void handle(MouseEvent mouseEvent) {
@@ -243,10 +246,13 @@ public class RoomController implements Initializable {
         }
     }
 
-    private Label createDataMacLabel( String MAC){
+    private Label createDataMacLabel(String MAC, int id){
         final Label label = new Label(MAC);
+        if(id == 0)
         label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
-        label.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
+        else label.getStyleClass().addAll("default-color1", "chart-line-symbol", "chart-series-line");
+
+        label.setStyle("-fx-font-size: 8; -fx-font-weight: bold;");
         label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
         return label;
 
@@ -334,16 +340,25 @@ public class RoomController implements Initializable {
     private void graphAdd(Map<String, Polo> risultato){
                 /* add a collection of points
                     with a determinated color*/
-        XYChart.Series series1 =new XYChart.Series<>();
-        series1.setName("Device");
+        ObservableList<XYChart.Data<Number, Number>> dataset = FXCollections.observableArrayList();
         /*aggiunge la posizione delle schedine*/
         for (String s : risultato.keySet()) {
                         /*aggiunge i dati delle schedine al grafico
                         .getX() è un metodo di Polo
                          */
-            series1.getData().add(new XYChart.Data(risultato.get(s).getX(), risultato.get(s).getY()));
 
+
+            XYChart.Data<Number, Number > data = new XYChart.Data<>(risultato.get(s).getX(),risultato.get(s).getY());
+            data.setNode(
+                    new HoverNode(
+                           s, 1
+                    )
+            );
+
+            dataset.add(data);
         }
+
+        XYChart.Series series1 =new XYChart.Series<>("Device",dataset);
 
         grafico.getData().add(series1);
 
