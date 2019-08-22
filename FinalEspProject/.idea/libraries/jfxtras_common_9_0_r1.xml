@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jfxtras-common-9.0-r1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-common-9.0-r1.jar!/" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-controls-9.0-r1.jar!/" />
+      <root url="jar://$USER_HOME$/Documenti/jfxtras-fxml-9.0-r1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
