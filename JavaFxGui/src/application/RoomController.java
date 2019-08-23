@@ -61,8 +61,8 @@ public class RoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final NumberAxis xAxis = new NumberAxis(0, 10, 0.5);
-        final NumberAxis yAxis = new NumberAxis(0, 10, 0.5);
+        final NumberAxis xAxis = new NumberAxis(-2, 10, 0.5);
+        final NumberAxis yAxis = new NumberAxis(-2, 10, 0.5);
         xAxis.setLabel("posX");
         yAxis.setLabel("posY");
         grafico= new ScatterChart<>(xAxis, yAxis);
@@ -153,8 +153,8 @@ public class RoomController implements Initializable {
                 ArrayList<Float> roomDim = qR.getRoomDim(roomName);
                 /* aggiusto gli assi in base
                 alla dimensione della stanza */
-                final NumberAxis xAxis = new NumberAxis(0, roomDim.get(0), 0.5);
-                final NumberAxis yAxis = new NumberAxis(0, roomDim.get(1), 0.5);
+                final NumberAxis xAxis = new NumberAxis(-2, roomDim.get(0) + 2, 0.5);
+                final NumberAxis yAxis = new NumberAxis(-2, roomDim.get(1)+2, 0.5);
                 xAxis.setLabel("posX");
                 yAxis.setLabel("posY");
                 graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
