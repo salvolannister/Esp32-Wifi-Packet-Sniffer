@@ -25,6 +25,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.LocalDateTimeTextField;
@@ -205,8 +206,13 @@ public class RoomController implements Initializable {
                 }
                 /*in ogni caso mostra
                  la posizione dei dispositivi */
-                grafico.setPadding(new Insets(10,10,10,10));
+
+
                 graph_container.getChildren().add(grafico);
+                /* this code could be usede to make the graph fit the container
+                grafico.prefWidthProperty().bind(graph_container.widthProperty());
+                grafico.prefHeightProperty().bind(graph_container.heightProperty());
+                 */
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -256,7 +262,8 @@ public class RoomController implements Initializable {
         else label.getStyleClass().addAll("default-color1", "chart-line-symbol", "chart-series-line");
 
         label.setStyle("-fx-font-size: 8; -fx-font-weight: bold;");
-        
+
+
         label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
         return label;
 
