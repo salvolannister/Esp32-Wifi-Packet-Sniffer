@@ -4,7 +4,7 @@ import DB.DBUtil;
 import DB.QueryConfiguration;
 import DB.QueryPosition;
 import DB.QueryRoom;
-import DTO.Polo;
+import DTO.Posizione;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -110,7 +110,7 @@ public class RoomController implements Initializable {
     public void search(MouseEvent mouseEvent) {
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
-        Map<String, Polo> risultato= new HashMap<>();
+        Map<String, Posizione> risultato= new HashMap<>();
         nav.setValue(0);
 
         if(roomName == null){
@@ -330,7 +330,7 @@ public class RoomController implements Initializable {
         QueryPosition p=new QueryPosition(db.getConn());
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
-        Map<String, Polo> risultato = p.showPosition(String.valueOf(later.getTime()), roomName, confName);
+        Map<String, Posizione> risultato = p.showPosition(String.valueOf(later.getTime()), roomName, confName);
         System.out.println("size: "+grafico.getData().size());
         if(grafico.getData().size() == 2){
             grafico.getData().remove(1);
@@ -345,7 +345,7 @@ public class RoomController implements Initializable {
 
     }
 
-    private void graphAdd(Map<String, Polo> risultato){
+    private void graphAdd(Map<String, Posizione> risultato){
                 /* add a collection of points
                     with a determinated color*/
         ObservableList<XYChart.Data<Number, Number>> dataset = FXCollections.observableArrayList();
@@ -373,6 +373,13 @@ public class RoomController implements Initializable {
     }
 
     public void onStartClick(MouseEvent mouseEvent){
+        if(roomCB.getValue() == null){
+            errorShower("You must select a Room first");
+            return;}
+        if(configCB.getValue() == null) {
+            errorShower("You must select a Configuration first");
+            return;
+        }
         ahead.setDisable(true);
         nav.setDisable(true);
         behind.setDisable(true);

@@ -1,6 +1,6 @@
 package DB;
 
-import DTO.Polo;
+import DTO.Posizione;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -142,10 +142,10 @@ public class QueryPosition {
     considerando anche un tempo di fine
 
      */
-    public Map<String, Polo> showPosition(String timeI, String timeF) throws SQLException {
+    public Map<String, Posizione> showPosition(String timeI, String timeF) throws SQLException {
 
         PreparedStatement pstmt;
-        Map<String, Polo> risultato= new HashMap<>();
+        Map<String, Posizione> risultato= new HashMap<>();
 
         try {
             conn.setAutoCommit(false);
@@ -157,7 +157,7 @@ public class QueryPosition {
                 ResultSet res=pstmt.executeQuery();
 
                 while (res.next()){
-                    risultato.put(res.getString("MAC"),new Polo(res.getFloat("posX"),res.getFloat("posY")));
+                    risultato.put(res.getString("MAC"),new Posizione(res.getFloat("posX"),res.getFloat("posY")));
                     //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
                 }
 
@@ -192,10 +192,10 @@ public class QueryPosition {
     e configurazione
     restituisce i dati del dispositivo
      */
-    public Map<String, Polo> showPosition(String timeI, String room,String conf) throws SQLException {
+    public Map<String, Posizione> showPosition(String timeI, String room, String conf) throws SQLException {
 
         PreparedStatement pstmt;
-        Map<String, Polo> risultato= new HashMap<>();
+        Map<String, Posizione> risultato= new HashMap<>();
 
         try {
             conn.setAutoCommit(false);
@@ -217,7 +217,7 @@ public class QueryPosition {
                 ResultSet res=pstmt.executeQuery();
 
                 while (res.next()){
-                    risultato.put(res.getString("MAC"),new Polo(res.getFloat("X"),res.getFloat("Y")));
+                    risultato.put(res.getString("MAC"),new Posizione(res.getFloat("X"),res.getFloat("Y")));
                     //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
                 }
 

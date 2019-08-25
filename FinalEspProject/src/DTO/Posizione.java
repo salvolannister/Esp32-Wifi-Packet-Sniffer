@@ -1,7 +1,7 @@
 package DTO;
 import java.util.Objects;
 
-public class Polo {
+public class Posizione {
     private Double x;
     private Double y;
     private String MAC;
@@ -24,12 +24,12 @@ public class Polo {
 
     public String getMAC(){ return MAC;}
 
-    public Polo(double x, double y) {
+    public Posizione(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public Polo(double x, double y, String MAC) {
+    public Posizione(double x, double y, String MAC) {
         this.x = x;
         this.y = y;
         this.MAC = MAC;
@@ -39,9 +39,9 @@ public class Polo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Polo polo = (Polo) o;
-        return Double.compare(polo.x, x) == 0 &&
-                Double.compare(polo.y, y) == 0;
+        Posizione posizione = (Posizione) o;
+        return Double.compare(posizione.x, x) == 0 &&
+                Double.compare(posizione.y, y) == 0;
     }
 
     @Override
