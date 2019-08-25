@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,6 +25,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.LocalDateTimeTextField;
@@ -59,8 +61,8 @@ public class RoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final NumberAxis xAxis = new NumberAxis(0, 10, 0.05);
-        final NumberAxis yAxis = new NumberAxis(0, 10, 0.05);
+        final NumberAxis xAxis = new NumberAxis(-2, 10, 0.5);
+        final NumberAxis yAxis = new NumberAxis(-2, 10, 0.5);
         xAxis.setLabel("posX");
         yAxis.setLabel("posY");
         grafico= new ScatterChart<>(xAxis, yAxis);
@@ -151,13 +153,14 @@ public class RoomController implements Initializable {
                 ArrayList<Float> roomDim = qR.getRoomDim(roomName);
                 /* aggiusto gli assi in base
                 alla dimensione della stanza */
-                final NumberAxis xAxis = new NumberAxis(0, roomDim.get(0), 0.01);
-                final NumberAxis yAxis = new NumberAxis(0, roomDim.get(1), 0.01);
+                final NumberAxis xAxis = new NumberAxis(-2, roomDim.get(0) + 2, 0.5);
+                final NumberAxis yAxis = new NumberAxis(-2, roomDim.get(1)+2, 0.5);
                 xAxis.setLabel("posX");
                 yAxis.setLabel("posY");
                 graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                 grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
                 grafico.setTitle("Devices's positions");
+
 
                 /*inserisco la
                 configurazione */
@@ -203,7 +206,13 @@ public class RoomController implements Initializable {
                 }
                 /*in ogni caso mostra
                  la posizione dei dispositivi */
+
+
                 graph_container.getChildren().add(grafico);
+                /* this code could be usede to make the graph fit the container
+                grafico.prefWidthProperty().bind(graph_container.widthProperty());
+                grafico.prefHeightProperty().bind(graph_container.heightProperty());
+                 */
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -253,6 +262,8 @@ public class RoomController implements Initializable {
         else label.getStyleClass().addAll("default-color1", "chart-line-symbol", "chart-series-line");
 
         label.setStyle("-fx-font-size: 8; -fx-font-weight: bold;");
+
+
         label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
         return label;
 
