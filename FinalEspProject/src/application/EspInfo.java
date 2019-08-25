@@ -56,6 +56,7 @@ public class EspInfo {
 				/*check mac address*/
 				if(mac.getText() == null || mac.getText().trim().isEmpty()){
 					 Alert fail= new Alert(AlertType.INFORMATION);
+					fail.getDialogPane().setExpanded(true);
 				        fail.setHeaderText("failure");
 				        fail.setContentText("You must fullfill the mac fields");
 				        fail.showAndWait();
@@ -64,8 +65,11 @@ public class EspInfo {
 					this.MAC = mac.getText();
 					if(!Pattern.matches(regex, MAC)) {
 						 Alert fail= new Alert(AlertType.INFORMATION);
+							fail.getDialogPane().setExpanded(true);
+							fail.getDialogPane().autosize();
 					        fail.setHeaderText("failure");
 					        fail.setContentText("Mac should be ex. 3D:F2:C9:A6:B3:4F or 3D-F2-C9-A6-B3-4F");
+
 					        fail.showAndWait();
 					        return false;
 					}else {

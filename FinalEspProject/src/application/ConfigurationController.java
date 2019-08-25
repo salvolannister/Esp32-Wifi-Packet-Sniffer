@@ -3,11 +3,7 @@ package application;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 import DB.DBUtil;
 import DB.QueryConfiguration;
@@ -226,11 +222,27 @@ private static void printField(String mac, String X, String Y) {
 				 return;
 			 }
 		 }
+		 //check mac distinti
+		 Long distinct_mac=espDevice.stream().map(EspInfo::getMAC).distinct().count();
+		 if(espDevice.size()!=distinct_mac){
+			 showAlert("Insert  distint MAC address!");
+			 System.out.println("ci sono mac duplicati ") ;
+			 return;
+		 }
+
 		// check of name field;
-		 if( name.getText() == null){
+		 if( name.getText().compareTo("")==0){
+			 showAlert("A valid name for configuration is required!");
 		     System.out.println(" No name was inserted ") ;
 		 return;
 		 }
+
+		 if(isConfiguration(name.getText())==true){
+			 showAlert("Inserted name refers to an existing configuration. Please insert a new one!");
+			 name.setText("");
+			System.out.println(" la configurazione già esiste ") ;
+			return;
+		}
 
 			System.out.println("WOWWWWW");
 	  			/*write in the DB */
@@ -252,6 +264,20 @@ private static void printField(String mac, String X, String Y) {
 				}
 			}
      
+	}
+
+	private boolean isConfiguration(String text) throws SQLException{
+		DBUtil db = new DBUtil();
+		db.openConnection("database.db");
+		QueryConfiguration qC  = new QueryConfiguration(db.getConn());
+
+		ArrayList<EspInfo> field= qC.readConfiguration(text);
+		db.closeConnection();
+
+		if(field==null)
+			return false;
+		return true;
+
 	}
 
 	private boolean writeData() throws SQLException {
@@ -293,5 +319,15 @@ private static void printField(String mac, String X, String Y) {
 //	    int plate = poundIncrementButtons.indexOf(button);
 //	    incrementDecrementPlate(0, 0, plate);
 //	}
+
+
+	private void showAlert(String content){
+		Alert fail= new Alert(AlertType.INFORMATION);
+		fail.setHeaderText("failure");
+		fail.getDialogPane().setExpanded(true);
+		fail.setContentText(content);
+		fail.showAndWait();
+	}
+
 }
 
