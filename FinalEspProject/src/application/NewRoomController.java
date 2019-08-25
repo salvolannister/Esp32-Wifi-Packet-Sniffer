@@ -1,7 +1,6 @@
 package application;
 
 import DB.DBUtil;
-import DB.QueryFake;
 import DB.QueryRoom;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

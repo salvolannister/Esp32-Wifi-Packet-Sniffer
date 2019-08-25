@@ -51,19 +51,7 @@ public class MainController {
 		}
 	
 		}
-
-		public void startServer(ActionEvent event){
-			System.out.println("cisono");
-			try {
-				File f=new File(".");
-				f.getAbsolutePath();
-				String jar =f.getAbsolutePath()+"//Serverino.jar";
-				Process process = Runtime.getRuntime().exec("java -jar"+ jar);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
+		
 
     public void openRoom(ActionEvent mouseEvent) {
 		Parent RoomPage;
