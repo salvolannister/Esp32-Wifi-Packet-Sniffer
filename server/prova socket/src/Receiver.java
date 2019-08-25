@@ -92,11 +92,11 @@ public class Receiver extends Thread {
                                 Payload pack = new Payload(TimeLong, p);
                                 EchoServer.conf.getMac_tab().put(mac[1], pack);
                             }else if(mac[1].compareTo(MacESPUmb) == 0) {
-                                Polo p = new Polo(5.0, 0.0);
+                                Polo p = new Polo(0.0, 3.3);
                                 Payload pack = new Payload(TimeLong, p);
                                 EchoServer.conf.getMac_tab().put(mac[1], pack);
                             }else if(mac[1].compareTo(MacESPMar) == 0) {
-                                Polo p = new Polo(5.0, 4.0);
+                                Polo p = new Polo(2.4, 3.3);
                                 Payload pack = new Payload(TimeLong, p);
                                 EchoServer.conf.getMac_tab().put(mac[1], pack);
                             }else if(mac[1].compareTo(MacESPAnt) == 0) {
@@ -203,7 +203,8 @@ public class Receiver extends Thread {
 
                                     dist.clear();
                                 }//fine for di sumpacket
-                                HiddenMacFinder.FindHiddenDevices(EchoServer.final_tab);
+                                //HiddenMacFinder.addLocalFake(); //// TODO: 23/08/2019 DELETE!!!
+                                HiddenMacFinder.FindHiddenDevices();
                                 DBInsert();
                                 //todo inviare final_tab alla gui
                                 writeFileFinalTab(EchoServer.final_tab, "Final.txt");
@@ -326,12 +327,12 @@ public class Receiver extends Thread {
 
     private void DBInsert() {
         for (Map.Entry<String, DBPacket> DBpkt1 : EchoServer.final_tab.entrySet()) {
-            if(DBpkt1!=null){
+            if(DBpkt1.getValue()!=null){
                 try {
                     QueryFake q = new QueryFake(db.getConn());
                     DBPacket pkt = DBpkt1.getValue();
 
-                    if (!q.aggiungiTupla(pkt.getDigest(), pkt.getMacSource(), pkt.getTimeStamp(), pkt.getRoom(), pkt.getPosX(), pkt.getPosY())) {
+                    if (!q.aggiungiTupla(pkt.getDigest(), pkt.getMacSource(), pkt.getTimeStamp(), pkt.getRoom(), pkt.getPosX(), pkt.getPosY(), pkt.getErr(), pkt.getLocalMacMargedNumber())) {
                         System.err.println("Errore nell'inserimento");
                         System.exit(-1);
                     }
@@ -357,12 +358,12 @@ public class Receiver extends Thread {
                         rssiSum += (Integer) pair.getValue();
                         pair.setValue(rssiSum);
                     }
-                    System.out.println("key = " + key + " Somma calcolata = " + pair.getValue());
-                    System.out.println("media calocata per key = " + key + " Come: " + (Integer)pair.getValue() + " / " + pkt.getRSSIs().size());
+                    //System.out.println("key = " + key + " Somma calcolata = " + pair.getValue());
+                    //System.out.println("media calocata per key = " + key + " Come: " + (Integer)pair.getValue() + " / " + pkt.getRSSIs().size());
                     pair.setValue((Integer)pair.getValue()/pkt.getRSSIs().size());
                 }
-                System.out.println("lista di Map = " + pkt.getRSSIs());
-                System.out.println("Map con media calcolata = " + pkt.getRSSI());
+                //System.out.println("lista di Map = " + pkt.getRSSIs());
+                //System.out.println("Map con media calcolata = " + pkt.getRSSI());
             }
         }
 

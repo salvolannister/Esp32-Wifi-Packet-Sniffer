@@ -1,6 +1,4 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HiddenMacFinder {
     private static Float DIST_WEIGHT = 0.4f;
@@ -10,17 +8,17 @@ public class HiddenMacFinder {
     private static List<String> SSIDblackList = Arrays.asList("Eduroam", "Polito");
     private static Float CategorydistanceThreshold = 1.5f; //se due dispositivi sono distanti più di CategorydistanceThreshold, anche se sono di tipo Android -> p = 0;
 
-    public static void FindHiddenDevices( Map<String, DBPacket> final_map){
+    public static void FindHiddenDevices(){
 
         //todo debug
         Integer total = 0;
         Integer couple = 0;
 
-        for (Map.Entry<String, DBPacket> DBpkt1 : final_map.entrySet()) {
+        for (Map.Entry<String, DBPacket> DBpkt1 : EchoServer.final_tab.entrySet()) {
             total++;
-            if(DBpkt1!=null && isLocal(DBpkt1.getValue().getMacSource())){
-                for(Map.Entry<String, DBPacket> DBpkt2 : final_map.entrySet())
-                    if(DBpkt1!=DBpkt2 && DBpkt2!=null && isLocal(DBpkt2.getValue().getMacSource())){
+            if(DBpkt1.getValue()!=null && isLocal(DBpkt1.getValue().getMacSource())){
+                for(Map.Entry<String, DBPacket> DBpkt2 : EchoServer.final_tab.entrySet())
+                    if(DBpkt1!=DBpkt2 && DBpkt2.getValue()!=null && isLocal(DBpkt2.getValue().getMacSource())){
                         //si entra in questo IF se sia DBpkt1 che DBpkt2 sono Local (e non sono la stessa entry)
                         // TODO: 21/08/2019 debug
                         couple++;
@@ -30,12 +28,14 @@ public class HiddenMacFinder {
                         Float CategoryP = HiddenMacFinder.ComputeCategoryProb(DBpkt1.getValue(), DBpkt2.getValue());
                         Float Prob = DistP + SSIDP + CategoryP;
 
-                        System.out.println("Distance prob: " + DistP + " SSID prob: " + SSIDP + " Category prob: " + CategoryP + ", TOTAL = " + Prob);
+                        //System.out.println("couple analized: " + DBpkt1.getValue().getMacSource() + " and " + DBpkt2.getValue().getMacSource());
+                        //System.out.println("Distance prob: " + DistP + " SSID prob: " + SSIDP + " Category prob: " + CategoryP + ", TOTAL = " + Prob);
 
                         if(Prob >= HiddenMacFinder.THRESHOLD){
-                            System.out.println("candidato trovato: due MAC local con alta probabilità di appartenere allo stesso dispositivo!!");
-                            DBpkt2 = null;
+                            //EchoServer.final_tab.put(DBpkt2.getKey(), null);
+                            DBpkt2.setValue(null);
                             Float err = 1-Prob; //distanza da 1 (certezza che si tratta dello stesso dispositivo)
+                            System.out.println("candidato TROVATO: due MAC local con alta probabilità di appartenere allo stesso dispositivo!! ERRORE = " + err);
                             if(DBpkt1.getValue().getErr() < err) //POLITICA WORST CASE
                                 DBpkt1.getValue().setErr(err);
                             DBpkt1.getValue().setLocalMacMargedNumber(DBpkt1.getValue().getLocalMacMargedNumber()+1);
@@ -45,13 +45,14 @@ public class HiddenMacFinder {
                             if(Prob<0)
                                 Prob = 0.03f; //siamo praticamente certi che non sia lo stesso dispositivo. Per essere negativo infatti vuol dire che un mac è di tipo android mentre l'altro no. Approssimiamo comunque ad un errore minimale
                             Float err = Prob; //distanza dallo zero (certezza che non sono lo stesso dispositivo)
+                            System.out.println("candidato SCARTATO: si assume dispositivi diversi!! ERRORE = " + err);
                             if(DBpkt1.getValue().getErr() < err) //POLITICA WORST CASE
                                 DBpkt1.getValue().setErr(err);
                         }
                     }
             }
         }//End Cycle
-        System.out.println("Number of elements: " + total + " and couple analized: " + couple);
+        //System.out.println("Number of elements: " + total + " and couple analized: " + couple);
     }
 
     private static Float ComputeDistanceProb(DBPacket pk1, DBPacket pk2){
@@ -79,7 +80,7 @@ public class HiddenMacFinder {
         String OUI1 = pk1.getMacSource().substring(0,8);
         String OUI2 = pk2.getMacSource().substring(0,8);
 
-        System.out.println("OUI1: " + OUI1 + " OUI2: " + OUI2);
+        //System.out.println("OUI1: " + OUI1 + " OUI2: " + OUI2);
 
         for (String target: AndroidOUI){
             if(OUI1.compareTo(target)== 0 && OUI2.compareTo(target)==0) //Entrambi i mac hanno oui uguale tra loro ed è di tipo android local
@@ -104,17 +105,56 @@ public class HiddenMacFinder {
      * test su mac locale/globale
      */
     public static Boolean isLocal(String mac){
+        //System.out.println("check mac -> "+ mac);
         String[] octets = mac.split(":");
         char test=octets[0].charAt(1);
-        String lower=Integer.toBinaryString(test);
-        //System.out.println(lower);
-        if(lower.charAt(4)=='1'){
-            System.out.println("local MAC foud!");
+
+        String tests = Character.toString(test);
+        int decimal = Integer.parseInt(tests, 16);
+        String lower = Integer.toBinaryString(decimal);
+
+        //System.out.println("Mac is: " + mac + " Test is: " + tests + " decimal version is: " + decimal + " lower is:"+lower);
+        if(lower.charAt(2)=='1'){
+            //System.out.println("local MAC foud!");
             return true;
         }
         else{
             //System.out.println("global");
             return false;
+        }
+    }
+
+    public static void addLocalFake(){
+
+
+        ArrayList<String> digests = new ArrayList<String>();
+
+        for (int i = 0; i<5; i++){
+            StringBuilder builder = new StringBuilder();
+            for (int j = 0; j < 32; j++) {
+                Random rand = new Random();
+                builder.append(rand.nextInt(9));
+            }
+            digests.add(builder.toString());
+        }
+
+        ArrayList<DBPacket> pkts = new ArrayList<DBPacket>();
+
+        //primi 3 vengono uniti
+        List<String> macs = Arrays.asList("da:a1:19:00:00:00", "da:a1:19:00:00:01", "da:a1:19:00:00:02", "da:a1:19:00:00:03", "0a:00:00:00:00:00");
+        pkts.add(new DBPacket(digests.get(0), 1566377514000L, 1, 3.5f, 4.6f, macs.get(0), "StessoSSID"));
+        pkts.add(new DBPacket(digests.get(1), 1566377518000L, 1, 3.0f, 4.1f, macs.get(1), "StessoSSID"));
+        pkts.add(new DBPacket(digests.get(2), 1566377519000L, 1, 3.3f, 4.3f, macs.get(2), "StessoSSID"));
+        pkts.add(new DBPacket(digests.get(3), 1566377538000L, 1, 5.0f, 1.1f, macs.get(3), "StessoSSID")); //non unito -> P=0.6
+        pkts.add(new DBPacket(digests.get(4), 1566377558000L, 1, 3.0f, 4.5f, macs.get(4), "DiversoSSID")); //non unito -> P=0.4
+
+        int i = 0;
+        synchronized (EchoServer.final_tab) {
+            for (DBPacket pkt : pkts) {
+                EchoServer.final_tab.put(macs.get(i), pkt);
+                i++;
+            }
+            System.out.println(EchoServer.final_tab);
         }
     }
 }

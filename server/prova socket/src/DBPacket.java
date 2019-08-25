@@ -112,7 +112,7 @@ public class DBPacket {
                 ", Err=" + Err +
                 ", LocalMacMargedNumber=" + LocalMacMargedNumber +
                 ", SSID='" + SSID + '\'' +
-                '}';
+                '}' + '\n';
     }
 
     @Override
