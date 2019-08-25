@@ -51,7 +51,6 @@ public class MainController {
 		}
 	
 		}
-		
 
     public void openRoom(ActionEvent mouseEvent) {
 		Parent RoomPage;
