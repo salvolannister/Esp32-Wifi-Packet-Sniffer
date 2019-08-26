@@ -5,6 +5,8 @@ import DB.QueryConfiguration;
 import DB.QueryPosition;
 import DB.QueryRoom;
 import DTO.Posizione;
+import Server.DBPacket;
+import Server.EchoServer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -46,8 +48,10 @@ public class RoomController implements Initializable {
     @FXML private ComboBox<String> configCB;
     @FXML private Button start;
     @FXML private Button stop;
+    @FXML private Button BackButton;
+    @FXML private Label label;
     private ScatterChart<Number, Number> grafico;
-
+private static Map<String, DBPacket> serie;
 
     private ObservableList<String> roomList = FXCollections.observableArrayList();
     private List<String> readList = new ArrayList<>();
@@ -55,9 +59,15 @@ public class RoomController implements Initializable {
     private  Timestamp inizio;
     private boolean stopCliked = false;
 
+    public static void plotta(Map<String, DBPacket> final_tab) {
+        //serie.clear();
+        serie=final_tab;
+        return;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        serie=null;
         final NumberAxis xAxis = new NumberAxis(-2, 10, 0.5);
         final NumberAxis yAxis = new NumberAxis(-2, 10, 0.5);
         xAxis.setLabel("posX");
@@ -292,6 +302,10 @@ public class RoomController implements Initializable {
     @FXML
     public void back(MouseEvent mouseEvent) {
 
+        startService.cancel();
+        ServiceData.cancel();
+
+
         Parent configurationPage;
         try {
             configurationPage = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -372,14 +386,111 @@ public class RoomController implements Initializable {
 
     }
 
-    public void onStartClick(MouseEvent mouseEvent){
-        if(roomCB.getValue() == null){
+
+    private void realtimeGraphAdd(Map<String, DBPacket> risultato){
+
+
+        if(grafico.getData().size() == 2){
+            grafico.getData().remove(1);
+
+        };
+
+                /* add a collection of points
+                    with a determinated color*/
+        ObservableList<XYChart.Data<Number, Number>> dataset = FXCollections.observableArrayList();
+        /*aggiunge la posizione delle schedine*/
+        for (String s : risultato.keySet()) {
+                        /*aggiunge i dati delle schedine al grafico
+                        .getX() è un metodo di Polo
+                         */
+
+
+            XYChart.Data<Number, Number > data = new XYChart.Data<>(risultato.get(s).getPosX(),risultato.get(s).getPosY());
+            data.setNode(
+                    new HoverNode(
+                            s, 1
+                    )
+            );
+
+            dataset.add(data);
+        }
+
+        XYChart.Series series1 =new XYChart.Series<>("Device",dataset);
+
+        grafico.getData().add(series1);
+        serie=null;
+
+
+    }
+
+    public void onStartClick(MouseEvent mouseEvent) throws IOException, SQLException {
+        String roomName = roomCB.getValue();
+        String confName = configCB.getValue();
+
+        if(roomName == null){
             errorShower("You must select a Room first");
             return;}
-        if(configCB.getValue() == null) {
+        if(confName == null) {
             errorShower("You must select a Configuration first");
             return;
         }
+
+        DBUtil db=new DBUtil();
+
+        if(!db.openConnection("database.db")){
+            System.err.println("Errore di Connessione al DB. Impossibile Continuare");
+            System.exit(-1);
+        }
+        QueryRoom qR = new QueryRoom(db.getConn());
+        QueryConfiguration qC = new QueryConfiguration(db.getConn());
+
+        ArrayList<Float> roomDim = qR.getRoomDim(roomName);
+        /* aggiusto gli assi in base
+                alla dimensione della stanza */
+        final NumberAxis xAxis = new NumberAxis(-2, roomDim.get(0) + 2, 0.5);
+        final NumberAxis yAxis = new NumberAxis(-2, roomDim.get(1)+2, 0.5);
+        xAxis.setLabel("posX");
+        yAxis.setLabel("posY");
+        graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
+        grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
+        grafico.setTitle("Devices's positions");
+
+
+
+/*inserisco la
+                configurazione */
+
+        ObservableList<XYChart.Data<Number, Number>> dataset = FXCollections.observableArrayList();
+        ArrayList<EspInfo> espInfos = qC.readConfiguration(confName);
+        if(espInfos !=  null) {
+
+            for (EspInfo eI: espInfos) {
+                        /*aggiunge i dati delle schedine al grafico
+                        .getX() è un metodo di Polo
+                         */
+                XYChart.Data<Number, Number > data = new XYChart.Data<>(eI.getX(), eI.getY());
+                data.setNode(
+                        new HoverNode(
+                                eI.getMAC(), 0
+                        )
+                );
+
+                dataset.add(data);
+
+                //data.getNode().setOnMouseClicked( e -> System.out.println("X "+ data.getXValue()));
+            }
+
+            XYChart.Series series2 = new XYChart.Series("Esp",dataset);
+
+
+            grafico.getData().add(series2);
+
+        }else{
+            //TODO
+            return;
+        }
+        db.closeConnection();
+        graph_container.getChildren().add(grafico);
         ahead.setDisable(true);
         nav.setDisable(true);
         behind.setDisable(true);
@@ -389,11 +500,40 @@ public class RoomController implements Initializable {
         stop.setDisable(false);
         DataI.setDisable(true);
         SearchButton.setDisable(true);
+        BackButton.setDisable(true);
+        label.setDisable(true);
+
+
         // TODO put the start function you mentioned end add a new graph
 
         startService.reset();
         startService.start();
+        System.out.println("aspetto i dati");
+        ServiceData.reset();
+        ServiceData.start();
+
     }
+
+    Service<Void>  ServiceData = new Service<Void>() {
+
+        @Override
+        protected Task<Void> createTask() {
+
+            return new Task<Void>(){
+
+                @Override
+                protected Void call() throws Exception {
+
+                    while(!isCancelled()) {
+                            if(serie!=null)
+                                realtimeGraphAdd(serie);
+                    }
+
+                    return null;
+                }
+            };
+        }
+    };
 
     /* crea un thread in modo tale da non
     fermare l'interfaccia
@@ -407,28 +547,54 @@ public class RoomController implements Initializable {
 
                 @Override
                 protected Void call() throws Exception {
-
+                    String[] arg=new String[2];
+                    arg[0]=roomCB.getValue();
+                    arg[1]=configCB.getValue();
+                    EchoServer server=new EchoServer();
                     while(!isCancelled()) {
-                        int randomInt = (int )(Math.random() * 37 + 1);
-                        System.out.println(randomInt);
+                        /*int randomInt = (int )(Math.random() * 37 + 1);
+                        System.out.println(randomInt);*/
+                        server.start(arg);
+                        //server=null;
+                        //System.out.println("non ci va");
+                        //server.stop();
                         /* qui mettere il codice che dovrebbe fare start*/
                     }
+
                     return null;
                 }
             };
         }
     };
 
-    public void onStopCLick(MouseEvent mouseEvent){
+    public void onStopCLick(MouseEvent mouseEvent) throws IOException {
         start.setDisable(false);
+        behind.setDisable(false);
         roomCB.setDisable(false);
         nav.setDisable(false);
         configCB.setDisable(false);
         stop.setDisable(true);
         DataI.setDisable(false);
         SearchButton.setDisable(false);
+        BackButton.setDisable(false);
+        label.setDisable(false);
         stopCliked = true;
+
+
+
         startService.cancel();
+        //EchoServer.stop();
+        ServiceData.cancel();
+        EchoServer.stop();
+
+        final NumberAxis xAxis = new NumberAxis(-2, 10, 0.5);
+        final NumberAxis yAxis = new NumberAxis(-2, 10, 0.5);
+        xAxis.setLabel("posX");
+        yAxis.setLabel("posY");
+        graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
+        grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
+        grafico.setTitle("Devices's positions");
+        graph_container.getChildren().add(grafico);
     }
 
     public void printValue(MouseEvent mouseEvent) {

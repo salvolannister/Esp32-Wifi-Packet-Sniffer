@@ -7,16 +7,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1b871214-de53-4ad8-bf0c-77c3757c0e5d" name="Default Changelist" comment="Inserita Funzione TimeStamp">
-      <change afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/libraries/jfxtras_common_9_0_r1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/JavaFxGui.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/META-INF/JavaFxGui.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/application/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/bin/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/bin/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaFxGui/src/application/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../FinalEspProject/.idea/libraries/commons_math3_3_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../FinalEspProject/.idea/libraries/commons_math3_3_6_1_sources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/.idea/libraries/commons_math3_3_6_1_javadoc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/.idea/libraries/commons_math3_3_6_1_javadoc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/.idea/libraries/jfxtras_common_9_0_r1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/FinalEspProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/FinalEspProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/DB/QueryPosition.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/DB/QueryPosition.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$1$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$HoverNode$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$HoverNode$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$HoverNode$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$HoverNode$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$HoverNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController$HoverNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/application/RoomController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/out/production/FinalEspProject/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/src/DB/QueryPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/src/DB/QueryPosition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/src/application/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/src/application/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../FinalEspProject/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../FinalEspProject/src/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_math3_3_6_1_javadoc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/org_projectlombok_lombok_1_18_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Serverino.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Serverino.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PacketRec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PacketRec.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -99,7 +112,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
@@ -215,6 +228,9 @@
       <workItem from="1566113565052" duration="377000" />
       <workItem from="1566136160273" duration="9000" />
       <workItem from="1566137024954" duration="1708000" />
+      <workItem from="1566759409517" duration="164000" />
+      <workItem from="1566765196760" duration="35000" />
+      <workItem from="1566769953292" duration="612000" />
     </task>
     <task id="LOCAL-00001" summary="prova git">
       <created>1553873564913</created>
@@ -304,18 +320,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Inserita Funzione TimeStamp" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/QueryFake.java</url>
-          <line>35</line>
-          <properties class="QueryFake" method="createDB">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="EchoServer.mac_tab" language="JAVA" />
@@ -345,94 +349,5 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <last-edited>Serverino:jar2</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>commons-math3-3.6.1-javadoc</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>11</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>Serverino</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>11</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>sqlite-jdbc-3.7.2 (2)</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

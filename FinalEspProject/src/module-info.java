@@ -1,4 +1,4 @@
-module JavaFxGui {
+module FinalEspProject {
     requires javafx.fxml;
     requires javafx.controls;
     requires javafx.base;
@@ -10,8 +10,8 @@ module JavaFxGui {
     requires transitive jfxtras.fxml;
     requires transitive jfxtras.common;
     requires transitive jfxtras.controls;
+    requires commons.math3;
+
 
     opens application;
-
-
 }
