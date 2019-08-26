@@ -91,7 +91,7 @@ public class EchoServer {
             try {
                 while (true) {
                     //count++;
-                    new Receiver(serverSocket.accept(), conf.getNumEsp(), db, args[0]).start();
+                    new Receiver(serverSocket.accept(), conf.getNumEsp(), db, args[0], args[1]).start();
                     System.out.println("io");
                     /*synchronized (tab){
                         writeFile(tab, "prova.txt");

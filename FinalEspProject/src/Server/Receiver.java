@@ -16,17 +16,19 @@ import org.apache.commons.math3.linear.RealVector;
 public class Receiver extends Thread {
 
     private  String room;
+    private  String configurazione;
     Socket csocket;
     private  static Integer n_ESP;
     private Integer id;
     private DBUtil db;
     private int max_silece_time = 120*1000;
 
-    public Receiver(Socket csocket, Integer n, DBUtil db, String room) {
+    public Receiver(Socket csocket, Integer n, DBUtil db, String room, String configurazione) {
         this.csocket = csocket;
         this.n_ESP=n;
         this.db=db;
         this.room=room;
+        this.configurazione=configurazione;
     }
 
     @Override
@@ -217,7 +219,7 @@ public class Receiver extends Thread {
                                     //todo inviare final_tab alla gui
                                     RoomController.plotta(EchoServer.final_tab);
                                     //System.out.println("Plottato");
-                                    DBInsert();
+                                    DBInsert(configurazione);
                                     writeFileFinalTab(EchoServer.final_tab, "Final.txt");
                                     EchoServer.final_tab.clear();
                                 }
@@ -337,14 +339,14 @@ public class Receiver extends Thread {
         return esito;
     }
 
-    private void DBInsert() {
+    private void DBInsert(String configurazione) {
         for (Map.Entry<String, DBPacket> DBpkt1 : EchoServer.final_tab.entrySet()) {
             if(DBpkt1.getValue()!=null){
                 try {
                     QueryPosition q = new QueryPosition(db.getConn());
                     DBPacket pkt = DBpkt1.getValue();
 
-                    if (!q.aggiungiTuplaN(pkt.getDigest(), pkt.getMacSource(), pkt.getTimeStamp(), pkt.getRoom(), pkt.getPosX(), pkt.getPosY(), pkt.getErr(), pkt.getLocalMacMargedNumber())) {
+                    if (!q.aggiungiTuplaN(pkt.getDigest(), pkt.getMacSource(), pkt.getTimeStamp(), pkt.getRoom(), pkt.getPosX(), pkt.getPosY(), pkt.getErr(), pkt.getLocalMacMargedNumber(), configurazione)) {
                         System.err.println("Errore nell'inserimento");
                         System.exit(-1);
                     }

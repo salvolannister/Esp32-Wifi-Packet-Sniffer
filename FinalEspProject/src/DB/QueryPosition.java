@@ -428,14 +428,14 @@ public class QueryPosition {
     }
 
 
-    public boolean aggiungiTuplaN(String hash,String mac, long time,  String room, Float posX, Float posY, Float err, int mergnumb) throws SQLException {
+    public boolean aggiungiTuplaN(String hash, String mac, long time, String room, Float posX, Float posY, Float err, int mergnumb, String configurazione) throws SQLException {
 
         PreparedStatement pstmt;
 
         try {
             conn.setAutoCommit(false);
 
-            String s=new String("INSERT INTO Position"+ "(MAC, Timestamp, Room, X, Y, Err, MergedNumb, Hash)"+" VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            String s=new String("INSERT INTO Position"+ "(MAC, Timestamp, Room, X, Y, Err, MergedNumb, Hash, Configuration)"+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
                 pstmt.setString(8, hash );
                 pstmt.setString(1, mac );
@@ -445,6 +445,7 @@ public class QueryPosition {
                 pstmt.setFloat(5, posY);
                 pstmt.setFloat(6, err);
                 pstmt.setInt(7, mergnumb);
+                pstmt.setString(9, configurazione );
 
                 pstmt.executeUpdate();
                 conn.commit();
