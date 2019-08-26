@@ -52,7 +52,7 @@ public class EspInfo {
 		if(checkFieldXY(x) ){
 			X =  Float.parseFloat(x.getText());
 			if(checkFieldXY(y)){
-				Y = Float.parseFloat(x.getText());
+				Y = Float.parseFloat(y.getText());
 				/*check mac address*/
 				if(mac.getText() == null || mac.getText().trim().isEmpty()){
 					 Alert fail= new Alert(AlertType.INFORMATION);
