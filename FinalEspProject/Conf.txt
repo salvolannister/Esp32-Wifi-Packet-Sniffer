@@ -1,0 +1,1 @@
+Configuration{mac_tab={24:0a:c4:9a:9f:3c=Payload{lastTime=1563614635707, posizione=Polo{x=5.0, y=0.0}}, 24:0a:c4:9b:4f:ac=Payload{lastTime=1563614635597, posizione=Polo{x=0.0, y=0.0}}, 3c:71:bf:0c:b5:38=Payload{lastTime=1563614635592, posizione=Polo{x=5.0, y=4.0}}}, n=2.5, Px=-62}

@@ -7,9 +7,21 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="commons-math3-3.6.1-javadoc" level="project" />
     <orderEntry type="library" name="javafx-swt" level="project" />
-    <orderEntry type="library" name="jfxtras-common-9.0-r1" level="project" />
+    <orderEntry type="module-library">
+      <library name="jfxtras-common-9.0-r1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Documenti/jfxtras-common-9.0-r1.jar!/" />
+          <root url="jar://$USER_HOME$/Documenti/jfxtras-controls-9.0-r1.jar!/" />
+          <root url="jar://$USER_HOME$/Documenti/jfxtras-fxml-9.0-r1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="sqlite-jdbc-3.7.2" level="project" />
+    <orderEntry type="library" name="commons-math3-3.6.1-javadoc" level="project" />
+    <orderEntry type="library" name="commons-math3-3.6.1-sources" level="project" />
+    <orderEntry type="library" name="commons-math3-3.6.1" level="project" />
   </component>
 </module>

@@ -7,9 +7,22 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="org.projectlombok:lombok:1.18.2" level="project" />
     <orderEntry type="library" name="sqlite-jdbc-3.7.2 (2)" level="project" />
-    <orderEntry type="library" name="commons-math3-3.6.1-javadoc" level="application" />
-    <orderEntry type="library" name="commons-math3-3.6.1-javadoc" level="project" />
+    <orderEntry type="module-library">
+      <library name="commons-math3-3.6.1-javadoc">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Documenti/commons-math3-3.6.1-bin/commons-math3-3.6.1/commons-math3-3.6.1-tests.jar!/" />
+          <root url="jar://$USER_HOME$/Documenti/commons-math3-3.6.1-bin/commons-math3-3.6.1/commons-math3-3.6.1-tools.jar!/" />
+          <root url="jar://$USER_HOME$/Documenti/commons-math3-3.6.1-bin/commons-math3-3.6.1/commons-math3-3.6.1.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/Documenti/commons-math3-3.6.1-bin/commons-math3-3.6.1/commons-math3-3.6.1-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Documenti/commons-math3-3.6.1-bin/commons-math3-3.6.1/commons-math3-3.6.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/Documenti/commons-math3-3.6.1-bin/commons-math3-3.6.1/commons-math3-3.6.1-test-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
