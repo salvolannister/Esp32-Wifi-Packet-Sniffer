@@ -33,7 +33,6 @@ public class Receiver extends Thread {
         String MacESPAnt= "24:0a:c4:a2:b3:40";
 
         try (
-
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(csocket.getInputStream()));
 
@@ -44,9 +43,9 @@ public class Receiver extends Thread {
             while ((inputLine = in.readLine()) != null) {
                 String str = trunc(inputLine, 5);
                 if (str.compareTo("Hello") == 0) {
-
+                    //// TODO: 25/08/2019 debug
                     System.out.println(inputLine);
-
+                    System.out.println("Current thread ID: " + Thread.currentThread().getId());
 
                     Long StgartLong = EchoServer.resinchronize();
                     String StartTime = Long.toString(StgartLong);
@@ -70,8 +69,10 @@ public class Receiver extends Thread {
                         System.out.print(StartTime.charAt(i));
                         dOut.write(StartTime.charAt(i));
                     }
+                    dOut.write('e'); //<e>nd of data
                     dOut.flush(); // Send off the data
-                    dOut.close();
+                    //// TODO: 25/08/2019 restore if not work
+                    // dOut.close();
                     System.out.println();
 
                     //System.out.println("Time send to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
@@ -138,7 +139,6 @@ public class Receiver extends Thread {
 
                         writeFileConf(EchoServer.conf, "Conf.txt");
                     }//chiusura accesso sincronizzato
-
                     //si elaborano i dati precedentemente ricevuti (alias: appena finito di catturare).
                     //Si sfrutta in questo modo il tempo di sniffing della schedina per l'elaborazione lato Server.
                     //Dunque si calcola la distanza
@@ -233,7 +233,8 @@ public class Receiver extends Thread {
                             }
 
                         }*/
-                    break;
+                    //// TODO: 25/08/2019 RESTORE IF NOT WORK!!!!!!!!
+                    //break;
                 }//Chiusura messaggio HELLO
                 else { //se si entra qui è perchè è stato ricevuto uno dei pacchetti sniffati dalla schedina oppure un messaggio di fine.
                     synchronized (EchoServer.tab) { //accesso concorrente
@@ -251,7 +252,7 @@ public class Receiver extends Thread {
                 }
             }//chiusura while
         }catch(IOException e){
-            System.out.println("Exception caught when trying to listen on port 8080 "
+            System.out.println("Exception caught when trying to listen on ESP connection"
                     + " or listening for a connection");
             System.out.println(e.getMessage());
         }
@@ -469,30 +470,5 @@ public class Receiver extends Thread {
             e.printStackTrace();
         }
     }
-
-    /***
-     *
-     * @param mac
-     * @return true/false
-     *
-     * test su mac locale/globale
-     */
-
-
-    /*public static Boolean isLocal(String mac){
-        String[] octets = mac.split(":");
-        char test=octets[0].charAt(1);
-        String lower=Integer.toBinaryString(test);
-        //System.out.println(lower);
-        if(lower.charAt(4)=='1'){
-            System.out.println("local MAC foud!");
-            return true;
-        }
-        else{
-            //System.out.println("global");
-            return false;
-        }
-    }*/
-
 
 }

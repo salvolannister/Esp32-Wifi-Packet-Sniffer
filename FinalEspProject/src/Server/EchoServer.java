@@ -3,6 +3,7 @@ import DB.DBUtil;
 import DB.QueryConfiguration;
 import DB.QueryPosition;
 import application.EspInfo;
+import application.RoomController;
 
 import java.net.*;
 import java.io.*;
@@ -54,8 +55,9 @@ public class EchoServer {
     }
     public void start(String[] args) throws IOException, SQLException {
 
-    	//conf.setNumEsp(3);
-
+        //conf.setNumEsp(3);
+        /*final_tab.put("24:0a:c4:9b:4f:ac", new DBPacket("12345678912345678912345678912345", 1566377514000L, "1", 3.5f, 4.6f, "24:0a:c4:9b:4f:ac", "StessoSSID"));
+        RoomController.plotta(EchoServer.final_tab);*/
 
         DBUtil db=new DBUtil();
         if(!db.openConnection("database.db")){

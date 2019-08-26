@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import DB.QueryPosition;
 import application.RoomController;
+import javafx.application.Platform;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 import org.apache.commons.math3.linear.RealVector;
@@ -51,7 +52,7 @@ public class Receiver extends Thread {
                 if (str.compareTo("Hello") == 0) {
 
                     System.out.println(inputLine);
-
+                    System.out.println("Current thread ID: " + Thread.currentThread().getId());
 
                     Long StgartLong = EchoServer.resinchronize();
                     String StartTime = Long.toString(StgartLong);
@@ -75,8 +76,9 @@ public class Receiver extends Thread {
                         System.out.print(StartTime.charAt(i));
                         dOut.write(StartTime.charAt(i));
                     }
+                    dOut.write('e'); //<e>nd of data
                     dOut.flush(); // Send off the data
-                    dOut.close();
+                    //dOut.close();
                     System.out.println();
 
                     //System.out.println("Time send to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
@@ -210,13 +212,15 @@ public class Receiver extends Thread {
                                     dist.clear();
                                 }//fine for di sumpacket
                                 //HiddenMacFinder.addLocalFake(); //// TODO: 23/08/2019 DELETE!!!
-                                HiddenMacFinder.FindHiddenDevices();
-
-                                //todo inviare final_tab alla gui
-                                RoomController.plotta(EchoServer.final_tab);
-                                DBInsert();
-                                writeFileFinalTab(EchoServer.final_tab, "Final.txt");
-                                EchoServer.final_tab.clear();
+                                if(!EchoServer.final_tab.isEmpty()){
+                                    HiddenMacFinder.FindHiddenDevices();
+                                    //todo inviare final_tab alla gui
+                                    RoomController.plotta(EchoServer.final_tab);
+                                    //System.out.println("Plottato");
+                                    DBInsert();
+                                    writeFileFinalTab(EchoServer.final_tab, "Final.txt");
+                                    EchoServer.final_tab.clear();
+                                }
                             }//fine synchronized finaltab
                         }
                         else
@@ -241,7 +245,7 @@ public class Receiver extends Thread {
                             }
 
                         }*/
-                    break;
+                    //break;
                 }//Chiusura messaggio HELLO
                 else { //se si entra qui è perchè è stato ricevuto uno dei pacchetti sniffati dalla schedina oppure un messaggio di fine.
                     synchronized (EchoServer.tab) { //accesso concorrente

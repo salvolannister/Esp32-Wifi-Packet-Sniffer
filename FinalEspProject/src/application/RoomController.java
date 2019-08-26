@@ -7,6 +7,7 @@ import DB.QueryRoom;
 import DTO.Posizione;
 import Server.DBPacket;
 import Server.EchoServer;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -50,8 +51,8 @@ public class RoomController implements Initializable {
     @FXML private Button stop;
     @FXML private Button BackButton;
     @FXML private Label label;
-    private ScatterChart<Number, Number> grafico;
-private static Map<String, DBPacket> serie;
+    private static ScatterChart<Number, Number> grafico;
+    private static Map<String, DBPacket> serie;
 
     private ObservableList<String> roomList = FXCollections.observableArrayList();
     private List<String> readList = new ArrayList<>();
@@ -61,7 +62,15 @@ private static Map<String, DBPacket> serie;
 
     public static void plotta(Map<String, DBPacket> final_tab) {
         //serie.clear();
+        System.out.println("data received: \n" + final_tab);
         serie=final_tab;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("PLOTTING Thread" + Thread.currentThread().getId());
+                realtimeGraphAdd(serie);
+            }
+        });
         return;
     }
 
@@ -89,7 +98,7 @@ private static Map<String, DBPacket> serie;
             QueryConfiguration qC = new QueryConfiguration(db.getConn());
 
             try {
-             readList = p.getRoomName();
+                readList = p.getRoomName();
 
                 if (readList != null) {
                     for (String room : readList) {
@@ -101,7 +110,7 @@ private static Map<String, DBPacket> serie;
                 if (readListConf != null) {
                     for (String config : readListConf) {
                         configList.add(config);
-                       // System.out.println(config);
+                        // System.out.println(config);
                     }
                 }
 
@@ -225,8 +234,8 @@ private static Map<String, DBPacket> serie;
             }
 
             db.closeConnection();
-           // DataI.setText("");
-           // DataI.setLocalDateTime(null);
+            // DataI.setText("");
+            // DataI.setLocalDateTime(null);
             return;
         }catch (NullPointerException n){
             //AreaInfo.setText("inserire data e ora di inizio e fine");
@@ -240,7 +249,7 @@ private static Map<String, DBPacket> serie;
     /*creates the event and uses the ID to distinguish from ESP device
     or phone
      */
-    class HoverNode extends StackPane {
+    static class HoverNode extends StackPane {
         HoverNode(String MAC, int id ){
             setPrefSize(12, 12);
 
@@ -262,10 +271,10 @@ private static Map<String, DBPacket> serie;
         }
     }
 
-    private Label createDataMacLabel(String MAC, int id){
+    private static Label createDataMacLabel(String MAC, int id){
         final Label label = new Label(MAC);
         if(id == 0)
-        label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
+            label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
         else label.getStyleClass().addAll("default-color1", "chart-line-symbol", "chart-series-line");
 
         label.setStyle("-fx-font-size: 8; -fx-font-weight: bold;");
@@ -373,7 +382,7 @@ private static Map<String, DBPacket> serie;
             XYChart.Data<Number, Number > data = new XYChart.Data<>(risultato.get(s).getX(),risultato.get(s).getY());
             data.setNode(
                     new HoverNode(
-                           s, 1
+                            s, 1
                     )
             );
 
@@ -387,7 +396,7 @@ private static Map<String, DBPacket> serie;
     }
 
 
-    private void realtimeGraphAdd(Map<String, DBPacket> risultato){
+    private static void realtimeGraphAdd(Map<String, DBPacket> risultato){
 
 
         if(grafico.getData().size() == 2){
@@ -509,8 +518,8 @@ private static Map<String, DBPacket> serie;
         startService.reset();
         startService.start();
         System.out.println("aspetto i dati");
-        ServiceData.reset();
-        ServiceData.start();
+        //ServiceData.reset();
+        //ServiceData.start();
 
     }
 
@@ -523,11 +532,15 @@ private static Map<String, DBPacket> serie;
 
                 @Override
                 protected Void call() throws Exception {
-
-                    while(!isCancelled()) {
-                            if(serie!=null)
-                                realtimeGraphAdd(serie);
-                    }
+                        if(serie!=null){
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("PLOTTING Thread" + Thread.currentThread().getId());
+                                    realtimeGraphAdd(serie);
+                                }
+                            });
+                        }
 
                     return null;
                 }
@@ -551,15 +564,14 @@ private static Map<String, DBPacket> serie;
                     arg[0]=roomCB.getValue();
                     arg[1]=configCB.getValue();
                     EchoServer server=new EchoServer();
-                    while(!isCancelled()) {
                         /*int randomInt = (int )(Math.random() * 37 + 1);
                         System.out.println(randomInt);*/
+                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA        ------------- SERVER STARING");
                         server.start(arg);
                         //server=null;
                         //System.out.println("non ci va");
                         //server.stop();
                         /* qui mettere il codice che dovrebbe fare start*/
-                    }
 
                     return null;
                 }
@@ -583,8 +595,7 @@ private static Map<String, DBPacket> serie;
 
 
         startService.cancel();
-        //EchoServer.stop();
-        ServiceData.cancel();
+        //ServiceData.cancel();
         EchoServer.stop();
 
         final NumberAxis xAxis = new NumberAxis(-2, 10, 0.5);
@@ -604,15 +615,15 @@ private static Map<String, DBPacket> serie;
 
     public void errorShower(String text){
 
-            Alert fail= new Alert(Alert.AlertType.INFORMATION);
-            fail.setHeaderText("failure");
-            fail.setContentText(text);
-            fail.showAndWait();
+        Alert fail= new Alert(Alert.AlertType.INFORMATION);
+        fail.setHeaderText("failure");
+        fail.setContentText(text);
+        fail.showAndWait();
 
     }
 
     private boolean checkDataUpper(Timestamp newData){
         LocalDateTime actual = DataI.getLocalDateTime();
-       return true;
+        return true;
     }
 }
