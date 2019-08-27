@@ -216,10 +216,10 @@ public class Receiver extends Thread {
                                 //HiddenMacFinder.addLocalFake(); //// TODO: 23/08/2019 DELETE!!!
                                 if(!EchoServer.final_tab.isEmpty()){
                                     HiddenMacFinder.FindHiddenDevices();
+                                    DBInsert(configurazione);
                                     //todo inviare final_tab alla gui
                                     RoomController.plotta(EchoServer.final_tab);
                                     //System.out.println("Plottato");
-                                    DBInsert(configurazione);
                                     writeFileFinalTab(EchoServer.final_tab, "Final.txt");
                                     EchoServer.final_tab.clear();
                                 }

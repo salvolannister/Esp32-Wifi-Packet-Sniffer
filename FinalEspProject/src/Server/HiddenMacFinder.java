@@ -115,6 +115,11 @@ public class HiddenMacFinder {
         String lower = Integer.toBinaryString(decimal);
 
         //System.out.println("Mac is: " + mac + " Test is: " + tests + " decimal version is: " + decimal + " lower is:"+lower);
+        if(lower.length()<3){
+            System.out.println("SOME ERROR IN ISLOCAL FUNTION - LOWER VALUE!!!!!!!!!! Mac is: " + mac + " Test is: " + tests + " decimal version is: " + decimal + " lower is:"+lower);
+            return false;
+        }
+
         if(lower.charAt(2)=='1'){
             //System.out.println("local MAC foud!");
             return true;

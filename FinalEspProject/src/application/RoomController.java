@@ -557,7 +557,6 @@ public class RoomController implements Initializable {
         protected Task<Void> createTask() {
 
             return new Task<Void>(){
-
                 @Override
                 protected Void call() throws Exception {
                     String[] arg=new String[2];
