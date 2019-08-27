@@ -1,0 +1,4 @@
+Controllo posizione oltre dimensione stanza -> non da plottare
+Quando si preme stop il server continua a girare
+Gestire quando si disconnette una schedina
+Qualche volta da errore sulla funzione IsLocal -> su if(lower.charAt(2)=='1') mi da out of index
