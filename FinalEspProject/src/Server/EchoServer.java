@@ -88,9 +88,11 @@ public class EchoServer {
         */
 
         while(true) {
+            System.out.println(TimeLong);
             try {
                 while (true) {
                     //count++;
+                    System.out.println(TimeLong);
                     new Receiver(serverSocket.accept(), conf.getNumEsp(), db, args[0], args[1]).start();
                     System.out.println("io");
                     /*synchronized (tab){

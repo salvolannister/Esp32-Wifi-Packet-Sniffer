@@ -250,7 +250,7 @@ private static void printField(String mac, String X, String Y) {
 
 			if( go) {
 				try {
-					HomePage = FXMLLoader.load(getClass().getResource("Main.fxml"));
+					HomePage = FXMLLoader.load(getClass().getResource("NewSetting.fxml"));
 					Scene HomePageScene = new Scene(HomePage);
 					Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 					appStage.hide();
@@ -297,7 +297,7 @@ private static void printField(String mac, String X, String Y) {
 
 		Parent configurationPage;
 		try {
-			configurationPage = FXMLLoader.load(getClass().getResource("Main.fxml"));
+			configurationPage = FXMLLoader.load(getClass().getResource("NewSetting.fxml"));
 			Scene configurationPageScene = new Scene(configurationPage);
 			Stage appStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
 			appStage.hide();
@@ -321,7 +321,7 @@ private static void printField(String mac, String X, String Y) {
 //	}
 
 
-	private void showAlert(String content){
+	public static void showAlert(String content){
 		Alert fail= new Alert(AlertType.INFORMATION);
 		fail.setHeaderText("failure");
 		fail.getDialogPane().setExpanded(true);

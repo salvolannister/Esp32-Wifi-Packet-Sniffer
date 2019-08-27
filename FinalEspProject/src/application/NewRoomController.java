@@ -37,41 +37,43 @@ public class NewRoomController implements Initializable {
              fail.setContentText("You didn't insert a name");
              fail.showAndWait();
              return;
-         }else{
-             DBUtil db=new DBUtil();
-             if(!db.openConnection("database.db")){
+         }else {
+             DBUtil db = new DBUtil();
+             if (!db.openConnection("database.db")) {
                  System.err.println("Errore di Connessione al DB. Impossibile Continuare");
                  System.exit(-1);
              }
              QueryRoom qR = new QueryRoom(db.getConn());
-             String n  = name.getText();
+             String n = name.getText();
 
-             if(qR.checkRoomExistence(n)){
-                 Alert fail= new Alert(Alert.AlertType.INFORMATION);
-                 fail.setHeaderText("failure");
-                 fail.setContentText("Room name is already used");
-                 fail.showAndWait();
+             if (qR.checkRoomExistence(n)) {
+                 ConfigurationController.showAlert("Room name is already used");
                  db.closeConnection();
                  return;
              }
-             X = Float.parseFloat(x.getText());
-             Y =  Float.parseFloat(y.getText());
-             qR.addRoom(n,X,Y);
-             Parent settingPage;
-             db.closeConnection();
-
              try {
-                 settingPage = FXMLLoader.load(getClass().getResource("NewSetting.fxml"));
-                 Scene configurationPageScene = new Scene(settingPage);
-                 Stage appStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-                 appStage.hide();
-                 appStage.setScene(configurationPageScene);
-                 appStage.show();
+                 X = Float.parseFloat(x.getText());
+                 Y = Float.parseFloat(y.getText());
+                 qR.addRoom(n, X, Y);
+                 Parent settingPage;
+                 db.closeConnection();
 
-             } catch (IOException e) {
+                 try {
+                     settingPage = FXMLLoader.load(getClass().getResource("NewSetting.fxml"));
+                     Scene configurationPageScene = new Scene(settingPage);
+                     Stage appStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                     appStage.hide();
+                     appStage.setScene(configurationPageScene);
+                     appStage.show();
 
-                 e.printStackTrace();
+                 } catch (IOException e) {
 
+                     e.printStackTrace();
+
+                 }
+             }
+             catch (NumberFormatException e){
+                 ConfigurationController.showAlert("Insert numeric value");
              }
          }
 
@@ -105,10 +107,7 @@ public class NewRoomController implements Initializable {
     private static boolean checkFieldXY( TextField o) {
 
         if(o.getText() == null || o.getText().trim().isEmpty()) {
-            Alert fail= new Alert(Alert.AlertType.INFORMATION);
-            fail.setHeaderText("failure");
-            fail.setContentText("You must fullfill the X and Y fields");
-            fail.showAndWait();
+            ConfigurationController.showAlert("You must fullfill the X and Y fields");
             return false;
         }else {
 
