@@ -6,7 +6,16 @@ da fare:
 - Testare grafica di margaret, mi sembra abbia qualche bug (non compare sempre la scritta "nessun mac trovato...." in seguito ad una ricerca) (Umberto?)
 
 opzionale:
-- aggiungere una qualche notifica che dice all'utente che il server sta sniffando (in modo che ha un feedback e non rimane fermo un minuto senza sapere cosa sta succedendo)
+- aggiungere una qualche notifica che dice all'utente che il server sta sniffando (in modo che ha un feedback e non rimane fermo un minuto senza sapere cosa sta succedendo).
+  NOTA: sarebbe utile anche a noi perchè almeno se stampiamo una cosa tipo "waiting" quando manda lo start alle schedine riusciamo ad accorgerci se c'è qualcosa che non va e al volo
+	resetto l'AP alla presentazione. Perchè come ti dicevo certe volte l'ESP fa fatica a collegarsi.
+	Quindi io farei:
+	- quando il server risponde con l'orario a cui iniziare metterei un messaggio sulla gui del tipo "Sniffing starded... wait for a minute". 
+	- quando riceve lo STOP dalla schedina resetta la scritta a vuoto
+	- loop di questa cosa
+	(tra lo stop e il nuovo messaggio di start ci passerà pochissimo.. però almeno così credo si veda che cambia qualcosina quando arrivano i dati)
+
+Questa è un'idea ma se hai un'idea migliore che renda di più ben venga.
 
 risolti:
 - Quando si preme stop il server continua a girare (RISOLTO)
