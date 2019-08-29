@@ -37,14 +37,9 @@ public class EchoServer {
     public static int sniffing_time = 40;
     private static int delta_update = sniffing_time - 10;
     private static ServerSocket serverSocket;
-
-    public static ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public void setServerSocket(ServerSocket serverSocket) {
-        this.serverSocket = serverSocket;
-    }
+    //// TODO: 27/08/2019 provaThread
+    private static ArrayList<Receiver> Poll = new ArrayList<Receiver>();
+    private static volatile boolean isDone = false;
 
     public EchoServer() {
         try {
@@ -55,6 +50,8 @@ public class EchoServer {
     }
     public void start(String[] args) throws IOException, SQLException {
 
+        setisDone(false);
+        System.out.println("SERVER AT THREAD : " + Thread.currentThread().getId() + " socket number: " + serverSocket.getLocalPort());
         //conf.setNumEsp(3);
         /*final_tab.put("24:0a:c4:9b:4f:ac", new DBPacket("12345678912345678912345678912345", 1566377514000L, "1", 3.5f, 4.6f, "24:0a:c4:9b:4f:ac", "StessoSSID"));
         RoomController.plotta(EchoServer.final_tab);*/
@@ -87,11 +84,13 @@ public class EchoServer {
         }, 0, 1000 * sniffing_time); // funzione chiamata ogni sniffing time
         */
 
-        while(true) {
+        while(!getisDone()) {
             try {
                 while (true) {
                     //count++;
-                    new Receiver(serverSocket.accept(), conf.getNumEsp(), db, args[0], args[1]).start();
+                    Receiver r = new Receiver(serverSocket.accept(), conf.getNumEsp(), db, args[0], args[1]);
+                    r.start();
+                    Poll.add(r);
                     System.out.println("io");
                     /*synchronized (tab){
                         writeFile(tab, "prova.txt");
@@ -111,9 +110,26 @@ public class EchoServer {
         }
     }
 
+    private static synchronized boolean getisDone() {
+        return isDone;
+    }
+
+    private static synchronized void    setisDone(boolean b){
+        isDone = b;
+    }
+
     public  static  void stop() throws IOException {
         serverSocket.close();
-        return;
+        for (Receiver receiver: Poll){
+            receiver.closeSocket();
+            receiver.interrupt();
+        }
+
+        Poll = new ArrayList<Receiver>();
+        synchronized (start_time) {
+            start_time = Long.valueOf(0);
+        }
+            return;
     }
 
 

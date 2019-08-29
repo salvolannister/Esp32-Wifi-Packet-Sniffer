@@ -33,31 +33,33 @@ public class Receiver extends Thread {
 
     @Override
     public void run() {
-
+        System.out.println("Receiver run");
         int waitSec = 15;
         String MacESPDavide = "24:0a:c4:9b:4f:ac";
         String MacESPMar= "3c:71:bf:0c:b5:38";
         String MacESPUmb= "24:0a:c4:9a:9f:3c";
         String MacESPAnt= "24:0a:c4:a2:b3:40";
 
-        try (
+        while (!Thread.currentThread().isInterrupted()) {
+            try (
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(csocket.getInputStream()));
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(csocket.getInputStream()));
 
-                DataOutputStream dOut = new DataOutputStream(csocket.getOutputStream());
+                    DataOutputStream dOut = new DataOutputStream(csocket.getOutputStream());
 
-        ) {
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                String str = trunc(inputLine, 5);
-                if (str.compareTo("Hello") == 0) {
+            ) {
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    System.out.println("line: " + inputLine);
+                    String str = trunc(inputLine, 5);
+                    if (str.compareTo("Hello") == 0) {
 
-                    System.out.println(inputLine);
-                    System.out.println("Current thread ID: " + Thread.currentThread().getId());
+                        System.out.println(inputLine);
+                        System.out.println("Receiver current thread ID: " + Thread.currentThread().getId() + " socket number " + csocket.getPort());
 
-                    Long StgartLong = EchoServer.resinchronize();
-                    String StartTime = Long.toString(StgartLong);
+                        Long StgartLong = EchoServer.resinchronize();
+                        String StartTime = Long.toString(StgartLong);
 
                         /*synchronized (EchoServer.start_time){
                             TimeLong = EchoServer.start_time;
@@ -73,170 +75,108 @@ public class Receiver extends Thread {
                         // convert long to string in order to truncate at 10 number
                         String StartTime = Long.toString(TimeLong);*/
 
-                    System.out.print("Time Sent: ");
-                    for (int i = 0; i < 10; i++) {
-                        System.out.print(StartTime.charAt(i));
-                        dOut.write(StartTime.charAt(i));
-                    }
-                    dOut.write('e'); //<e>nd of data
-                    dOut.flush(); // Send off the data
-                    //dOut.close();
-                    System.out.println();
+                        System.out.print("Time Sent: ");
+                        for (int i = 0; i < 10; i++) {
+                            System.out.print(StartTime.charAt(i));
+                            dOut.write(StartTime.charAt(i));
+                        }
+                        dOut.write('e'); //<e>nd of data
+                        dOut.flush(); // Send off the data
+                        //dOut.close();
+                        System.out.println();
 
-                    //System.out.println("Time send to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
+                        //System.out.println("Time send to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
 
-                    //Get MAC of ESP written in the HELLO message
-                    String[] mac = inputLine.split("My Mac is: ");
+                        //Get MAC of ESP written in the HELLO message
+                        String[] mac = inputLine.split("My Mac is: ");
 
-                    Calendar cal = Calendar.getInstance();
-                    Long TimeLong = cal.getTimeInMillis();
-                    TimeLong = TimeLong + waitSec * 1000;
+                        Calendar cal = Calendar.getInstance();
+                        Long TimeLong = cal.getTimeInMillis();
+                        TimeLong = TimeLong + waitSec * 1000;
 
-                    //setting posizioni ESP, Controllo di ESP non più collegate e conseguente aggiornamento numero dispositivi
-                    synchronized (EchoServer.conf){
-                        /*if(EchoServer.conf.getMac_tab().containsKey(mac[1])==false){
+                        //setting posizioni ESP, Controllo di ESP non più collegate e conseguente aggiornamento numero dispositivi
+                        synchronized (EchoServer.conf) {
+                            //Aggiornamento dell'ultimo istante di tempo al quale la schedina ha dato segni di vita al server
+                            EchoServer.conf.getMac_tab().get(mac[1]).setLastTime(TimeLong);
 
-                            if (mac[1].compareTo(MacESPDavide) == 0) {
-                                //define position of this ESP
-                                Polo p = new Polo(0.0, 0.0);
-                                Payload pack = new Payload(TimeLong, p);
-                                EchoServer.conf.getMac_tab().put(mac[1], pack);
-                            }else if(mac[1].compareTo(MacESPUmb) == 0) {
-                                Polo p = new Polo(0.0, 3.3);
-                                Payload pack = new Payload(TimeLong, p);
-                                EchoServer.conf.getMac_tab().put(mac[1], pack);
-                            }else if(mac[1].compareTo(MacESPMar) == 0) {
-                                Polo p = new Polo(2.4, 3.3);
-                                Payload pack = new Payload(TimeLong, p);
-                                EchoServer.conf.getMac_tab().put(mac[1], pack);
-                            }else if(mac[1].compareTo(MacESPAnt) == 0) {
-                                Polo p = new Polo(0.0, 4.0);
-                                Payload pack = new Payload(TimeLong, p);
-                                EchoServer.conf.getMac_tab().put(mac[1], pack);
-                            }
-                        }*/
-                        //Aggiornamento dell'ultimo istante di tempo al quale la schedina ha dato segni di vita al server
-                        EchoServer.conf.getMac_tab().get(mac[1]).setLastTime(TimeLong);
-
-                        //si verifica se per il dato mac sono passati più di 60000 ms (ovvero 1min) facendo la diferenza tra il tempo del prossimo sniffing e l'ultimo registrato.
-                        // Se vero si setta LastTime a MIN_VALUE
-                        for(String x: EchoServer.conf.getMac_tab().keySet()) {
-                            if (EchoServer.conf.getMac_tab().get(x).getLastTime() != Long.MIN_VALUE) {
-                                if ((TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()) > this.max_silece_time) {//5 min=300000
-                                    System.out.println("ERRRRRRRRRRRRRRRRRRRRRR -------- some ESP " + EchoServer.conf.getMac_tab().get(x) + "not available!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOW = "+ TimeLong +
-                                            " Last = "+ EchoServer.conf.getMac_tab().get(x).getLastTime() + " DIFF = "+ (TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()));
-                                    EchoServer.conf.getMac_tab().get(x).setLastTime(Long.MIN_VALUE);
+                            //si verifica se per il dato mac sono passati più di 60000 ms (ovvero 1min) facendo la diferenza tra il tempo del prossimo sniffing e l'ultimo registrato.
+                            // Se vero si setta LastTime a MIN_VALUE
+                            for (String x : EchoServer.conf.getMac_tab().keySet()) {
+                                if (EchoServer.conf.getMac_tab().get(x).getLastTime() != Long.MIN_VALUE) {
+                                    if ((TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()) > this.max_silece_time) {//5 min=300000
+                                        System.out.println("ERRRRRRRRRRRRRRRRRRRRRR -------- some ESP " + EchoServer.conf.getMac_tab().get(x) + "not available!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOW = " + TimeLong +
+                                                " Last = " + EchoServer.conf.getMac_tab().get(x).getLastTime() + " DIFF = " + (TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()));
+                                        EchoServer.conf.getMac_tab().get(x).setLastTime(Long.MIN_VALUE);
+                                    }
                                 }
                             }
-                        }
-                        //Si verifica a questo punto se ci sono schedine che non si fanno sentire da più di 60000 (ovvero quelle per cui al passo precedente
-                        //si è impostato LeastTime a MIN_VALUE. Si aggiorna di conseguenza il numero di schedine correnti.
-                        Long l=EchoServer.conf.getMac_tab().values().stream().filter(y->Long.compareUnsigned(y.getLastTime(),Long.MIN_VALUE)!=0).count();
-                        EchoServer.conf.setNumEsp(l.intValue());
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  n_esp = " + EchoServer.conf.getNumEsp());
+                            //Si verifica a questo punto se ci sono schedine che non si fanno sentire da più di 60000 (ovvero quelle per cui al passo precedente
+                            //si è impostato LeastTime a MIN_VALUE. Si aggiorna di conseguenza il numero di schedine correnti.
+                            Long l = EchoServer.conf.getMac_tab().values().stream().filter(y -> Long.compareUnsigned(y.getLastTime(), Long.MIN_VALUE) != 0).count();
+                            EchoServer.conf.setNumEsp(l.intValue());
+                            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  n_esp = " + EchoServer.conf.getNumEsp());
 
-                        // ???????????????????????????????????????????????????????????????????????????
-                        // ???????????????????????????????????????????????????????????????????????????
-                        //CONTROLLARE!!!!!!!!!!!!!!!!!!! update anche dell'attributo della classe!!! this.nESP
+                            // ???????????????????????????????????????????????????????????????????????????
+                            // ???????????????????????????????????????????????????????????????????????????
+                            //CONTROLLARE!!!!!!!!!!!!!!!!!!! update anche dell'attributo della classe!!! this.nESP
 
-                        n_ESP = EchoServer.conf.getNumEsp(); //?????????????????????????????????????????????
+                            n_ESP = EchoServer.conf.getNumEsp(); //?????????????????????????????????????????????
 
-                        // ???????????????????????????????????????????????????????????????????????????
-                        // ???????????????????????????????????????????????????????????????????????????
-                        // ???????????????????????????????????????????????????????????????????????????
+                            // ???????????????????????????????????????????????????????????????????????????
+                            // ???????????????????????????????????????????????????????????????????????????
+                            // ???????????????????????????????????????????????????????????????????????????
 
 
-                        writeFileConf(EchoServer.conf, "Conf.txt");
-                    }//chiusura accesso sincronizzato
+                            writeFileConf(EchoServer.conf, "Conf.txt");
+                        }//chiusura accesso sincronizzato
 
-                    //si elaborano i dati precedentemente ricevuti (alias: appena finito di catturare).
-                    //Si sfrutta in questo modo il tempo di sniffing della schedina per l'elaborazione lato Server.
-                    //Dunque si calcola la distanza
-                    //e si aggiungono le info sul DB
-                    synchronized (EchoServer.sum_tab){
-                        if(EchoServer.getNEsp()>2){
-                            System.out.println("MINUMUM # OF ESP OK!!!");
-                            //todo debug
-                            computeAvarage();
-                            synchronized (EchoServer.final_tab) {
-                                for(Sum_PacketRec p:EchoServer.sum_tab) {
-                                    List<Distance> dist = new ArrayList<>();
-                                    for (String s : p.getRSSI().keySet()) {
-                                        synchronized (EchoServer.conf) {
-                                            //creo ed aggiungo alla lista, un oggetto Distance costituito dalla posizione di una schedina e il valore di RSSI
-                                            dist.add(new Distance(EchoServer.conf.getMac_tab().get(s).getPosizione(), p.getRSSI().get(s)));
-                                            // DEBUG System.out.println("Distance value before calling computeDistance: " + EchoServer.conf.getMac_tab().get(s).getPosizione().toString());
-                                        }
-                                    }
-                                    Polo pos = computePosition(dist);
-
-                                    EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, room, (float) pos.getX(), (float) pos.getY(), p.getMacSource(), p.getSSID()));
-                                    //double average=p.getRSSI().values().stream().mapToInt(i->i).average().getAsDouble();
-
-                                    /*
-                                    if (isLocal(p.getMacSource()) == true) {
-                                        Long duplicate = EchoServer.final_tab.values().stream()
-                                                .filter(x -> x.getPosX() == pos.getX()).filter(y -> y.getPosY() == pos.getY())
-                                                .count();
-                                        if (duplicate == 0) {
-                                            System.out.println("Local MAC, ma nessun elemento nella stessa posizione trovato -> carico nel DB un nuovo dispositivo!");
-                                            EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY(), p.getMacSource()));
-                                            try {
-                                                QueryFake q = new QueryFake(db.getConn());
-
-                                                if (!q.aggiungiTupla(p.getdigest(), p.getMacSource(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY())) {
-                                                    System.err.println("Errore nell'inserimento");
-                                                    System.exit(-1);
-                                                }
-                                            } catch (SQLException e) {
-                                                e.printStackTrace();
+                        //si elaborano i dati precedentemente ricevuti (alias: appena finito di catturare).
+                        //Si sfrutta in questo modo il tempo di sniffing della schedina per l'elaborazione lato Server.
+                        //Dunque si calcola la distanza
+                        //e si aggiungono le info sul DB
+                        synchronized (EchoServer.sum_tab) {
+                            if (EchoServer.getNEsp() > 2) {
+                                System.out.println("MINUMUM # OF ESP OK!!!");
+                                //todo debug
+                                computeAvarage();
+                                synchronized (EchoServer.final_tab) {
+                                    for (Sum_PacketRec p : EchoServer.sum_tab) {
+                                        List<Distance> dist = new ArrayList<>();
+                                        for (String s : p.getRSSI().keySet()) {
+                                            synchronized (EchoServer.conf) {
+                                                //creo ed aggiungo alla lista, un oggetto Distance costituito dalla posizione di una schedina e il valore di RSSI
+                                                dist.add(new Distance(EchoServer.conf.getMac_tab().get(s).getPosizione(), p.getRSSI().get(s)));
+                                                // DEBUG System.out.println("Distance value before calling computeDistance: " + EchoServer.conf.getMac_tab().get(s).getPosizione().toString());
                                             }
                                         }
-                                        else{
-                                            // TODO: 14/08/2019 inserire calcolo che aggiorna una qualche misura di errore
-                                            System.out.println("Torvato local MAC con posizione identica ad altro dispositivo -> si suppone sia lo stesso");
-                                        }
+                                        Polo pos = computePosition(dist);
+
+                                        EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, room, (float) pos.getX(), (float) pos.getY(), p.getMacSource(), p.getSSID()));
+                                        dist.clear();
+                                    }//fine for di sumpacket
+                                    //HiddenMacFinder.addLocalFake(); //// TODO: 23/08/2019 DELETE!!!
+                                    if (!EchoServer.final_tab.isEmpty()) {
+                                        HiddenMacFinder.FindHiddenDevices();
+                                        DBInsert(configurazione);
+                                        //todo inviare final_tab alla gui
+                                        RoomController.plotta(EchoServer.final_tab);
+                                        //System.out.println("Plottato");
+                                        writeFileFinalTab(EchoServer.final_tab, "Final.txt");
+                                        EchoServer.final_tab.clear();
                                     }
-                                    else { //MAC NON LOCALE
-                                        EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY(), p.getMacSource()));
-                                        try {
-                                            QueryFake q = new QueryFake(db.getConn());
-
-                                            if (!q.aggiungiTupla(p.getdigest(), p.getMacSource(), Long.parseLong(p.getTimeStamp()) * 1000, 1, (float) pos.getX(), (float) pos.getY())) {
-                                                System.err.println("Errore nell'inserimento");
-                                                System.exit(-1);
-                                            }
-                                        } catch (SQLException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }*/
-
-                                    dist.clear();
-                                }//fine for di sumpacket
-                                //HiddenMacFinder.addLocalFake(); //// TODO: 23/08/2019 DELETE!!!
-                                if(!EchoServer.final_tab.isEmpty()){
-                                    HiddenMacFinder.FindHiddenDevices();
-                                    DBInsert(configurazione);
-                                    //todo inviare final_tab alla gui
-                                    RoomController.plotta(EchoServer.final_tab);
-                                    //System.out.println("Plottato");
-                                    writeFileFinalTab(EchoServer.final_tab, "Final.txt");
-                                    EchoServer.final_tab.clear();
-                                }
-                            }//fine synchronized finaltab
+                                }//fine synchronized finaltab
+                            } else
+                                System.out.println("Not enaugh data to process Location!!");
+                            if (EchoServer.sum_tab.isEmpty() == false)
+                                writeFileSumTab(EchoServer.sum_tab, "sumTab.txt");
+                            EchoServer.sum_tab.clear();
                         }
-                        else
-                            System.out.println("Not enaugh data to process Location!!");
-                        if(EchoServer.sum_tab.isEmpty()==false)
-                            writeFileSumTab(EchoServer.sum_tab, "sumTab.txt");
-                        EchoServer.sum_tab.clear();
-                    }
-                    synchronized (EchoServer.tab){
-                        if(EchoServer.tab.isEmpty()==false) {
-                            writeFileTab(EchoServer.tab, "Tab.txt");
-                            //EchoServer.tab.clear();
+                        synchronized (EchoServer.tab) {
+                            if (EchoServer.tab.isEmpty() == false) {
+                                writeFileTab(EchoServer.tab, "Tab.txt");
+                                //EchoServer.tab.clear();
+                            }
                         }
-                    }
                         /*synchronized (EchoServer.tab){
                             if(EchoServer.tab.isEmpty()==true){
                                 System.out.println("inizio");
@@ -247,28 +187,51 @@ public class Receiver extends Thread {
                             }
 
                         }*/
-                    //break;
-                }//Chiusura messaggio HELLO
-                else { //se si entra qui è perchè è stato ricevuto uno dei pacchetti sniffati dalla schedina oppure un messaggio di fine.
-                    synchronized (EchoServer.tab) { //accesso concorrente
-                        //se è stato ricevuto un pacchetto si crea l'oggetto Packet che esegue il parsing dei dati.
-                        //quindi si inserisce il nuovo pacchetto nella struttura tab. Il metodo checkInsert verificherà se esista già tale entry.
-                        if (inputLine.compareTo("STOP") != 0) {
-                            Packet p = new Packet(inputLine);
-                            if (checkInsert(p, EchoServer.tab) == false)
-                                System.out.println("pacchetto già ricevuto");
-                        } else {
-                            EchoServer.updateTime2(); //metodo in mutua esclusione per aggiornare (se non è stato già fatto per questa sessione) lo start_time
-                            System.out.println("Stop message received: " + inputLine);
-                        }
-                    }//chiusura accesso concorrente
-                }
-            }//chiusura while
-        }catch(IOException e){
-            System.out.println("Exception caught when trying to listen on port 8080 "
-                    + " or listening for a connection");
-            System.out.println(e.getMessage());
+                        //break;
+                    }//Chiusura messaggio HELLO
+                    else { //se si entra qui è perchè è stato ricevuto uno dei pacchetti sniffati dalla schedina oppure un messaggio di fine.
+                        synchronized (EchoServer.tab) { //accesso concorrente
+                            //se è stato ricevuto un pacchetto si crea l'oggetto Packet che esegue il parsing dei dati.
+                            //quindi si inserisce il nuovo pacchetto nella struttura tab. Il metodo checkInsert verificherà se esista già tale entry.
+                            if (inputLine.compareTo("STOP") != 0 && inputLine.compareTo("CHECK")!=0) {
+                                Packet p = new Packet(inputLine);
+                                if (checkInsert(p, EchoServer.tab) == false)
+                                    System.out.println("pacchetto già ricevuto");
+                            } else if (inputLine.compareTo("STOP") == 0){
+                                EchoServer.updateTime2(); //metodo in mutua esclusione per aggiornare (se non è stato già fatto per questa sessione) lo start_time
+                                System.out.println("Stop message received: " + inputLine);
+                            } else if (inputLine.compareTo("CHECK") == 0){
+                                String resp = "OK";
+                                System.out.println("CHECK MESSAGE RECEIVED!!");
+                                dOut.write(resp.charAt(0));
+                                dOut.write(resp.charAt(1));
+                                dOut.write('e');
+                                dOut.flush(); // Send off the data
+                            }
+                        }//chiusura accesso concorrente
+                    }
+                }//chiusura while
+            } catch (IOException e) {
+                System.out.println("Exception caught when trying to listen on port 8080 "
+                        + " or listening for a connection");
+                System.out.println(e.getMessage());
+            }
         }
+        /*
+        if(Thread.currentThread().isInterrupted()){
+            try {
+                System.out.println("closing socket Receiver");
+                csocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        */
+
+    }
+
+    public void closeSocket() throws IOException {
+        csocket.close();
     }
 
     /***
@@ -328,7 +291,8 @@ public class Receiver extends Thread {
                                 tab.get(p.getDigest()).getMacSource(),
                                 tab.get(p.getDigest()).getDigest(),
                                 tab.get(p.getDigest()).getTimeStamp(),
-                                tab.get(p.getDigest()).getSSID());
+                                tab.get(p.getDigest()).getSSID(),
+                                tab.get(p.getDigest()).getSequenceNumber());
 
                         EchoServer.sum_tab.add(s);
                         //EchoServer.tab.remove(p.getDigest());

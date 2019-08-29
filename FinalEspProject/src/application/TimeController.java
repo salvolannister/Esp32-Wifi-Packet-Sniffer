@@ -212,10 +212,12 @@ public class TimeController implements Initializable {
                 return;
             }else{
                 AreaInfo.appendText("Selezionare la stanza\n");
+                ConfigurationController.showAlert("Select a Room!");
                 return;
             }
         }catch (NullPointerException n){
             AreaInfo.appendText("Inserire data e ora di inizio\n");
+            ConfigurationController.showAlert("Select a date and time!");
             return;
         }
 

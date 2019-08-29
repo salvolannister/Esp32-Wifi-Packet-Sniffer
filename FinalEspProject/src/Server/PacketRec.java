@@ -16,7 +16,15 @@ public class PacketRec {
     private String SSID;
     private String Digest;
     private String TimeStamp;
+    private Integer SequenceNumber;
 
+    public Integer getSequenceNumber() {
+        return SequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber) {
+        SequenceNumber = sequenceNumber;
+    }
 
     /***
      *
@@ -32,18 +40,20 @@ public class PacketRec {
         setN_ESP(0);
         setRSSI(new HashMap<String,Integer>());
         setTimeStamp(packet.getTimeStamp());
+        setSequenceNumber(packet.getSequenceNumber());
         newSignal(packet.getIdMac(),packet.getRSSI());
     }
 
     @Override
     public String toString() {
-        return "\nPacketRec{" +
-                "\nRSSI=" + RSSI +
-                ", \nn_ESP=" + n_ESP +
-                ", \nMacSource='" + MacSource + '\'' +
-                ", \nSSID='" + SSID + '\'' +
-                ", \nDigest='" + Digest + '\'' +
-                ", \nTimeStamp='"+ TimeStamp +'\''+"\n"+
+        return "PacketRec{" +
+                "RSSI=" + RSSI +
+                ", n_ESP=" + n_ESP +
+                ", MacSource='" + MacSource + '\'' +
+                ", SSID='" + SSID + '\'' +
+                ", Digest='" + Digest + '\'' +
+                ", TimeStamp='" + TimeStamp + '\'' +
+                ", SequenceNumber=" + SequenceNumber +
                 '}';
     }
 
@@ -52,17 +62,18 @@ public class PacketRec {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PacketRec packetRec = (PacketRec) o;
-        return RSSI.equals(packetRec.RSSI) &&
-                n_ESP.equals(packetRec.n_ESP) &&
-                MacSource.equals(packetRec.MacSource) &&
-                SSID.equals(packetRec.SSID) &&
-                Digest.equals(packetRec.Digest) &&
-                TimeStamp.equals(packetRec.TimeStamp);
+        return Objects.equals(RSSI, packetRec.RSSI) &&
+                Objects.equals(n_ESP, packetRec.n_ESP) &&
+                Objects.equals(MacSource, packetRec.MacSource) &&
+                Objects.equals(SSID, packetRec.SSID) &&
+                Objects.equals(Digest, packetRec.Digest) &&
+                Objects.equals(TimeStamp, packetRec.TimeStamp) &&
+                Objects.equals(SequenceNumber, packetRec.SequenceNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(RSSI, n_ESP, MacSource, SSID, Digest, TimeStamp);
+        return Objects.hash(RSSI, n_ESP, MacSource, SSID, Digest, TimeStamp, SequenceNumber);
     }
 
     public Map<String, Integer> getRSSI() {

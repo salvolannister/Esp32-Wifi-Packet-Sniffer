@@ -1,4 +1,13 @@
-Controllo posizione oltre dimensione stanza -> non da plottare
-Quando si preme stop il server continua a girare
-Gestire quando si disconnette una schedina
-Qualche volta da errore sulla funzione IsLocal -> su if(lower.charAt(2)=='1') mi da out of index
+da fare:
+- Controllo posizione oltre dimensione stanza -> non da plottare (Umberto)
+- Gestire quando si disconnette una schedina -> mettere un pop-up di avviso e basta. (Umberto)
+- Analizzare Sequence Number per mac nascosti (work in progress, Davide)
+- Skippare eventuali schedine esterne che non sono nella configurazione. (Davide)
+- Testare grafica di margaret, mi sembra abbia qualche bug (non compare sempre la scritta "nessun mac trovato...." in seguito ad una ricerca) (Umberto?)
+
+opzionale:
+- aggiungere una qualche notifica che dice all'utente che il server sta sniffando (in modo che ha un feedback e non rimane fermo un minuto senza sapere cosa sta succedendo)
+
+risolti:
+- Quando si preme stop il server continua a girare (RISOLTO)
+- Qualche volta da errore sulla funzione IsLocal -> su if(lower.charAt(2)=='1') mi da out of index (RISOLTO, DA TESTARE)

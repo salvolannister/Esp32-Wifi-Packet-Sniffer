@@ -24,7 +24,7 @@ public class Packet {
 		extractDigest(packetChar);
 		extractTimeStamp(packetChar);
 		extractIdMac(packetChar);
-		//extractSequenceNumber(packetChar);
+		extractSequenceNumber(packetChar);
 		System.out.println(this.toString());
 	}
 
@@ -197,8 +197,11 @@ public class Packet {
 	 */
 	private void extractTimeStamp(String packetChar) {
 		String[] begin = packetChar.split("TimeStamp=");
-		String[] hash = begin[1].split("/");
-		setTimeStamp(hash[0]);
+		if(begin.length>1) {
+			String[] hash = begin[1].split("/");
+			if(hash.length>=1)
+				setTimeStamp(hash[0]);
+		}
 	}
 
 	private void extractSequenceNumber(String packetChar) {

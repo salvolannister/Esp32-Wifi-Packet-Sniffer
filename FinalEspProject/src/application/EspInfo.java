@@ -48,38 +48,42 @@ public class EspInfo {
 
 	public boolean textFieldCheck(){
 	
-		
-		if(checkFieldXY(x) ){
-			X =  Float.parseFloat(x.getText());
-			if(checkFieldXY(y)){
-				Y = Float.parseFloat(y.getText());
-				/*check mac address*/
-				if(mac.getText() == null || mac.getText().trim().isEmpty()){
-					 Alert fail= new Alert(AlertType.INFORMATION);
-					fail.getDialogPane().setExpanded(true);
-				        fail.setHeaderText("failure");
-				        fail.setContentText("You must fullfill the mac fields");
-				        fail.showAndWait();
-				        return false;
-				}else {
-					this.MAC = mac.getText();
-					if(!Pattern.matches(regex, MAC)) {
-						 Alert fail= new Alert(AlertType.INFORMATION);
+		try {
+			if (checkFieldXY(x)) {
+				X = Float.parseFloat(x.getText());
+				if (checkFieldXY(y)) {
+					Y = Float.parseFloat(y.getText());
+					/*check mac address*/
+					if (mac.getText() == null || mac.getText().trim().isEmpty()) {
+						Alert fail = new Alert(AlertType.INFORMATION);
+						fail.getDialogPane().setExpanded(true);
+						fail.setHeaderText("failure");
+						fail.setContentText("You must fullfill the mac fields");
+						fail.showAndWait();
+						return false;
+					} else {
+						this.MAC = mac.getText();
+						if (!Pattern.matches(regex, MAC)) {
+							Alert fail = new Alert(AlertType.INFORMATION);
 							fail.getDialogPane().setExpanded(true);
 							fail.getDialogPane().autosize();
-					        fail.setHeaderText("failure");
-					        fail.setContentText("Mac should be ex. 3D:F2:C9:A6:B3:4F or 3D-F2-C9-A6-B3-4F");
+							fail.setHeaderText("failure");
+							fail.setContentText("Mac should be ex. 3D:F2:C9:A6:B3:4F or 3D-F2-C9-A6-B3-4F");
 
-					        fail.showAndWait();
-					        return false;
-					}else {
-						return true;
+							fail.showAndWait();
+							return false;
+						} else {
+							return true;
+						}
 					}
+				} else {
+					return false;
 				}
-			}else {
+			} else {
 				return false;
 			}
-		}else {
+		}catch (NumberFormatException e){
+			ConfigurationController.showAlert("insert numeric value!");
 			return false;
 		}
 	}

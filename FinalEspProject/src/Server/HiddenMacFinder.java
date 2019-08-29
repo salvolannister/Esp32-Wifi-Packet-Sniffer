@@ -2,9 +2,10 @@ package Server;
 import java.util.*;
 
 public class HiddenMacFinder {
-    private static Float DIST_WEIGHT = 0.4f;
-    private static Float SSID_WEIGHT = 0.3f;
-    private static Float CAT_WEIGHT = 0.3f;
+    private static Float DIST_WEIGHT = 0.3f;
+    private static Float SSID_WEIGHT = 0.2f;
+    private static Float CAT_WEIGHT = 0.2f;
+    private static Float SEQN_WEIGHT = 0.3f;
     private static Float THRESHOLD = 0.7f;
     private static List<String> SSIDblackList = Arrays.asList("Eduroam", "Polito");
     private static Float CategorydistanceThreshold = 1.5f; //se due dispositivi sono distanti più di CategorydistanceThreshold, anche se sono di tipo Android -> p = 0;
@@ -106,20 +107,30 @@ public class HiddenMacFinder {
      * test su mac locale/globale
      */
     public static Boolean isLocal(String mac){
+
+        boolean islocal = false;
         //System.out.println("check mac -> "+ mac);
         String[] octets = mac.split(":");
-        char test=octets[0].charAt(1);
+        char test=octets[0].charAt(1); //cifra esadecimale (4bit) che mi interessa -> devo analizzarne il terzo bit
 
         String tests = Character.toString(test);
         int decimal = Integer.parseInt(tests, 16);
         String lower = Integer.toBinaryString(decimal);
 
         //System.out.println("Mac is: " + mac + " Test is: " + tests + " decimal version is: " + decimal + " lower is:"+lower);
-        if(lower.length()<3){
-            System.out.println("SOME ERROR IN ISLOCAL FUNTION - LOWER VALUE!!!!!!!!!! Mac is: " + mac + " Test is: " + tests + " decimal version is: " + decimal + " lower is:"+lower);
-            return false;
-        }
 
+        //risulta utile ragionare, invece che come terzo bit, come PENULTIMO bit in modo da essere indipendente dal numero di bit necessari per rappresentare il numero.
+        if(lower.length()<2){ //if the number is in 1 bit: the third MSB of 4bit is always zero.System.out.println("SOME ERROR IN ISLOCAL FUNTION - LOWER VALUE!!!!!!!!!! Mac is: " + mac + " Test is: " + tests + " decimal version is: " + decimal + " lower is:"+lower);
+            islocal = false;
+        }
+        else{
+          if(lower.charAt(lower.length()-2)=='1')
+              islocal = true;
+          else
+              islocal = false;
+        }
+        return islocal;
+        /*
         if(lower.charAt(2)=='1'){
             //System.out.println("local MAC foud!");
             return true;
@@ -127,7 +138,7 @@ public class HiddenMacFinder {
         else{
             //System.out.println("global");
             return false;
-        }
+        }*/
     }
 
     public static void addLocalFake(){

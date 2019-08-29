@@ -16,6 +16,7 @@ public class Sum_PacketRec {
     private String digest;
     private String TimeStamp;
     private String SSID;
+    private Integer SequenceNumber;
 
     public Sum_PacketRec(Map<String, Integer> RSSI, String macSource, String digest, String timeStamp, String ssid) {
         //todo cancellare se funziona
@@ -39,6 +40,36 @@ public class Sum_PacketRec {
         this.digest = digest;
         TimeStamp = timeStamp;
         SSID = null;
+    }
+
+    public Sum_PacketRec(Map<String, Integer> RSSI, String macSource, String digest, String timeStamp, String SSID, Integer sequenceNumber) {
+        this.RSSI = RSSI;
+        this.RSSIs = RSSIs;
+        MacSource = macSource;
+        this.digest = digest;
+        TimeStamp = timeStamp;
+        this.SSID = SSID;
+        SequenceNumber = sequenceNumber;
+    }
+
+    public void setRSSIs(ArrayList<Map<String, Integer>> RSSIs) {
+        this.RSSIs = RSSIs;
+    }
+
+    public String getDigest() {
+        return digest;
+    }
+
+    public void setDigest(String digest) {
+        this.digest = digest;
+    }
+
+    public Integer getSequenceNumber() {
+        return SequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber) {
+        SequenceNumber = sequenceNumber;
     }
 
     //todo debug
@@ -95,24 +126,30 @@ public class Sum_PacketRec {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Sum_PacketRec that = (Sum_PacketRec) o;
-        return RSSI.equals(that.RSSI) &&
-                MacSource.equals(that.MacSource) &&
-                digest.equals(that.digest) &&
-                TimeStamp.equals(that.TimeStamp);
+        return Objects.equals(RSSI, that.RSSI) &&
+                Objects.equals(RSSIs, that.RSSIs) &&
+                Objects.equals(MacSource, that.MacSource) &&
+                Objects.equals(digest, that.digest) &&
+                Objects.equals(TimeStamp, that.TimeStamp) &&
+                Objects.equals(SSID, that.SSID) &&
+                Objects.equals(SequenceNumber, that.SequenceNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(RSSI, MacSource, digest, TimeStamp);
+        return Objects.hash(RSSI, RSSIs, MacSource, digest, TimeStamp, SSID, SequenceNumber);
     }
 
     @Override
     public String toString() {
-        return "\nSum_PacketRec{\n" +
+        return "Sum_PacketRec{" +
                 "RSSI=" + RSSI +
-                ", \nMacSource='" + MacSource + '\'' +
-                ", \ndigest='" + digest + '\'' +
-                ", \nTimeStamp='" + TimeStamp + '\'' + "\n"+
+                ", RSSIs=" + RSSIs +
+                ", MacSource='" + MacSource + '\'' +
+                ", digest='" + digest + '\'' +
+                ", TimeStamp='" + TimeStamp + '\'' +
+                ", SSID='" + SSID + '\'' +
+                ", SequenceNumber=" + SequenceNumber +
                 '}';
     }
 }

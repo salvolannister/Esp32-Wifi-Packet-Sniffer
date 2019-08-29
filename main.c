@@ -55,8 +55,10 @@ static bool FIRST = true; /* Only used in startup: if obtain_time() can't set cu
 static wifi_country_t wifi_country = {.cc="CN", .schan=1, .nchan=13, .policy=WIFI_COUNTRY_POLICY_AUTO};
 static const char *TAG = "ESP32-SniffingProject"; //used to log function
 const int IPV4_GOTIP_BIT = BIT0;
-static const char *payload = "Message from ESP32 \n";
+//static const char *payload = "Message from ESP32 \n";
 bool IsConnected = false;
+static int Client_socket;
+
 
 /* FreeRTOS event group to signal when we are connected & ready to make a request */
 static EventGroupHandle_t wifi_event_group;
@@ -99,6 +101,9 @@ static void tcp_sendPacket();
 static struct sockaddr_in tcp_init();
 void startSniffingPacket();
 static int tcp_hello();
+static int getSocket();
+static void setSocket();
+static void checkSocket();
 
 
 static esp_err_t event_handler(void *ctx, system_event_t *event);
@@ -126,11 +131,9 @@ uint8_t espMac[6];
  /*struttura che viene aggiornata con time,
  mostra il tempo passato da una det. data*/
 
-
-
 static void initialize_sntp();
 static int get_start_timestamp();
-static int set_waiting_time();
+//static int set_waiting_time();
 static void obtain_time();
 static void reboot(char *msg_err);
 
@@ -141,7 +144,6 @@ app_main(void)
     int start_time;
     time_t now; /*struttura che viene aggiornata con time, mostra il tempo passato da una det. data*/
    // struct tm timeinfo;/*struttura per accedere ai campi di now*//*struttura per accedere ai campi di now*/
-    char buffer[100];
 
 	//uint8_t channel = 1;
     Sniffed_packet=P_allocate(40);
@@ -161,6 +163,7 @@ app_main(void)
 	int waitingTime = tcp_hello(); //TODO: CALL STARTSNIFFINGPACKET AFTER RECEIVING THE STARTING TIME FROM THE SERVER AND WAITING UNTIL THIS TIME!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (waitingTime <= 0)
 		reboot("time error");
+
 	//wait
 	printf("--------------- %d SECONDS WAITING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
 	vTaskDelay(waitingTime*1000 / portTICK_PERIOD_MS);
@@ -193,6 +196,7 @@ app_main(void)
 			reboot("error in tcp_hello function!");
 		printf("--------------- %d SECONDS WAITING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n", waitingTime);
 		vTaskDelay(waitingTime * 1000 / portTICK_PERIOD_MS);
+		checkSocket();
 		printf("--------------- RESTART SNIFFING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------ \n");
 
 		//stopSniffing=false;
@@ -364,6 +368,8 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)
 	case SYSTEM_EVENT_STA_DISCONNECTED:
 		printf("esp32 has been disconnected \n");
 		xEventGroupClearBits(wifi_event_group, IPV4_GOTIP_BIT);
+		//NO RETRY.... BUT ROBOOT!!!!!!
+		reboot("hotspot problems");
 		esp_wifi_connect(); //retry to connect
 		break;
 
@@ -490,29 +496,31 @@ static struct sockaddr_in tcp_init() {
 /*
 Return socket struct only if connection to server works. If it fail 5 times will reboot the system.
 */
-int getSocket() {
+static void setSocket() {
 	//create connection parameters and return only after ip address configuration!!
 	struct sockaddr_in destAddr = tcp_init();
 
 	// try to connect to the specified server
 	int attempNum = 5;
 	int result = 1;
-	int s = 0;
+	//int s = 0;
 	while (attempNum != 0 && result != 0) //try until result != 0 (connection extablished) or trynumber reached
 	{
 		// create a new socket
-		s = socket(AF_INET, SOCK_STREAM, 0);
-		if (s < 0) {
+		Client_socket = socket(AF_INET, SOCK_STREAM, 0);
+		if (Client_socket < 0) {
+			reboot("socket not allocated");
 			printf("Unable to allocate a new socket\n");
 			//while (1) vTaskDelay(1000 / portTICK_RATE_MS);
 		}
 		else
-			printf("Socket allocated, id=%d\n", s);
+			printf("Socket allocated, id=%d\n", Client_socket);
 
-		result = connect(s, (struct sockaddr *)&destAddr, sizeof(destAddr));
+		result = connect(Client_socket, (struct sockaddr *)&destAddr, sizeof(destAddr));
 		if (result != 0) {
-			printf("connection to server: attemp remaining %d failed\n", attempNum-1);
-			close(s);
+			close(Client_socket);
+			reboot("socket allocated, but connection problems"); //DELETE if you wont to retry
+			printf("connection to server: attemp remaining %d failed\n", attempNum - 1);
 			attempNum--;
 			//while (1) vTaskDelay(1000 / portTICK_RATE_MS);
 		}
@@ -522,8 +530,51 @@ int getSocket() {
 	if (attempNum == 0) {
 		reboot("unable to connect with server");
 	}
-	return s;
+	//return s;
+}
 
+static void checkSocket() {
+	
+	int s = getSocket();
+	int result;
+	char *checkMessage = "CHECK\n";
+	vTaskDelay(2000 / portTICK_PERIOD_MS);
+
+	result = write(s, checkMessage, strlen(checkMessage));
+	printf("result value: %d \n", result);
+	if (result <= 0) {
+		printf("CHECKING.. BUT socket has been closed\n");
+		close(s);
+		reboot("Unable to send CHECK message");
+	}
+	
+	//wait response
+	int r;
+	char recv_buf[10];
+	bool trovato = false;
+	do {
+		bzero(recv_buf, sizeof(recv_buf));
+		r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
+		for (int i = 0; i < r; i++) {
+			printf("char received: %c \n", (char)recv_buf[i]);
+			if ((char)recv_buf[i] == 'e') {
+				trovato = true;
+				break;
+			}
+		}
+	} while (r > 0 && !trovato);
+
+	if (r <= 0) {
+		printf("NO DATA\n");
+		reboot("Unable to RECEIVE data"); //delte if you wont to retry
+	}
+}
+
+static int getSocket() {
+	if (Client_socket <= 0) {
+		setSocket();
+	}	
+	return Client_socket;
 }
 
 static int tcp_hello() {
@@ -540,13 +591,14 @@ static int tcp_hello() {
 	while (attemptNum>0)  //try until we have perfomed all send/receive messages
 	{
 		printf("attemp number: %d", (5-attemptNum));
-		int s = getSocket();
+		int s = getSocket(); //reboot if no socket allocated
 
 		//send hello to server
 		int result = write(s, str_hello, strlen(str_hello));
 		if (result < 0) {
 			printf("Unable to send data\n");
 			close(s);
+			reboot("unable to SEND data to server"); //delete if you wont to retry
 			attemptNum--;
 			vTaskDelay(2000 / portTICK_RATE_MS);
 			continue; //retry!
@@ -560,8 +612,12 @@ static int tcp_hello() {
 			bzero(recv_buf, sizeof(recv_buf));
 			r = read(s, recv_buf, sizeof(recv_buf) - 1); //read return the number of bytes recived!!
 			for (int i = 0; i < r; i++) {
-				printf("data coming from server\n");
-				printf(" %c\n", recv_buf[i]);
+				if ((char)recv_buf[i] == 'e') {
+					r = 0;
+					break;
+				}
+				//printf("data coming from server\n");
+				//printf(" %c\n", recv_buf[i]);
 				timeRec[bytenum+i] = recv_buf[i];
 			}
 			bytenum += r;
@@ -571,6 +627,7 @@ static int tcp_hello() {
 		if (r < 0) {
 			printf("Unable to receive data\n");
 			close(s);
+			reboot("Unable to RECEIVE data"); //delte if you wont to retry
 			attemptNum--;
 			bzero(timeRec, sizeof(timeRec));
 			continue; //retry!
@@ -580,8 +637,8 @@ static int tcp_hello() {
 		
 
 		//close socket
-		close(s);
-		printf("Socket closed\n");
+		//close(*s);
+		//printf("Socket closed\n");
 
 		break;	//exit from while
 	}
@@ -590,7 +647,7 @@ static int tcp_hello() {
 	time(&ts);
 	int startTime = atoi(timeRec);
 	printf("starting time: %d", startTime);
-	printf("My time: %d \n", (int)ts);
+	printf(" My time: %d \n", (int)ts);
 
 	int waitingtime = startTime - (int)ts;
 	printf("waiting time: %d\n", waitingtime);
@@ -606,7 +663,7 @@ static int tcp_hello() {
 
 static void tcp_sendPacket()
 {   
-	int start_time, ora, sleep_time;
+	int start_time, ora;
     time_t now;
     struct tm timeinfo;
     char buffer[100];
@@ -631,7 +688,7 @@ static void tcp_sendPacket()
     strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
     printf("TEMPO in italia:%s agora=%d st=%d\n",buffer,ora,start_time);
 	
-	int s = getSocket();
+	int s = getSocket(); //if no socket allocated -> reboot
 
 	reduced_info x;
 	int i;
@@ -689,23 +746,25 @@ static void tcp_sendPacket()
 		if (result < 0) {
 			printf("Unable to send data\n");
 			close(s);
+			reboot("Unable to SEND PACKETS data");
 		}
 		else
 			NumPacketSent++;
 	}
 	//stop message
-	char *stop = "STOP";
+	char *stop = "STOP\n";
 	vTaskDelay(2000 / portTICK_PERIOD_MS);
 
 	result = write(s, stop, strlen(stop));
 	if (result < 0) {
 		printf("Unable to send data\n");
 		close(s);
+		reboot("Unable to send STOP message");
 	}
-
+	printf("Stop!!!");
 	printf("Num packet sent: %d\n", NumPacketSent);
-	close(s);
-	printf("Socket closed\n");
+	//close(*s);
+	//printf("Socket closed\n");
 
 }
 
@@ -730,6 +789,7 @@ wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type)
 void
 wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 {
+
 	if (type != WIFI_PKT_MGMT)
 		return;
 
@@ -783,7 +843,7 @@ wifi_sniffer_packet_handler(void* buff, wifi_promiscuous_pkt_type_t type)
 	uint16_t seq_n = hdr->sequence_ctrl;
 	if (seq_n != NULL) {
 		uint16_t mask_seqN = 0xFFF0;
-		seq_n = seq_n & mask;
+		seq_n = seq_n & mask_seqN;
 		x.seq_n = seq_n;
 	}
     /* only probe request are memorized */
@@ -838,7 +898,7 @@ static void initialize_sntp()
     setenv("TZ", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00", 1);
     tzset();
 }
-
+/*
 static int set_waiting_time()
 {
 	int st,sleep_time = 10;
@@ -846,9 +906,10 @@ static int set_waiting_time()
 
 	time(&t);
 	st = (sleep_time - (int)t % sleep_time) * 1000;
-    /* clculatre how many seconds are left from de sleep time */
+    // clculatre how many seconds are left from de sleep time
 	return st;
 }
+*/
 
 static void obtain_time()
 {

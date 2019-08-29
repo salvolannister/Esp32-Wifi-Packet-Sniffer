@@ -563,15 +563,14 @@ public class RoomController implements Initializable {
                     arg[0]=roomCB.getValue();
                     arg[1]=configCB.getValue();
                     EchoServer server=new EchoServer();
-                        /*int randomInt = (int )(Math.random() * 37 + 1);
-                        System.out.println(randomInt);*/
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA        ------------- SERVER STARING");
-                        server.start(arg);
+
+                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA           ------------- SERVER STARTING");
+                    server.start(arg);
                         //server=null;
                         //System.out.println("non ci va");
                         //server.stop();
                         /* qui mettere il codice che dovrebbe fare start*/
-
+                    System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE          -------------  SERVER END!!!!!!!!");
                     return null;
                 }
             };

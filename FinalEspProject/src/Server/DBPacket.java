@@ -12,6 +12,20 @@ public class DBPacket {
   private Float Err;
   private Integer LocalMacMargedNumber;
   private String SSID;
+  private Integer SequenceNumber;
+
+    public DBPacket(String digest, Long timeStamp, String room, float posX, float posY, String macSource, Float err, Integer localMacMargedNumber, String SSID, Integer sequenceNumber) {
+        this.digest = digest;
+        TimeStamp = timeStamp;
+        Room = room;
+        this.posX = posX;
+        this.posY = posY;
+        MacSource = macSource;
+        Err = err;
+        LocalMacMargedNumber = localMacMargedNumber;
+        this.SSID = SSID;
+        SequenceNumber = sequenceNumber;
+    }
 
     public DBPacket(String digest, Long timeStamp, String room, float posX, float posY, String macSource, String ssid) {
         this.digest = digest;
@@ -35,6 +49,14 @@ public class DBPacket {
         SSID = null;
         Err = 0f;
         LocalMacMargedNumber = 0;
+    }
+
+    public Integer getSequenceNumber() {
+        return SequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber) {
+        SequenceNumber = sequenceNumber;
     }
 
     public String getSSID() {
@@ -106,14 +128,15 @@ public class DBPacket {
         return "DBPacket{" +
                 "digest='" + digest + '\'' +
                 ", TimeStamp=" + TimeStamp +
-                ", Room=" + Room +
+                ", Room='" + Room + '\'' +
                 ", posX=" + posX +
                 ", posY=" + posY +
                 ", MacSource='" + MacSource + '\'' +
                 ", Err=" + Err +
                 ", LocalMacMargedNumber=" + LocalMacMargedNumber +
                 ", SSID='" + SSID + '\'' +
-                '}' + '\n';
+                ", SequenceNumber=" + SequenceNumber +
+                '}';
     }
 
     @Override
@@ -129,12 +152,13 @@ public class DBPacket {
                 Objects.equals(MacSource, dbPacket.MacSource) &&
                 Objects.equals(Err, dbPacket.Err) &&
                 Objects.equals(LocalMacMargedNumber, dbPacket.LocalMacMargedNumber) &&
-                Objects.equals(SSID, dbPacket.SSID);
+                Objects.equals(SSID, dbPacket.SSID) &&
+                Objects.equals(SequenceNumber, dbPacket.SequenceNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(digest, TimeStamp, Room, posX, posY, MacSource, Err, LocalMacMargedNumber, SSID);
+        return Objects.hash(digest, TimeStamp, Room, posX, posY, MacSource, Err, LocalMacMargedNumber, SSID, SequenceNumber);
     }
 
     public String getDigest() {
