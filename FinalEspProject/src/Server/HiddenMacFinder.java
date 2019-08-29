@@ -28,7 +28,8 @@ public class HiddenMacFinder {
                         Float DistP = HiddenMacFinder.ComputeDistanceProb(DBpkt1.getValue(), DBpkt2.getValue());
                         Float SSIDP = HiddenMacFinder.ComputeSSIDProb(DBpkt1.getValue(), DBpkt2.getValue());
                         Float CategoryP = HiddenMacFinder.ComputeCategoryProb(DBpkt1.getValue(), DBpkt2.getValue());
-                        Float Prob = DistP + SSIDP + CategoryP;
+                        Float SeqNP = HiddenMacFinder.ComputeSeqNPorob(DBpkt1.getValue(), DBpkt2.getValue());
+                        Float Prob = DistP + SSIDP + CategoryP + SeqNP;
 
                         //System.out.println("couple analized: " + DBpkt1.getValue().getMacSource() + " and " + DBpkt2.getValue().getMacSource());
                         //System.out.println("Distance prob: " + DistP + " SSID prob: " + SSIDP + " Category prob: " + CategoryP + ", TOTAL = " + Prob);
@@ -99,6 +100,17 @@ public class HiddenMacFinder {
         return P;
     }
 
+    private static Float ComputeSeqNPorob(DBPacket pk1, DBPacket pk2){
+        Integer seqDistance = Math.abs(pk1.getSequenceNumber() - pk2.getSequenceNumber());
+        if(seqDistance<=100)
+            return SEQN_WEIGHT; //MAX VALUE
+        else if(seqDistance>100 && seqDistance<=200)
+            return SEQN_WEIGHT/2;
+        else if(seqDistance>200 && seqDistance<=300)
+            return SEQN_WEIGHT/3;
+        //If distance > 300 we consider no weight for SeqNumber criteria
+        return 0f;
+    }
     /***
      *
      * @param mac
