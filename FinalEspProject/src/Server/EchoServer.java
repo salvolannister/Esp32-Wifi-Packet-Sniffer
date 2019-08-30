@@ -4,6 +4,7 @@ import DB.QueryConfiguration;
 import DB.QueryPosition;
 import application.EspInfo;
 import application.RoomController;
+import org.apache.commons.math3.analysis.interpolation.HermiteInterpolator;
 
 import java.net.*;
 import java.io.*;
@@ -37,7 +38,6 @@ public class EchoServer {
     public static int sniffing_time = 40;
     private static int delta_update = sniffing_time - 10;
     private static ServerSocket serverSocket;
-    //// TODO: 27/08/2019 provaThread
     private static ArrayList<Receiver> Poll = new ArrayList<Receiver>();
     private static volatile boolean isDone = false;
 
@@ -48,6 +48,23 @@ public class EchoServer {
             e.printStackTrace();
         }
     }
+
+    //// TODO: 30/08/2019 debug local mac logic 
+    public void test(){
+        HiddenMacFinder.addLocalFake();
+        synchronized (final_tab){
+            System.out.println("initial tab:");
+            for (Map.Entry<String, DBPacket> dbPacket : EchoServer.final_tab.entrySet())
+                System.out.println(dbPacket.getValue());
+        }
+        HiddenMacFinder.FindHiddenDevices();
+        synchronized (final_tab){
+            System.out.println("final tab:");
+            for (Map.Entry<String, DBPacket> dbPacket : EchoServer.final_tab.entrySet())
+                System.out.println(dbPacket.getValue());
+        }
+    }
+
     public void start(String[] args) throws IOException, SQLException {
 
         setisDone(false);

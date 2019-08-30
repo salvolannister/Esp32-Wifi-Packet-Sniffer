@@ -31,8 +31,8 @@ public class HiddenMacFinder {
                         Float SeqNP = HiddenMacFinder.ComputeSeqNPorob(DBpkt1.getValue(), DBpkt2.getValue());
                         Float Prob = DistP + SSIDP + CategoryP + SeqNP;
 
-                        //System.out.println("couple analized: " + DBpkt1.getValue().getMacSource() + " and " + DBpkt2.getValue().getMacSource());
-                        //System.out.println("Distance prob: " + DistP + " SSID prob: " + SSIDP + " Category prob: " + CategoryP + ", TOTAL = " + Prob);
+                        System.out.println("couple analized: " + DBpkt1.getValue().getMacSource() + " and " + DBpkt2.getValue().getMacSource());
+                        System.out.println("Distance prob: " + DistP + " SSID prob: " + SSIDP + " Category prob: " + CategoryP + " SeqN prob: " + SeqNP + ", TOTAL = " + Prob);
 
                         if(Prob >= HiddenMacFinder.THRESHOLD){
                             //EchoServer.final_tab.put(DBpkt2.getKey(), null);
@@ -62,7 +62,8 @@ public class HiddenMacFinder {
         float P;
         float x1 = pk1.getPosX(), x2 = pk2.getPosX(), y1 = pk1.getPosY(), y2 = pk2.getPosY();
         double distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-        P = (float) (DIST_WEIGHT/(distance+1));
+        double factor = distance/2;
+        P = (float) (DIST_WEIGHT/(factor+1));
         return P;
     }
 
@@ -169,13 +170,34 @@ public class HiddenMacFinder {
 
         ArrayList<DBPacket> pkts = new ArrayList<DBPacket>();
 
-        //primi 3 vengono uniti
         List<String> macs = Arrays.asList("da:a1:19:00:00:00", "da:a1:19:00:00:01", "da:a1:19:00:00:02", "da:a1:19:00:00:03", "0a:00:00:00:00:00");
-        pkts.add(new DBPacket(digests.get(0), 1566377514000L, "1", 3.5f, 4.6f, macs.get(0), "StessoSSID"));
-        pkts.add(new DBPacket(digests.get(1), 1566377518000L, "1", 3.0f, 4.1f, macs.get(1), "StessoSSID"));
-        pkts.add(new DBPacket(digests.get(2), 1566377519000L, "1", 3.3f, 4.3f, macs.get(2), "StessoSSID"));
-        pkts.add(new DBPacket(digests.get(3), 1566377538000L, "1", 5.0f, 1.1f, macs.get(3), "StessoSSID")); //non unito -> P=0.6
-        pkts.add(new DBPacket(digests.get(4), 1566377558000L, "1", 3.0f, 4.5f, macs.get(4), "DiversoSSID")); //non unito -> P=0.4
+
+        //TEST 1: TUTTI I CRITERI SODDISFATTI -> MERGED
+        //PDist circa 0.3, Pssid = 0.2, PCat = 0.3, PseqN = dist < 100 -> 0.3. P=circa 1, err=circa 0
+/*
+
+        pkts.add(new DBPacket(digests.get(0), 1566377514000L, "1", 3.5f, 4.6f, macs.get(0), 0f, 0, "StessoSSID", 1550));
+        pkts.add(new DBPacket(digests.get(1), 1566377518000L, "1", 3.0f, 4.1f, macs.get(1), 0f, 0, "StessoSSID", 1570));
+
+*/
+
+        //TEST 2: CRITERI NON SODDISFATTI O P BASSA -> NOT MERGED
+        //PDist motlo minore di 0.3, Pssid = 0, PCat = -0.2, PseqN = dist > 300 -> 0. P=circa -0.2 -> 0.03 , err=circa 0
+/*
+
+        pkts.add(new DBPacket(digests.get(0), 1566377514000L, "1", 3.5f, 4.6f, macs.get(0), 0f, 0, "StessoSSID", 1550));
+        pkts.add(new DBPacket(digests.get(1), 1566377518000L, "1", 5.0f, 1.1f, macs.get(4), 0f, 0, "DiversoSSID", 2570));
+
+*/
+
+
+
+        //primi 3 vengono uniti
+        pkts.add(new DBPacket(digests.get(0), 1566377514000L, "1", 3.5f, 4.6f, macs.get(0), 0f, 0, "StessoSSID", 1550));
+        pkts.add(new DBPacket(digests.get(1), 1566377518000L, "1", 3.0f, 4.1f, macs.get(1),  0f, 0, "StessoSSID", 1590));
+        pkts.add(new DBPacket(digests.get(2), 1566377519000L, "1", 3.3f, 4.3f, macs.get(2),  0f, 0, "StessoSSID", 3000));
+        pkts.add(new DBPacket(digests.get(3), 1566377538000L, "1", 5.0f, 1.1f, macs.get(3),  0f, 0, "StessoSSID", 250)); //non unito -> P=0.6
+        pkts.add(new DBPacket(digests.get(4), 1566377558000L, "1", 3.0f, 4.5f, macs.get(4),  0f, 0, "DiversoSSID", 370)); //non unito -> P=0.4
 
         int i = 0;
         synchronized (EchoServer.final_tab) {
@@ -183,7 +205,7 @@ public class HiddenMacFinder {
                 EchoServer.final_tab.put(macs.get(i), pkt);
                 i++;
             }
-            System.out.println(EchoServer.final_tab);
+            //System.out.println(EchoServer.final_tab);
         }
     }
 }
