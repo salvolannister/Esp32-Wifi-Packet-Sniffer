@@ -2,6 +2,7 @@ package Server;
 import DB.DBUtil;
 import DB.QueryConfiguration;
 import DB.QueryPosition;
+import application.ConfigurationController;
 import application.EspInfo;
 import application.RoomController;
 import org.apache.commons.math3.analysis.interpolation.HermiteInterpolator;
@@ -66,6 +67,7 @@ public class EchoServer {
     }
 
     public void start(String[] args) throws IOException, SQLException {
+
 
         setisDone(false);
         System.out.println("SERVER AT THREAD : " + Thread.currentThread().getId() + " socket number: " + serverSocket.getLocalPort());

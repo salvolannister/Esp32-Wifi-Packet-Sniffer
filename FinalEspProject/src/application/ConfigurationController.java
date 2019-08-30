@@ -225,20 +225,20 @@ private static void printField(String mac, String X, String Y) {
 		 //check mac distinti
 		 Long distinct_mac=espDevice.stream().map(EspInfo::getMAC).distinct().count();
 		 if(espDevice.size()!=distinct_mac){
-			 showAlert("Insert  distint MAC address!");
+			 showAlert("Insert  distint MAC address!", true);
 			 System.out.println("ci sono mac duplicati ") ;
 			 return;
 		 }
 
 		// check of name field;
 		 if( name.getText().compareTo("")==0){
-			 showAlert("A valid name for configuration is required!");
+			 showAlert("A valid name for configuration is required!", true);
 		     System.out.println(" No name was inserted ") ;
 		 return;
 		 }
 
 		 if(isConfiguration(name.getText())==true){
-			 showAlert("Inserted name refers to an existing configuration. Please insert a new one!");
+			 showAlert("Inserted name refers to an existing configuration. Please insert a new one!", true);
 			 name.setText("");
 			System.out.println(" la configurazione già esiste ") ;
 			return;
@@ -321,12 +321,13 @@ private static void printField(String mac, String X, String Y) {
 //	}
 
 
-	public static void showAlert(String content){
+	public static void showAlert(String content, Boolean wait){
 		Alert fail= new Alert(AlertType.INFORMATION);
 		fail.setHeaderText("failure");
 		fail.getDialogPane().setExpanded(true);
 		fail.setContentText(content);
-		fail.showAndWait();
+		if(wait==true)
+			fail.showAndWait();
 	}
 
 }

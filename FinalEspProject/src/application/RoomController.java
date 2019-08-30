@@ -39,6 +39,7 @@ import java.util.*;
 
 public class RoomController implements Initializable {
 
+
     @FXML private Button ahead;
     @FXML private Button behind;
     @FXML private Button SearchButton;
@@ -51,6 +52,8 @@ public class RoomController implements Initializable {
     @FXML private Button stop;
     @FXML private Button BackButton;
     @FXML private Label label;
+    @FXML private Pane logger;
+    private static TextArea feedback;
     private static ScatterChart<Number, Number> grafico;
     private static Map<String, DBPacket> serie;
     private static float roomX;
@@ -76,9 +79,35 @@ public class RoomController implements Initializable {
         return;
     }
 
+    public static void showPopUp(String s) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ConfigurationController.showAlert(s, false);
+            }
+        });
+        return;
+    }
+
+    public static void sendToLog(String s) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                feedback.appendText(s+"\n");
+            }
+        });
+        return;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         serie=null;
+        feedback=new TextArea();
+        feedback.setEditable(false);
+        feedback.setMaxHeight(logger.getMaxHeight());
+        feedback.setMaxWidth(logger.getMaxWidth()+280);
+        System.out.println("maxw"+logger.getMaxWidth());
+        logger.getChildren().add(feedback);
         final NumberAxis xAxis = new NumberAxis(-2, 10, 0.5);
         final NumberAxis yAxis = new NumberAxis(-2, 10, 0.5);
         xAxis.setLabel("posX");
@@ -404,6 +433,7 @@ public class RoomController implements Initializable {
 
     private static void realtimeGraphAdd(Map<String, DBPacket> risultato){
 
+        feedback.appendText("Plotting received data\n");
 
 
 
@@ -440,11 +470,14 @@ public class RoomController implements Initializable {
 
         grafico.getData().add(series1);
         serie=null;
+        feedback.appendText("The capture continues!\n");
 
 
     }
 
     public void onStartClick(MouseEvent mouseEvent) throws IOException, SQLException {
+
+
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
 
@@ -455,6 +488,9 @@ public class RoomController implements Initializable {
             errorShower("You must select a Configuration first");
             return;
         }
+
+        feedback.setText("");
+        feedback.appendText("The capture begins, waiting for the\noutcome\n");
 
         DBUtil db=new DBUtil();
 
@@ -479,9 +515,6 @@ public class RoomController implements Initializable {
         grafico.setTitle("Devices's positions");
 
 
-        System.out.println("TEST\n\n");
-       // System.out.println("ax "+grafico.getScene().getX());
-       // System.out.println("ay "+grafico.getScene().getY());
 
 /*inserisco la
                 configurazione */
@@ -508,7 +541,7 @@ public class RoomController implements Initializable {
 
             XYChart.Series series2 = new XYChart.Series("Esp",dataset);
 
-
+            grafico.getData().add(series2);
 
 
         }else{
@@ -621,6 +654,7 @@ public class RoomController implements Initializable {
         grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
         grafico.setTitle("Devices's positions");
         graph_container.getChildren().add(grafico);
+        feedback.appendText("The capture is stopped\n");
     }
 
     public void printValue(MouseEvent mouseEvent) {

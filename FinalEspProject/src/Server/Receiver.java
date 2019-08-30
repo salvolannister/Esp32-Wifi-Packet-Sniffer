@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import DB.QueryPosition;
+import application.ConfigurationController;
 import application.RoomController;
 import javafx.application.Platform;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
@@ -97,6 +98,10 @@ public class Receiver extends Thread {
                         //setting posizioni ESP, Controllo di ESP non più collegate e conseguente aggiornamento numero dispositivi
                         synchronized (EchoServer.conf) {
                             //Aggiornamento dell'ultimo istante di tempo al quale la schedina ha dato segni di vita al server
+                            if(EchoServer.conf.getMac_tab().get(mac[1]).getLastTime()== Long.MIN_VALUE){
+                                RoomController.showPopUp("Esp with MAC:"+ mac[1] +" has been re-connected!");
+                                RoomController.sendToLog("Esp with MAC:"+ mac[1] +"\n has been re-connected!");
+                            }
                             EchoServer.conf.getMac_tab().get(mac[1]).setLastTime(TimeLong);
 
                             //si verifica se per il dato mac sono passati più di 60000 ms (ovvero 1min) facendo la diferenza tra il tempo del prossimo sniffing e l'ultimo registrato.
@@ -107,6 +112,8 @@ public class Receiver extends Thread {
                                         System.out.println("ERRRRRRRRRRRRRRRRRRRRRR -------- some ESP " + EchoServer.conf.getMac_tab().get(x) + "not available!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOW = " + TimeLong +
                                                 " Last = " + EchoServer.conf.getMac_tab().get(x).getLastTime() + " DIFF = " + (TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()));
                                         EchoServer.conf.getMac_tab().get(x).setLastTime(Long.MIN_VALUE);
+                                        RoomController.showPopUp("Esp with MAC:"+ x +" has been disconnected!");
+                                        RoomController.sendToLog("Esp with MAC:"+ x +"\n has been disconnected!");
                                     }
                                 }
                             }

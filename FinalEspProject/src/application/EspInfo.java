@@ -83,7 +83,7 @@ public class EspInfo {
 				return false;
 			}
 		}catch (NumberFormatException e){
-			ConfigurationController.showAlert("insert numeric value!");
+			ConfigurationController.showAlert("insert numeric value!",true);
 			return false;
 		}
 	}
@@ -91,10 +91,7 @@ public class EspInfo {
 	private static boolean checkFieldXY( TextField o) {
 		
 		if(o.getText() == null || o.getText().trim().isEmpty()) {
-			 Alert fail= new Alert(AlertType.INFORMATION);
-		        fail.setHeaderText("failure");
-		        fail.setContentText("You must fullfill the X and Y fields");
-		        fail.showAndWait();
+		       ConfigurationController.showAlert("You must fullfill the X and Y fields", true);
 			 return false;
 		}else {
 		

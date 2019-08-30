@@ -239,12 +239,12 @@ try{
                 return;
             }else{
                 AreaInfo.appendText("Selezionare la stanza\n");
-                ConfigurationController.showAlert("Select a Room!");
+                ConfigurationController.showAlert("Select a Room!", true);
                 return;
             }
         }catch (NullPointerException n){
             AreaInfo.appendText("Inserire data e ora di inizio\n");
-            ConfigurationController.showAlert("Select a date and time!");
+            ConfigurationController.showAlert("Select a date and time!", true);
             return;
         }
 

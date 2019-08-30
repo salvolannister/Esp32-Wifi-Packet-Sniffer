@@ -47,7 +47,7 @@ public class NewRoomController implements Initializable {
              String n = name.getText();
 
              if (qR.checkRoomExistence(n)) {
-                 ConfigurationController.showAlert("Room name is already used");
+                 ConfigurationController.showAlert("Room name is already used", true);
                  db.closeConnection();
                  return;
              }
@@ -73,7 +73,7 @@ public class NewRoomController implements Initializable {
                  }
              }
              catch (NumberFormatException e){
-                 ConfigurationController.showAlert("Insert numeric value");
+                 ConfigurationController.showAlert("Insert numeric value", true);
              }
          }
 
@@ -107,7 +107,7 @@ public class NewRoomController implements Initializable {
     private static boolean checkFieldXY( TextField o) {
 
         if(o.getText() == null || o.getText().trim().isEmpty()) {
-            ConfigurationController.showAlert("You must fullfill the X and Y fields");
+            ConfigurationController.showAlert("You must fullfill the X and Y fields", true);
             return false;
         }else {
 
