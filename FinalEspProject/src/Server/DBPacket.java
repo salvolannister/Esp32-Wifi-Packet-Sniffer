@@ -169,4 +169,10 @@ public class DBPacket {
         this.digest = digest;
     }
 
+
+    public boolean checkArea(float roomX, float roomY) {
+        if(posX>=0 && posY>=0 && posX<=roomX && posY<=roomY)
+            return true;
+    return false;
+    }
 }

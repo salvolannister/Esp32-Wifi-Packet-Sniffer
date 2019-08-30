@@ -53,6 +53,8 @@ public class RoomController implements Initializable {
     @FXML private Label label;
     private static ScatterChart<Number, Number> grafico;
     private static Map<String, DBPacket> serie;
+    private static float roomX;
+    private static float roomY;
 
     private ObservableList<String> roomList = FXCollections.observableArrayList();
     private List<String> readList = new ArrayList<>();
@@ -165,8 +167,9 @@ public class RoomController implements Initializable {
                 ahead.setDisable(false);
                 behind.setDisable(false);
                 nav.setDisable(false);
-                risultato =p.showPosition(String.valueOf(inizio.getTime()),roomName,confName);
                 ArrayList<Float> roomDim = qR.getRoomDim(roomName);
+                risultato =p.showPosition(String.valueOf(inizio.getTime()),roomName,confName, roomDim);
+
                 /* aggiusto gli assi in base
                 alla dimensione della stanza */
                 final NumberAxis xAxis = new NumberAxis(-2, roomDim.get(0) + 2, 0.5);
@@ -351,9 +354,12 @@ public class RoomController implements Initializable {
             System.exit(-1);
         }
         QueryPosition p=new QueryPosition(db.getConn());
+        QueryRoom qR=new QueryRoom(db.getConn());
+
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
-        Map<String, Posizione> risultato = p.showPosition(String.valueOf(later.getTime()), roomName, confName);
+        ArrayList<Float> roomDim = qR.getRoomDim(roomName);
+        Map<String, Posizione> risultato = p.showPosition(String.valueOf(later.getTime()), roomName, confName, roomDim);
         System.out.println("size: "+grafico.getData().size());
         if(grafico.getData().size() == 2){
             grafico.getData().remove(1);
@@ -399,6 +405,8 @@ public class RoomController implements Initializable {
     private static void realtimeGraphAdd(Map<String, DBPacket> risultato){
 
 
+
+
         if(grafico.getData().size() == 2){
             grafico.getData().remove(1);
 
@@ -407,21 +415,25 @@ public class RoomController implements Initializable {
                 /* add a collection of points
                     with a determinated color*/
         ObservableList<XYChart.Data<Number, Number>> dataset = FXCollections.observableArrayList();
+
+
         /*aggiunge la posizione delle schedine*/
         for (String s : risultato.keySet()) {
                         /*aggiunge i dati delle schedine al grafico
                         .getX() è un metodo di Polo
                          */
 
+                        if(risultato.get(s).checkArea(roomX, roomY)==true){
+                            XYChart.Data<Number, Number > data = new XYChart.Data<>(risultato.get(s).getPosX(),risultato.get(s).getPosY());
+                            data.setNode(
+                                    new HoverNode(
+                                            s, 1
+                                    )
+                            );
 
-            XYChart.Data<Number, Number > data = new XYChart.Data<>(risultato.get(s).getPosX(),risultato.get(s).getPosY());
-            data.setNode(
-                    new HoverNode(
-                            s, 1
-                    )
-            );
+                            dataset.add(data);
+                        }
 
-            dataset.add(data);
         }
 
         XYChart.Series series1 =new XYChart.Series<>("Device",dataset);
@@ -454,6 +466,8 @@ public class RoomController implements Initializable {
         QueryConfiguration qC = new QueryConfiguration(db.getConn());
 
         ArrayList<Float> roomDim = qR.getRoomDim(roomName);
+        roomX = roomDim.get(0);
+        roomY=roomDim.get(1);
         /* aggiusto gli assi in base
                 alla dimensione della stanza */
         final NumberAxis xAxis = new NumberAxis(-2, roomDim.get(0) + 2, 0.5);
@@ -465,6 +479,9 @@ public class RoomController implements Initializable {
         grafico.setTitle("Devices's positions");
 
 
+        System.out.println("TEST\n\n");
+       // System.out.println("ax "+grafico.getScene().getX());
+       // System.out.println("ay "+grafico.getScene().getY());
 
 /*inserisco la
                 configurazione */
@@ -492,7 +509,7 @@ public class RoomController implements Initializable {
             XYChart.Series series2 = new XYChart.Series("Esp",dataset);
 
 
-            grafico.getData().add(series2);
+
 
         }else{
             //TODO

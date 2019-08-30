@@ -111,7 +111,9 @@ public class TimeController implements Initializable {
 
             /*ricavo la stanza selezionata*/
             String roomselected = ComboRoom.getValue();
-
+            int numbermac;
+            int count=0;
+            XYChart.Series series = new XYChart.Series();
             if(roomselected != null) {
 
 
@@ -121,30 +123,41 @@ public class TimeController implements Initializable {
                     System.exit(-1);
                 }
                 QueryPosition p = new QueryPosition(db.getConn());
+                series.getData().add(new XYChart.Data(0, 0));
 
                 try {
                     risultato = p.showNumberMacPerRoom(String.valueOf(inizio.getTime()), String.valueOf(afterfive.getTime()), roomselected);
 
                     if (risultato != null) {
                         //System.out.println("tutto ok");
-                        XYChart.Series series = new XYChart.Series();
-                        series.getData().add(new XYChart.Data(0, 0));
 
-                        int numbermac = 0;
+                        //series.getData().add(new XYChart.Data(0, 0));
+
+                         numbermac = 0;
                         //ogni HahMap contiene: K=MAC, V=frequenza del MAC
                         /*ricavo il valore per ogni chiave dell'hashmap e incremento una variabile solo se
                          * se è = 5*/
                         for (Map.Entry<String, Long> s : risultato.entrySet()) {
                             long val = s.getValue();
                             System.out.println(val);
-                            if (val == 5)
+                            if (val == 5) {
                                 numbermac++;
+                                count++;
+                            }
                         }
                         System.out.println("numero MAC presenti in TUTTI i primi 5 min:" + numbermac);
 
                         series.getData().add(new XYChart.Data(5, numbermac));
 
-                        secres = p.showMacPerRoom(String.valueOf(afterfive.getTime()), String.valueOf(afterten.getTime()), roomselected);
+                    }else {
+                        series.getData().add(new XYChart.Data(5, 0));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                try{
+                    secres = p.showMacPerRoom(String.valueOf(afterfive.getTime()), String.valueOf(afterten.getTime()), roomselected);
                         if (secres != null) {
                             numbermac = 0;
                             for (Map.Entry<String, Long> s : secres.entrySet()) {
@@ -152,12 +165,19 @@ public class TimeController implements Initializable {
                                 System.out.println(val);
                                 System.out.println(secres);
                                 if (val == 5)
-                                    numbermac++;
+                                    {numbermac++;
+                                count++;}
                             }
                             System.out.println("numero MAC presenti in TUTTI i primi 10 min:" + numbermac);
                             series.getData().add(new XYChart.Data(10, numbermac));
 
-
+                        }else {
+                            series.getData().add(new XYChart.Data(10, 0));
+                        }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+try{
                             thirdres = p.showMacPerRoom(String.valueOf(afterten.getTime()), String.valueOf(afterfifteen.getTime()), roomselected);
                             if (thirdres != null) {
                                 numbermac = 0;
@@ -166,12 +186,18 @@ public class TimeController implements Initializable {
                                     System.out.println(val);
                                     System.out.println(thirdres);
                                     if (val == 5)
-                                        numbermac++;
+                                        {numbermac++;
+                                    count++;}
                                 }
                                 System.out.println("numero MAC presenti in TUTTI i primi 15 min:" + numbermac);
                                 series.getData().add(new XYChart.Data(15, numbermac));
-
-
+                            }else {
+                                series.getData().add(new XYChart.Data(15, 0));
+                            }
+} catch (SQLException e) {
+    e.printStackTrace();
+}
+try{
                                 fourcres = p.showMacPerRoom(String.valueOf(afterfifteen.getTime()), String.valueOf(aftertwenty.getTime()), roomselected);
                                 if (fourcres != null) {
                                     numbermac = 0;
@@ -180,31 +206,32 @@ public class TimeController implements Initializable {
                                         System.out.println(val);
                                         System.out.println(fourcres);
                                         if (val == 5)
-                                            numbermac++;
+                                            {numbermac++;
+                                        count++;}
                                     }
                                     System.out.println("numero MAC presenti in TUTTI i primi 20 min:" + numbermac);
                                     series.getData().add(new XYChart.Data(20, numbermac));
+
+                                }else {
+                                    series.getData().add(new XYChart.Data(20, 0));
                                 }
-                            }
-                        }
+} catch (SQLException e) {
+    e.printStackTrace();
+}
+
+
+
                         graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                         grafico.getData().add(series);
                         graph_container.getChildren().add(grafico);
-                    }else{
+
+                        if(count==0){
                         AreaInfo.appendText("Nessun MAC rilevato per la stanza " + roomselected + "\n" + "A partire dalla data e ora seguenti:\n" + "TS Inizio: " + inizio);
                         XYChart.Series serie = new XYChart.Series();
-                        serie.getData().add(new XYChart.Data(0, 0));
-                        serie.getData().add(new XYChart.Data(5, 0));
-                        serie.getData().add(new XYChart.Data(10, 0));
-                        serie.getData().add(new XYChart.Data(15, 0));
-                        serie.getData().add(new XYChart.Data(20, 0));
                         graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                         grafico.getData().add(serie);
                         graph_container.getChildren().add(grafico);
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
 
                 db.closeConnection();
                 DataI.setText("");

@@ -3,6 +3,7 @@ package DB;
 import DTO.Posizione;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -196,7 +197,7 @@ public class QueryPosition {
     e configurazione
     restituisce i dati del dispositivo
      */
-    public Map<String, Posizione> showPosition(String timeI, String room, String conf) throws SQLException {
+    public Map<String, Posizione> showPosition(String timeI, String room, String conf, ArrayList<Float> roomDim) throws SQLException {
 
         PreparedStatement pstmt;
         Map<String, Posizione> risultato= new HashMap<>();
@@ -204,8 +205,9 @@ public class QueryPosition {
         try {
             conn.setAutoCommit(false);
             /* DESC sta per descendant */
-            String s=new String("SELECT MAC, X, Y FROM Position WHERE Timestamp >= ? AND Timestamp < ? AND Room = ? AND Configuration = ? ");
-                try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+            String s=new String("SELECT MAC, Position.X, Position.Y FROM Position, Room WHERE Timestamp >= ? AND Timestamp <= ? AND Room = ? AND Configuration = ? AND Room.Name=Position.Room AND Position.X>=0 AND Position.Y>=0 AND Position.X<=Room.X AND Position.Y<=Room.Y");
+
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
                 pstmt.setString(1,  timeI);
                 Long timeF = Long.parseLong(timeI);
                 Long minuto =(long) 60000;
