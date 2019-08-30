@@ -4,6 +4,7 @@ import DB.QueryConfiguration;
 import DB.QueryPosition;
 import application.EspInfo;
 import application.RoomController;
+import org.apache.commons.math3.analysis.interpolation.HermiteInterpolator;
 
 import java.net.*;
 import java.io.*;
@@ -48,6 +49,23 @@ public class EchoServer {
             e.printStackTrace();
         }
     }
+
+    //// TODO: 30/08/2019 debug local mac logic 
+    public void test(){
+        HiddenMacFinder.addLocalFake();
+        synchronized (final_tab){
+            System.out.println("initial tab:");
+            for (Map.Entry<String, DBPacket> dbPacket : EchoServer.final_tab.entrySet())
+                System.out.println(dbPacket.getValue());
+        }
+        HiddenMacFinder.FindHiddenDevices();
+        synchronized (final_tab){
+            System.out.println("final tab:");
+            for (Map.Entry<String, DBPacket> dbPacket : EchoServer.final_tab.entrySet())
+                System.out.println(dbPacket.getValue());
+        }
+    }
+
     public void start(String[] args) throws IOException, SQLException {
 
         setisDone(false);
