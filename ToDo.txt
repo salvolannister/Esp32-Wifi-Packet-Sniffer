@@ -1,14 +1,16 @@
 da fare:
 - VISUALIZZARE STIMA ERRORE NUM DI DISPOSITIVI (quello basato sui singoli errori salvati nel DB quando si accorpano mac locali) (??????)
-- Skippare eventuali schedine esterne che non sono nella configurazione. (Davide)
+
 
 da testare:
 - Qualche volta da errore sulla funzione IsLocal -> su if(lower.charAt(2)=='1') mi da out of index (RISOLTO, DA TESTARE)
 - Analizzare Sequence Number per mac nascosti (RISOLTO, DA TESTARE)
 - Gestire quando si disconnette una schedina -> mettere un pop-up di avviso e basta. (RISOLTO, DA TESTARE)
 - Controllo posizione oltre dimensione stanza -> non da plottare (RISOLTO, DA TESTARE PARTE REALTIME)
+- Skippare eventuali schedine esterne che non sono nella configurazione. (Davide)
 
 opzionale:
+*****DA TESTARE*****
 - aggiungere una qualche notifica che dice all'utente che il server sta sniffando (in modo che ha un feedback e non rimane fermo un minuto senza sapere cosa sta succedendo).
   NOTA: sarebbe utile anche a noi perchè almeno se stampiamo una cosa tipo "waiting" quando manda lo start alle schedine riusciamo ad accorgerci se c'è qualcosa che non va e al volo
 	resetto l'AP alla presentazione. Perchè come ti dicevo certe volte l'ESP fa fatica a collegarsi.
@@ -19,7 +21,7 @@ opzionale:
 	(tra lo stop e il nuovo messaggio di start ci passerà pochissimo.. però almeno così credo si veda che cambia qualcosina quando arrivano i dati)
 
 Questa è un'idea ma se hai un'idea migliore che renda di più ben venga.
-
+*****DA TESTARE*****
 risolti:
 - Quando si preme stop il server continua a girare (RISOLTO)
 - Testare grafica di margaret, mi sembra abbia qualche bug (non compare sempre la scritta "nessun mac trovato...." in seguito ad una ricerca) (RISOLTO)

@@ -97,10 +97,13 @@ public class Receiver extends Thread {
 
                         //setting posizioni ESP, Controllo di ESP non più collegate e conseguente aggiornamento numero dispositivi
                         synchronized (EchoServer.conf) {
+//controllo se la schedina che ha inviato un pacchetto è una della configurazione o meno
+                            if (EchoServer.conf.getMac_tab().containsKey(mac[1]) == true) {
+
                             //Aggiornamento dell'ultimo istante di tempo al quale la schedina ha dato segni di vita al server
-                            if(EchoServer.conf.getMac_tab().get(mac[1]).getLastTime()== Long.MIN_VALUE){
-                                RoomController.showPopUp("Esp with MAC:"+ mac[1] +" has been re-connected!");
-                                RoomController.sendToLog("Esp with MAC:"+ mac[1] +"\n has been re-connected!");
+                            if (EchoServer.conf.getMac_tab().get(mac[1]).getLastTime() == Long.MIN_VALUE) {
+                                RoomController.showPopUp("Esp with MAC:" + mac[1] + " has been re-connected!");
+                                RoomController.sendToLog("Esp with MAC:" + mac[1] + "\n has been re-connected!");
                             }
                             EchoServer.conf.getMac_tab().get(mac[1]).setLastTime(TimeLong);
 
@@ -112,8 +115,8 @@ public class Receiver extends Thread {
                                         System.out.println("ERRRRRRRRRRRRRRRRRRRRRR -------- some ESP " + EchoServer.conf.getMac_tab().get(x) + "not available!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOW = " + TimeLong +
                                                 " Last = " + EchoServer.conf.getMac_tab().get(x).getLastTime() + " DIFF = " + (TimeLong - EchoServer.conf.getMac_tab().get(x).getLastTime()));
                                         EchoServer.conf.getMac_tab().get(x).setLastTime(Long.MIN_VALUE);
-                                        RoomController.showPopUp("Esp with MAC:"+ x +" has been disconnected!");
-                                        RoomController.sendToLog("Esp with MAC:"+ x +"\n has been disconnected!");
+                                        RoomController.showPopUp("Esp with MAC:" + x + " has been disconnected!");
+                                        RoomController.sendToLog("Esp with MAC:" + x + "\n has been disconnected!");
                                     }
                                 }
                             }
@@ -135,6 +138,10 @@ public class Receiver extends Thread {
 
 
                             writeFileConf(EchoServer.conf, "Conf.txt");
+                        }//chiusura if schedina diversa
+                          else {
+                                RoomController.showPopUp("rilevata scheda non presente in configurazione");
+                            }
                         }//chiusura accesso sincronizzato
 
                         //si elaborano i dati precedentemente ricevuti (alias: appena finito di catturare).
@@ -200,6 +207,11 @@ public class Receiver extends Thread {
                             //quindi si inserisce il nuovo pacchetto nella struttura tab. Il metodo checkInsert verificherà se esista già tale entry.
                             if (inputLine.compareTo("STOP") != 0 && inputLine.compareTo("CHECK")!=0) {
                                 Packet p = new Packet(inputLine);
+                                synchronized (EchoServer.conf) {
+                                    if (EchoServer.conf.getMac_tab().containsKey(p.getMacSource()) == false) {
+                                        System.out.println("pacchetto già ricevuto");
+                                    }
+                                }
                                 if (checkInsert(p, EchoServer.tab) == false)
                                     System.out.println("pacchetto già ricevuto");
                             } else if (inputLine.compareTo("STOP") == 0){
