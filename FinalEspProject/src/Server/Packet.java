@@ -158,7 +158,6 @@ public class Packet {
 		String[] ssid_len = begin[1].split("/");
 		//System.out.println("SSID LENGHT = " + ssid_len[0]);
 		//if(ssid_len[0]!="0"){
-		//TODO check if ssid capture is correct!!!!
 		if(ssid_len[0].compareTo("0") != 0){
 			String[] _ssid = packetChar.split("SSID_=");
 			String ssid = _ssid[1].split("/")[0];

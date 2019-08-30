@@ -202,7 +202,6 @@ public class HiddenMacFinder {
         int i = 0;
         synchronized (EchoServer.final_tab) {
             for (DBPacket pkt : pkts) {
-                //TODO  RESTORE ECHOSERVER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 EchoServer.final_tab.put(macs.get(i), pkt);
                 i++;
             }

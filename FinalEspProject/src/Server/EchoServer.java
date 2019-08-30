@@ -38,7 +38,6 @@ public class EchoServer {
     public static int sniffing_time = 40;
     private static int delta_update = sniffing_time - 10;
     private static ServerSocket serverSocket;
-    //// TODO: 27/08/2019 provaThread
     private static ArrayList<Receiver> Poll = new ArrayList<Receiver>();
     private static volatile boolean isDone = false;
 

@@ -137,7 +137,6 @@ public class Receiver extends Thread {
                         synchronized (EchoServer.sum_tab) {
                             if (EchoServer.getNEsp() > 2) {
                                 System.out.println("MINUMUM # OF ESP OK!!!");
-                                //todo debug
                                 computeAvarage();
                                 synchronized (EchoServer.final_tab) {
                                     for (Sum_PacketRec p : EchoServer.sum_tab) {
@@ -158,7 +157,6 @@ public class Receiver extends Thread {
                                     if (!EchoServer.final_tab.isEmpty()) {
                                         HiddenMacFinder.FindHiddenDevices();
                                         DBInsert(configurazione);
-                                        //todo inviare final_tab alla gui
                                         RoomController.plotta(EchoServer.final_tab);
                                         //System.out.println("Plottato");
                                         writeFileFinalTab(EchoServer.final_tab, "Final.txt");

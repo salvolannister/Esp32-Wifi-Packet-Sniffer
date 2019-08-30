@@ -10,7 +10,6 @@ public class Sum_PacketRec {
     //quando si rileva in seguito dinuovo uno stesso mac si aggiunge all'entry iniziale
     //dei valori di rssi nella lista RSSIs
     private Map<String, Integer> RSSI;
-    //todo debug
     private ArrayList<Map<String, Integer>> RSSIs = new ArrayList<Map<String, Integer>>();
     private String MacSource;
     private String digest;
@@ -19,9 +18,7 @@ public class Sum_PacketRec {
     private Integer SequenceNumber;
 
     public Sum_PacketRec(Map<String, Integer> RSSI, String macSource, String digest, String timeStamp, String ssid) {
-        //todo cancellare se funziona
         this.RSSI = RSSI;
-        //todo debug
         Map<String, Integer> copyRssi = new HashMap<String,Integer>(RSSI);
         this.RSSIs.add(copyRssi);
         MacSource = macSource;
@@ -31,9 +28,7 @@ public class Sum_PacketRec {
     }
 
     public Sum_PacketRec(Map<String, Integer> RSSI, String macSource, String digest, String timeStamp) {
-        //todo cancellare se funziona
         this.RSSI = RSSI;
-        //todo debug
         Map<String, Integer> copyRssi = new HashMap<String,Integer>(RSSI);
         this.RSSIs.add(copyRssi);
         MacSource = macSource;
@@ -72,11 +67,10 @@ public class Sum_PacketRec {
         SequenceNumber = sequenceNumber;
     }
 
-    //todo debug
     public void addRSSI(Map<String, Integer> rssi){
         RSSIs.add(rssi);
     }
-    //todo debug
+
     public ArrayList<Map<String, Integer>> getRSSIs(){
         return this.RSSIs;
     }
