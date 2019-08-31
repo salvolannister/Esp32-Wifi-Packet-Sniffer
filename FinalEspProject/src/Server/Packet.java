@@ -205,8 +205,13 @@ public class Packet {
 
 	private void extractSequenceNumber(String packetChar) {
 		String[] begin = packetChar.split("Sequence_Number=");
-		String[] seq_n = begin[1].split("/");
-		setSequenceNumber(Integer.parseInt(seq_n[0]));
+		if(begin.length>1){
+			String[] seq_n = begin[1].split("/");
+			if(seq_n.length>0)
+				setSequenceNumber(Integer.parseInt(seq_n[0]));
+		}
+
+
 	}
 	
 

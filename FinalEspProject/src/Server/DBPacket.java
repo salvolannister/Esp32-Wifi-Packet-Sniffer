@@ -27,7 +27,7 @@ public class DBPacket {
         SequenceNumber = sequenceNumber;
     }
 
-    public DBPacket(String digest, Long timeStamp, String room, float posX, float posY, String macSource, String ssid) {
+    public DBPacket(String digest, Long timeStamp, String room, float posX, float posY, String macSource, String ssid, Integer sequenceNumber) {
         this.digest = digest;
         TimeStamp = timeStamp;
         Room = room;
@@ -35,6 +35,7 @@ public class DBPacket {
         this.posY = posY;
         MacSource = macSource;
         SSID = ssid;
+        SequenceNumber = sequenceNumber;
         Err = 0f;
         LocalMacMargedNumber = 0;
     }

@@ -102,6 +102,9 @@ public class HiddenMacFinder {
     }
 
     private static Float ComputeSeqNPorob(DBPacket pk1, DBPacket pk2){
+        if(pk1.getSequenceNumber()==null || pk2.getSequenceNumber()==null)
+            return 0f;
+
         Integer seqDistance = Math.abs(pk1.getSequenceNumber() - pk2.getSequenceNumber());
         if(seqDistance<=100)
             return SEQN_WEIGHT; //MAX VALUE

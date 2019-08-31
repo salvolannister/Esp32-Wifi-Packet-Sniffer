@@ -328,6 +328,8 @@ private static void printField(String mac, String X, String Y) {
 		fail.setContentText(content);
 		if(wait==true)
 			fail.showAndWait();
+		else
+			fail.show();
 	}
 
 }

@@ -50,6 +50,26 @@ public class EchoServer {
         }
     }
 
+    public static void reset() {
+
+        System.out.println("reset session parameters");
+        synchronized (final_tab){
+            final_tab = new HashMap<String, DBPacket>();
+        }
+
+        synchronized (tab){
+            tab = new HashMap<String, PacketRec>();
+        }
+
+        synchronized (sum_tab){
+            sum_tab = new ArrayList<Sum_PacketRec>();
+        }
+
+        synchronized (start_time){
+            start_time = Long.valueOf(0);
+        }
+    }
+
     //// TODO: 30/08/2019 debug local mac logic 
     public void test(){
         HiddenMacFinder.addLocalFake();
@@ -148,6 +168,7 @@ public class EchoServer {
         synchronized (start_time) {
             start_time = Long.valueOf(0);
         }
+
         return;
     }
 
@@ -178,12 +199,11 @@ public class EchoServer {
         // get time in millis from Epoch
         Long TimeLong = cal.getTimeInMillis();
         synchronized (start_time){
-            // convert long to string in order to truncate at 10 number
             if(TimeLong - start_time >= delta_update)
                 start_time = TimeLong + (delta_time * 1000);
         }
     }
-
+    //// TODO: 31/08/2019 restore if not work 
     public static synchronized Long resinchronize(){
         // create a calendar
         Calendar cal = Calendar.getInstance();
@@ -195,7 +215,10 @@ public class EchoServer {
                 System.out.println("Risincronizzazione.....");
                 start_time = TimeLong + (delta_time * 1000);
             }
-            //else if(TimeLong - start_time >= 2*delta_update) //schedina si riconnette dopo un certo tempo
+            else if(TimeLong - start_time >= 2*delta_update){
+                reset();
+                start_time = TimeLong + (delta_time * 1000);
+            }
             return start_time;
         }
     }

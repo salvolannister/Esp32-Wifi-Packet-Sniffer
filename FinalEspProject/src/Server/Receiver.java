@@ -59,46 +59,32 @@ public class Receiver extends Thread {
                         System.out.println(inputLine);
                         System.out.println("Receiver current thread ID: " + Thread.currentThread().getId() + " socket number " + csocket.getPort());
 
-                        Long StgartLong = EchoServer.resinchronize();
-                        String StartTime = Long.toString(StgartLong);
-
-                        /*synchronized (EchoServer.start_time){
-                            TimeLong = EchoServer.start_time;
-                        }*/
-
-                        /*
-                        // create a calendar
-                        Calendar cal = Calendar.getInstance();
-                        // get time in millis from Epoch
-                        Long TimeLong = cal.getTimeInMillis();
-                        // add to current time waitSec -> ESP start sniffing at now+waitSec
-                        TimeLong = TimeLong + waitSec * 1000;
-                        // convert long to string in order to truncate at 10 number
-                        String StartTime = Long.toString(TimeLong);*/
-
-                        System.out.print("Time Sent: ");
-                        for (int i = 0; i < 10; i++) {
-                            System.out.print(StartTime.charAt(i));
-                            dOut.write(StartTime.charAt(i));
-                        }
-                        dOut.write('e'); //<e>nd of data
-                        dOut.flush(); // Send off the data
-                        //dOut.close();
-                        System.out.println();
-
-                        //System.out.println("Time send to ESP: "+ StartTime.substring(0, Math.min(StartTime.length(), 10)));
 
                         //Get MAC of ESP written in the HELLO message
                         String[] mac = inputLine.split("My Mac is: ");
 
-                        Calendar cal = Calendar.getInstance();
-                        Long TimeLong = cal.getTimeInMillis();
-                        TimeLong = TimeLong + waitSec * 1000;
 
                         //setting posizioni ESP, Controllo di ESP non più collegate e conseguente aggiornamento numero dispositivi
                         synchronized (EchoServer.conf) {
-//controllo se la schedina che ha inviato un pacchetto è una della configurazione o meno
+                            //controllo se la schedina che ha inviato un pacchetto è una della configurazione o meno
                             if (EchoServer.conf.getMac_tab().containsKey(mac[1]) == true) {
+
+                                Long StgartLong = EchoServer.resinchronize();
+                                String StartTime = Long.toString(StgartLong);
+
+                                System.out.print("Time Sent: ");
+                                for (int i = 0; i < 10; i++) {
+                                    System.out.print(StartTime.charAt(i));
+                                    dOut.write(StartTime.charAt(i));
+                                }
+                                dOut.write('e'); //<e>nd of data
+                                dOut.flush(); // Send off the data
+                                //dOut.close();
+                                System.out.println();
+
+                                Calendar cal = Calendar.getInstance();
+                                Long TimeLong = cal.getTimeInMillis();
+                                TimeLong = TimeLong + waitSec * 1000;
 
                             //Aggiornamento dell'ultimo istante di tempo al quale la schedina ha dato segni di vita al server
                             if (EchoServer.conf.getMac_tab().get(mac[1]).getLastTime() == Long.MIN_VALUE) {
@@ -141,6 +127,7 @@ public class Receiver extends Thread {
                         }//chiusura if schedina diversa
                           else {
                                 RoomController.showPopUp("rilevata scheda non presente in configurazione");
+                                RoomController.sendToLog("rilevata scheda non presente in configurazione");
                             }
                         }//chiusura accesso sincronizzato
 
@@ -164,7 +151,7 @@ public class Receiver extends Thread {
                                         }
                                         Polo pos = computePosition(dist);
 
-                                        EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, room, (float) pos.getX(), (float) pos.getY(), p.getMacSource(), p.getSSID()));
+                                        EchoServer.final_tab.put(p.getMacSource(), new DBPacket(p.getdigest(), Long.parseLong(p.getTimeStamp()) * 1000, room, (float) pos.getX(), (float) pos.getY(), p.getMacSource(), p.getSSID(), p.getSequenceNumber()));
                                         dist.clear();
                                     }//fine for di sumpacket
                                     //HiddenMacFinder.addLocalFake(); //// TODO: 23/08/2019 DELETE!!!
@@ -310,7 +297,8 @@ public class Receiver extends Thread {
                                 tab.get(p.getDigest()).getTimeStamp(),
                                 tab.get(p.getDigest()).getSSID(),
                                 tab.get(p.getDigest()).getSequenceNumber());
-
+                        //// TODO: 31/08/2019 debug
+                        System.out.println("packet seqN: " + p.getSequenceNumber() + " Sum_PacketRec seqN: " + s.getSequenceNumber());
                         EchoServer.sum_tab.add(s);
                         //EchoServer.tab.remove(p.getDigest());
                     }
