@@ -340,6 +340,56 @@ public class QueryPosition {
     }
 
 
+    public Map<String, Long> getGlobalError(String timeI, String timeF, String room) throws SQLException {
+
+        PreparedStatement pstmt;
+        Map<String, Long> risultato= new HashMap<>();
+
+        try {
+            conn.setAutoCommit(false);
+            /* DESC sta per descendant */
+            String s= new String("SELECT MAC, count(*) AS val, SUM(Err) AS Errore, SUM(MergedNumb) AS merged FROM Position WHERE Timestamp >= ? AND Timestamp <= ? AND Room = ? AND Err>0 GROUP BY MAC HAVING COUNT(*) >4 ORDER BY count(*) DESC");
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+                pstmt.setString(1,  timeI);
+                pstmt.setString(2,  timeF);
+                pstmt.setString(3, room);
+                ResultSet res=pstmt.executeQuery();
+
+
+                long N=0;
+                long Err=0;
+                long merge=0;
+                while (res.next()){
+                    N+=res.getLong("val");
+                    Err+=res.getLong("Errore");
+                    merge+=res.getLong("merged");
+                }
+                risultato.put("N", N);
+                risultato.put("Err", Err);
+                risultato.put("merge", merge);
+                System.out.println("N "+ N + "ERR "+ Err+ "merged "+ merge);
+
+                if(risultato.isEmpty()==false){
+                    conn.commit();
+                    return risultato;
+                }
+                return null;
+
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+
+        }catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+            System.out.println("errore");
+            return null;
+        }
+
+    }
+
 
 
     /*aggiungi di test nel database database.db*/
@@ -463,6 +513,46 @@ public class QueryPosition {
             e.printStackTrace();
             System.out.println("errore");
             return false;
+        }
+
+    }
+
+    public Long getGlobalMAC(String timeI, String timeF, String room) throws SQLException {
+        PreparedStatement pstmt;
+
+        try {
+            conn.setAutoCommit(false);
+            /* DESC sta per descendant */
+            String s= new String("SELECT  MAC, count(*) AS val FROM Position WHERE Timestamp >= ? AND Timestamp <= ? AND Room = ? AND Err=0 GROUP BY MAC HAVING COUNT(*) >4 ORDER BY count(*) DESC");
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+                pstmt.setString(1,  timeI);
+                pstmt.setString(2,  timeF);
+                pstmt.setString(3, room);
+                ResultSet res=pstmt.executeQuery();
+
+
+                long N=0;
+                while (res.next()) {
+                    N++;
+                }
+
+
+
+
+                    conn.commit();
+                    return N;
+
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+
+        }catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+            System.out.println("errore");
+            return null;
         }
 
     }

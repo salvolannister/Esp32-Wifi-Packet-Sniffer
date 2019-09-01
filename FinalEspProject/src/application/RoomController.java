@@ -106,7 +106,6 @@ public class RoomController implements Initializable {
         feedback.setEditable(false);
         feedback.setMaxHeight(logger.getMaxHeight());
         feedback.setMaxWidth(logger.getMaxWidth()+280);
-        System.out.println("maxw"+logger.getMaxWidth());
         logger.getChildren().add(feedback);
         final NumberAxis xAxis = new NumberAxis(-2, 10, 0.5);
         final NumberAxis yAxis = new NumberAxis(-2, 10, 0.5);

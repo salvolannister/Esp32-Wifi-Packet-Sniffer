@@ -330,6 +330,7 @@ private static void printField(String mac, String X, String Y) {
 			fail.showAndWait();
 		else
 			fail.show();
+
 	}
 
 }

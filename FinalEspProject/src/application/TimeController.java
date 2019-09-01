@@ -5,9 +5,11 @@ import DB.QueryPosition;
 import DB.QueryRoom;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,9 +19,11 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.LocalDateTimeTextField;
 
@@ -36,7 +40,10 @@ public class TimeController implements Initializable {
     @FXML private Pane graph_container;
     @FXML private LocalDateTimeTextField DataI;
     @FXML private ComboBox<String> ComboRoom;
-    @FXML private TextArea AreaInfo;
+
+    @FXML private Pane logger;
+    private static TextArea feedback;
+
 
 
 
@@ -51,6 +58,12 @@ public class TimeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        feedback=new TextArea();
+        feedback.setEditable(false);
+        feedback.setMaxHeight(logger.getMaxHeight());
+        feedback.setMaxWidth(logger.getMaxWidth()+280);
+        logger.getChildren().add(feedback);
 
         /*inizializza il grafico*/
         final NumberAxis xAxis = new NumberAxis(0, 20, 5);
@@ -101,7 +114,7 @@ public class TimeController implements Initializable {
 
         try {
             grafico.getData().removeAll(grafico.getData()); //rimuove il vecchio risultato
-            AreaInfo.setText("");
+            feedback.setText("");
 
             Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
             Timestamp afterfive = new Timestamp(inizio.getTime() + 5*60000);
@@ -126,6 +139,7 @@ public class TimeController implements Initializable {
                 series.getData().add(new XYChart.Data(0, 0));
 
                 try {
+
                     risultato = p.showNumberMacPerRoom(String.valueOf(inizio.getTime()), String.valueOf(afterfive.getTime()), roomselected);
 
                     if (risultato != null) {
@@ -140,14 +154,22 @@ public class TimeController implements Initializable {
                         for (Map.Entry<String, Long> s : risultato.entrySet()) {
                             long val = s.getValue();
                             System.out.println(val);
-                            if (val == 5) {
+                            if (val >= 5) {
                                 numbermac++;
                                 count++;
                             }
                         }
-                        System.out.println("numero MAC presenti in TUTTI i primi 5 min:" + numbermac);
+                        /*retrieve global error*/
 
-                        series.getData().add(new XYChart.Data(5, numbermac));
+                       String outcome=computeError(String.valueOf(inizio.getTime()), String.valueOf(afterfive.getTime()), roomselected, p, numbermac);
+
+                        System.out.println("numero MAC presenti in TUTTI i primi 5 min:" + numbermac);
+                        XYChart.Data<Number, Number > data =new XYChart.Data(5, numbermac);
+                        data.setNode(new TimeController.HoverNode(
+                                        outcome, 0
+                                )
+                        );
+                        series.getData().add(data);
 
                     }else {
                         series.getData().add(new XYChart.Data(5, 0));
@@ -157,6 +179,8 @@ public class TimeController implements Initializable {
                 }
 
                 try{
+
+
                     secres = p.showMacPerRoom(String.valueOf(afterfive.getTime()), String.valueOf(afterten.getTime()), roomselected);
                         if (secres != null) {
                             numbermac = 0;
@@ -168,8 +192,17 @@ public class TimeController implements Initializable {
                                     {numbermac++;
                                 count++;}
                             }
+                            /*retrieve global error*/
+
+                            String outcome=computeError(String.valueOf(afterfive.getTime()), String.valueOf(afterten.getTime()), roomselected, p, numbermac);
+
                             System.out.println("numero MAC presenti in TUTTI i primi 10 min:" + numbermac);
-                            series.getData().add(new XYChart.Data(10, numbermac));
+                            XYChart.Data<Number, Number > data =new XYChart.Data(10, numbermac);
+                            data.setNode(new TimeController.HoverNode(
+                                            outcome, 0
+                                    )
+                            );
+                            series.getData().add(data);
 
                         }else {
                             series.getData().add(new XYChart.Data(10, 0));
@@ -178,7 +211,9 @@ public class TimeController implements Initializable {
                 e.printStackTrace();
             }
 try{
-                            thirdres = p.showMacPerRoom(String.valueOf(afterten.getTime()), String.valueOf(afterfifteen.getTime()), roomselected);
+    System.out.println("3");
+
+    thirdres = p.showMacPerRoom(String.valueOf(afterten.getTime()), String.valueOf(afterfifteen.getTime()), roomselected);
                             if (thirdres != null) {
                                 numbermac = 0;
                                 for (Map.Entry<String, Long> s : thirdres.entrySet()) {
@@ -189,8 +224,17 @@ try{
                                         {numbermac++;
                                     count++;}
                                 }
+                                /*retrieve global error*/
+
+                                String outcome=computeError(String.valueOf(afterten.getTime()), String.valueOf(afterfifteen.getTime()), roomselected, p, numbermac);
+
                                 System.out.println("numero MAC presenti in TUTTI i primi 15 min:" + numbermac);
-                                series.getData().add(new XYChart.Data(15, numbermac));
+                                XYChart.Data<Number, Number > data =new XYChart.Data(15, numbermac);
+                                data.setNode(new TimeController.HoverNode(
+                                                outcome, 0
+                                        )
+                                );
+                                series.getData().add(data);
                             }else {
                                 series.getData().add(new XYChart.Data(15, 0));
                             }
@@ -198,7 +242,9 @@ try{
     e.printStackTrace();
 }
 try{
-                                fourcres = p.showMacPerRoom(String.valueOf(afterfifteen.getTime()), String.valueOf(aftertwenty.getTime()), roomselected);
+    System.out.println("4");
+
+    fourcres = p.showMacPerRoom(String.valueOf(afterfifteen.getTime()), String.valueOf(aftertwenty.getTime()), roomselected);
                                 if (fourcres != null) {
                                     numbermac = 0;
                                     for (Map.Entry<String, Long> s : fourcres.entrySet()) {
@@ -209,8 +255,17 @@ try{
                                             {numbermac++;
                                         count++;}
                                     }
+                                    /*retrieve global error*/
+
+                                    String outcome=computeError(String.valueOf(afterfifteen.getTime()), String.valueOf(aftertwenty.getTime()), roomselected, p, numbermac);
+
                                     System.out.println("numero MAC presenti in TUTTI i primi 20 min:" + numbermac);
-                                    series.getData().add(new XYChart.Data(20, numbermac));
+                                    XYChart.Data<Number, Number > data =new XYChart.Data(20, numbermac);
+                                    data.setNode(new TimeController.HoverNode(
+                                                    outcome, 0
+                                            )
+                                    );
+                                    series.getData().add(data);
 
                                 }else {
                                     series.getData().add(new XYChart.Data(20, 0));
@@ -226,7 +281,7 @@ try{
                         graph_container.getChildren().add(grafico);
 
                         if(count==0){
-                        AreaInfo.appendText("Nessun MAC rilevato per la stanza " + roomselected + "\n" + "A partire dalla data e ora seguenti:\n" + "TS Inizio: " + inizio);
+                        feedback.appendText("Nessun MAC rilevato per la stanza " + roomselected + "\n" + "A partire dalla data e ora seguenti:\n" + "TS Inizio: " + inizio);
                         XYChart.Series serie = new XYChart.Series();
                         graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                         grafico.getData().add(serie);
@@ -238,17 +293,31 @@ try{
                 DataI.setLocalDateTime(null);
                 return;
             }else{
-                AreaInfo.appendText("Selezionare la stanza\n");
+                feedback.appendText("Selezionare la stanza\n");
                 ConfigurationController.showAlert("Select a Room!", true);
                 return;
             }
         }catch (NullPointerException n){
-            AreaInfo.appendText("Inserire data e ora di inizio\n");
+            feedback.appendText("Inserire data e ora di inizio\n");
             ConfigurationController.showAlert("Select a date and time!", true);
+            n.printStackTrace();
             return;
         }
 
 
+    }
+
+    private String computeError(String valueI, String valueF, String roomselected, QueryPosition p, int numbermac ) throws SQLException {
+
+        Map<String, Long> risultato= p.getGlobalError(valueI, valueF, roomselected);
+
+        risultato.put("MIN", p.getGlobalMAC(valueI, valueF, roomselected));
+        long globalE=0;
+        if(risultato.get("N")!=0) {
+            globalE = risultato.get("Errore") / risultato.get("N");
+        }
+
+        return "GlobalError "+ globalE + " MIN "+ risultato.get("MIN")+ " MAX "+ risultato.get("merge")+numbermac;
     }
 
 
@@ -270,5 +339,34 @@ try{
 
         }
     }
+
+    static class HoverNode extends StackPane {
+        HoverNode(String MAC, int id ){
+            setPrefSize(12, 12);
+
+
+
+            setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                    //AreaInfo.setText("prova");
+                    //getChildren().setAll(label);
+                    feedback.setText(MAC);
+                    //setCursor(Cursor.NONE);
+                    //toFront();
+                }
+            });
+            /*setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                    feedback.setText("");
+                    setCursor(Cursor.CROSSHAIR);
+                }
+            });*/
+        }
+    }
+
+
+
+
+
 
 }
