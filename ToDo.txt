@@ -1,5 +1,5 @@
 da fare:
-- VISUALIZZARE STIMA ERRORE NUM DI DISPOSITIVI (quello basato sui singoli errori salvati nel DB quando si accorpano mac locali) (??????)
+
 
 
 da testare:
@@ -8,6 +8,7 @@ da testare:
 - Gestire quando si disconnette una schedina -> mettere un pop-up di avviso e basta. (RISOLTO, DA TESTARE)
 - Controllo posizione oltre dimensione stanza -> non da plottare (RISOLTO, DA TESTARE PARTE REALTIME)
 - Skippare eventuali schedine esterne che non sono nella configurazione. (Davide)
+- VISUALIZZARE STIMA ERRORE NUM DI DISPOSITIVI (quello basato sui singoli errori salvati nel DB quando si accorpano mac locali) (??????)
 
 opzionale:
 *****DA TESTARE*****
