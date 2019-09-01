@@ -74,6 +74,8 @@ public class NewRoomController implements Initializable {
              }
              catch (NumberFormatException e){
                  ConfigurationController.showAlert("Insert numeric value", true);
+                 db.closeConnection();
+                 return;
              }
          }
 

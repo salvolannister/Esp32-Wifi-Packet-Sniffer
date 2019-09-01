@@ -300,7 +300,7 @@ try{
         }catch (NullPointerException n){
             feedback.appendText("Inserire data e ora di inizio\n");
             ConfigurationController.showAlert("Select a date and time!", true);
-            n.printStackTrace();
+            //n.printStackTrace();
             return;
         }
 

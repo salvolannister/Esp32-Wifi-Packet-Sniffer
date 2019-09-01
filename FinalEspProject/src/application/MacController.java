@@ -16,6 +16,7 @@ import java.util.*;
 import DB.DBUtil;
 import DB.QueryPosition;
 import DB.QueryRoom;
+import DTO.NumMac;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,6 +62,12 @@ public class MacController implements Initializable{
             Timestamp inizio = Timestamp.valueOf(DataI.getLocalDateTime());
             Timestamp fine = Timestamp.valueOf(DataF.getLocalDateTime());
 
+            if(inizio.compareTo(fine)>0){
+                AreaInfo.appendText("La data d'inizio deve precedere quella di fine\n");
+                ConfigurationController.showAlert("The starting date  must precede the ending one",true);
+                return;
+            }
+
             /*Ricavo la stanza selezionata*/
             String roomselected = ComboboxRoom.getValue();
 
@@ -74,11 +81,12 @@ public class MacController implements Initializable{
                 QueryPosition p = new QueryPosition(db.getConn());
 
                 try {
-                    risultato = p.showMacPerRoom(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()), roomselected);
-                    if (risultato != null) {
+                    List<NumMac> QueryRes = p.showListMacPerRoom(String.valueOf(inizio.getTime()), String.valueOf(fine.getTime()), roomselected);
+
+                    if (QueryRes != null) {
                         //System.out.println("tutto ok");
-                        for (String s : risultato.keySet()) {
-                            addMacButton(s, DataI.getText(), DataF.getText());
+                        for (NumMac s : QueryRes) {
+                            addMacButton(s.getMAC(), DataI.getText(), DataF.getText(), s.getFreq());
                         }
                     } else {
                         AreaInfo.appendText("Nessun MAC rilevato per la stanza " + roomselected + "\n" + "Nell'intervallo di tempo seguente:\n" + "TS Inizio: " + inizio + "\n" + "TS Fine: " + fine);
@@ -99,21 +107,23 @@ public class MacController implements Initializable{
                 return;
             }else{
                 AreaInfo.appendText("Selezionare la stanza\n");
+                ConfigurationController.showAlert("Select a room",true);
                 return;
             }
         }catch (NullPointerException n){
             AreaInfo.appendText("Inserire data e ora di inizio e fine");
+            ConfigurationController.showAlert("Insert a starting/ending date and time",true);
             //DataF.text
             return;
         }
     }
 
 
-    private void addMacButton(String s, String dataI,  String dataF) {
+    private void addMacButton(String s, String dataI,  String dataF, Long num) {
 
         Button mac=new Button(s);
         mac.setPrefWidth(260);
-        mac.setOnMouseClicked(new InfoEvent(risultato.get(mac.getText()), mac.getText(),AreaInfo, dataI, dataF));
+        mac.setOnMouseClicked(new InfoEvent(num, mac.getText(),AreaInfo, dataI, dataF));
         MacList.add(mac);
         System.out.println("-----------");
         System.out.println("ho aggiunto un bottone " + MacList.size());

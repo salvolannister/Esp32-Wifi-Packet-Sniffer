@@ -12,7 +12,7 @@
             <Button mnemonicParsing="false" onAction="#openRoom" onMouseClicked="#openRoom" prefHeight="110.0" prefWidth="160.0" text="Room diagram" BorderPane.alignment="CENTER" />
          </right>
          <bottom>
-            <Button mnemonicParsing="false" onAction="#openMacFreq" onMouseClicked="#openMacFreq" prefHeight="110.0" prefWidth="160.0" text="Show Mac's Frequency" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#openMacFreq" onMouseClicked="#openMacFreq" prefHeight="110.0" prefWidth="160.0" text="Mac's Frequency" BorderPane.alignment="CENTER" />
          </bottom>
          <left>
             <Button fx:id="cnfg" mnemonicParsing="false" onAction="#openTimeDiag" onMouseClicked="#openTimeDiag" prefHeight="110.0" prefWidth="160.0" text="TimeDiagram" BorderPane.alignment="CENTER" />

@@ -1,10 +1,12 @@
 package DB;
 
+import DTO.NumMac;
 import DTO.Posizione;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class QueryPosition {
@@ -93,7 +95,6 @@ public class QueryPosition {
     }
 
 
-
     public Map<String, Long> showMacPerRoom(String timeI, String timeF, String room) throws SQLException {
 
         PreparedStatement pstmt;
@@ -139,6 +140,50 @@ public class QueryPosition {
     }
 
 
+
+    public List<NumMac> showListMacPerRoom(String timeI, String timeF, String room) throws SQLException {
+
+        PreparedStatement pstmt;
+        List<NumMac> QueryRes= new ArrayList<>();
+
+        try {
+            conn.setAutoCommit(false);
+
+            String s=new String("SELECT MAC, count(*) AS val FROM Position WHERE Timestamp >= ? AND Timestamp <= ? AND Room = ? GROUP BY MAC ORDER BY count(*) DESC");
+            try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
+                pstmt.setString(1,  timeI);
+                pstmt.setString(2, timeF);
+                pstmt.setString(3, room);
+                ResultSet res=pstmt.executeQuery();
+
+                while (res.next()){
+                    QueryRes.add(new NumMac(res.getString("MAC"), res.getLong("val")));
+                    //System.out.println(res.getString("MAC")+"  "+res.getLong("val"));
+                }
+
+
+                System.out.println(QueryRes);
+
+                if(QueryRes.isEmpty()==false){
+                    conn.commit();
+                    return QueryRes;
+                }
+                return null;
+
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+
+        }catch (Exception e) {
+            conn.rollback();
+            e.printStackTrace();
+            System.out.println("errore");
+            return null;
+        }
+
+    }
 
 
 
