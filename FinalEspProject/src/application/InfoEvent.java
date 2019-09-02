@@ -25,7 +25,7 @@ public class InfoEvent implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
         AreaInfo.setText("");
-        AreaInfo.appendText("Il mac "+ btn+ "\n è stato rilevato "+num+ " volte\n\n\n");
+        AreaInfo.appendText("Il MAC "+ btn+ "\n è stato rilevato "+num+ " volte\n\n\n");
         AreaInfo.appendText("Nell'intervallo seguente:\n");
         AreaInfo.appendText("TS inizio: "+dataI + "\n" + "TS fine: " +dataF);
     }

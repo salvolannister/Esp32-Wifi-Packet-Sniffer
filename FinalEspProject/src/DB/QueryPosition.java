@@ -385,15 +385,15 @@ public class QueryPosition {
     }
 
 
-    public Map<String, Long> getGlobalError(String timeI, String timeF, String room) throws SQLException {
+    public Map<String, Double> getGlobalError(String timeI, String timeF, String room) throws SQLException {
 
         PreparedStatement pstmt;
-        Map<String, Long> risultato= new HashMap<>();
+        Map<String, Double> risultato= new HashMap<>();
 
         try {
             conn.setAutoCommit(false);
             /* DESC sta per descendant */
-            String s= new String("SELECT MAC, count(*) AS val, SUM(Err) AS Errore, SUM(MergedNumb) AS merged FROM Position WHERE Timestamp >= ? AND Timestamp <= ? AND Room = ? AND Err>0 GROUP BY MAC HAVING COUNT(*) >4 ORDER BY count(*) DESC");
+            String s= new String("SELECT MAC, count(*) AS val, SUM(Err) AS Errore, SUM(MergedNumb) AS merged FROM Position WHERE Timestamp >= ? AND Timestamp <= ? AND Err>0 AND Room = ? GROUP BY MAC HAVING COUNT(*) >4 ORDER BY count(*) DESC");
             try (PreparedStatement preparedStatement = pstmt = conn.prepareStatement(s)) {
                 pstmt.setString(1,  timeI);
                 pstmt.setString(2,  timeF);
@@ -401,12 +401,12 @@ public class QueryPosition {
                 ResultSet res=pstmt.executeQuery();
 
 
-                long N=0;
-                long Err=0;
-                long merge=0;
+                Double N=0.0;
+                Double Err=0.0;
+                Double merge=0.0;
                 while (res.next()){
                     N+=res.getLong("val");
-                    Err+=res.getLong("Errore");
+                    Err+=res.getDouble("Errore");
                     merge+=res.getLong("merged");
                 }
                 risultato.put("N", N);
@@ -562,7 +562,7 @@ public class QueryPosition {
 
     }
 
-    public Long getGlobalMAC(String timeI, String timeF, String room) throws SQLException {
+    public Double getGlobalMAC(String timeI, String timeF, String room) throws SQLException {
         PreparedStatement pstmt;
 
         try {
@@ -576,7 +576,7 @@ public class QueryPosition {
                 ResultSet res=pstmt.executeQuery();
 
 
-                long N=0;
+                Double N=0.0;
                 while (res.next()) {
                     N++;
                 }

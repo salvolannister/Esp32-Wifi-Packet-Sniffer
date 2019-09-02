@@ -68,7 +68,7 @@ public class TimeController implements Initializable {
         /*inizializza il grafico*/
         final NumberAxis xAxis = new NumberAxis(0, 20, 5);
         //final ValueAxis<String> xAxis =new ValueAxis<String>();
-        final NumberAxis yAxis = new NumberAxis(0, 50, 1);
+        final NumberAxis yAxis = new NumberAxis(0, 30, 1);
         xAxis.setLabel("Time (min)");
         yAxis.setLabel("People Number");
         grafico=new LineChart<Number, Number>(xAxis, yAxis);
@@ -309,15 +309,17 @@ try{
 
     private String computeError(String valueI, String valueF, String roomselected, QueryPosition p, int numbermac ) throws SQLException {
 
-        Map<String, Long> risultato= p.getGlobalError(valueI, valueF, roomselected);
+        Map<String, Double> risultato= p.getGlobalError(valueI, valueF, roomselected);
 
         risultato.put("MIN", p.getGlobalMAC(valueI, valueF, roomselected));
-        long globalE=0;
+        Double globalE=0.0;
         if(risultato.get("N")!=0) {
-            globalE = risultato.get("Errore") / risultato.get("N");
+            globalE = risultato.get("Err") / risultato.get("N").intValue();
         }
 
-        return "GlobalError "+ globalE + " MIN "+ risultato.get("MIN")+ " MAX "+ risultato.get("merge")+numbermac;
+        Integer tot=risultato.get("merge").intValue()+numbermac;
+
+        return "GlobalError "+ globalE.floatValue() + " MIN "+ risultato.get("MIN").intValue()+ " MAX "+ tot;
     }
 
 

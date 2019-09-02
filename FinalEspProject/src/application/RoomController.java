@@ -114,6 +114,7 @@ public class RoomController implements Initializable {
         grafico= new ScatterChart<>(xAxis, yAxis);
         grafico.setCursor(Cursor.CROSSHAIR);
         grafico.setTitle("Posizione");
+        grafico.setPrefSize(415,434);
         graph_container.getChildren().add(grafico); //aggiungo un grafico vuoto
 
         /* setting content in Room and Configuration button*/
@@ -157,6 +158,7 @@ public class RoomController implements Initializable {
     }
 
     public void search(MouseEvent mouseEvent) {
+        feedback.setText("");
         String roomName = roomCB.getValue();
         String confName = configCB.getValue();
         Map<String, Posizione> risultato= new HashMap<>();
@@ -207,7 +209,7 @@ public class RoomController implements Initializable {
                 graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
                 grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
                 grafico.setTitle("Devices's positions");
-
+                grafico.setPrefSize(415,434);
 
                 /*inserisco la
                 configurazione */
@@ -513,6 +515,7 @@ public class RoomController implements Initializable {
         grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
         grafico.setTitle("Devices's positions");
 
+        grafico.setPrefSize(415,434);
 
 
 /*inserisco la
@@ -652,6 +655,8 @@ public class RoomController implements Initializable {
         graph_container.getChildren().remove(grafico); //rimuovo il grafico vuoto
         grafico=new ScatterChart<Number, Number>(xAxis, yAxis);
         grafico.setTitle("Devices's positions");
+
+        grafico.setPrefSize(415,434);
         graph_container.getChildren().add(grafico);
         feedback.appendText("The capture is stopped\n");
     }

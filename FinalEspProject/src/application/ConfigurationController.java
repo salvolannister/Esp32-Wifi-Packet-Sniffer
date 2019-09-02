@@ -323,7 +323,7 @@ private static void printField(String mac, String X, String Y) {
 
 	public static void showAlert(String content, Boolean wait){
 		Alert fail= new Alert(AlertType.INFORMATION);
-		fail.setHeaderText("failure");
+		fail.setHeaderText("Pay attention");
 		fail.getDialogPane().setExpanded(true);
 		fail.setContentText(content);
 		if(wait==true)
